@@ -48,27 +48,21 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
     };
 
     try {
-      // メール送信方式（確実）
-      const subject = `[AromaWise フィードバック] ${getCategoryLabel(feedback.category)} - ${feedback.rating}⭐`;
-      const body = `フィードバック詳細：
-
-評価: ${feedback.rating}/5 ⭐
-カテゴリ: ${getCategoryLabel(feedback.category)}
-日時: ${new Date(feedback.timestamp).toLocaleString('ja-JP')}
-
-コメント:
-${feedback.comment || 'コメントなし'}
-
-技術情報:
-- URL: ${feedback.url}
-- ブラウザ: ${feedback.userAgent}
-
-このフィードバックはAromaWiseアプリから送信されました。`;
-
-      const mailtoLink = `mailto:fumiyasu.dev@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.open(mailtoLink);
+      // Google Forms送信（暫定版）
+      const formData = new FormData();
+      
+      // 暫定フィールドマッピング
+      formData.append('entry.521869119', `${feedback.rating}⭐`);
+      formData.append('entry.1313356794', `${getCategoryLabel(feedback.category)} - ${feedback.comment || 'コメントなし'}`);
+      
+      await fetch('https://docs.google.com/forms/d/e/1FAIpQLSfQMEwtCtjSCDvnV0_qRARQobaOxqjzC5K7_P9bP4o1_0oxxw/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
       
       let success = true;
+      console.log('Google Formsに送信しました');
       
       // 使用統計も更新
       const stats = JSON.parse(localStorage.getItem('aromawise_usage_stats') || '{}');
