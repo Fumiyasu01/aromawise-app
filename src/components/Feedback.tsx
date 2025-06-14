@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { analytics } from '../utils/analytics';
-import { FeedbackService } from '../utils/feedbackService';
 import './Feedback.css';
 
 interface FeedbackProps {
@@ -13,6 +12,18 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
   const [category, setCategory] = useState<string>('general');
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const getCategoryLabel = (category: string): string => {
+    const labels: Record<string, string> = {
+      'general': '全般的な感想',
+      'usability': '使いやすさ',
+      'content': 'コンテンツ',
+      'features': '機能について',
+      'bug': 'バグ報告',
+      'suggestion': '改善提案'
+    };
+    return labels[category] || category;
+  };
 
   const categories = [
     { value: 'general', label: '全般的な感想' },
@@ -37,8 +48,27 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
     };
 
     try {
-      // フィードバックを送信（ローカル保存も含む）
-      const success = await FeedbackService.submitFeedback(feedback);
+      // メール送信方式（確実）
+      const subject = `[AromaWise フィードバック] ${getCategoryLabel(feedback.category)} - ${feedback.rating}⭐`;
+      const body = `フィードバック詳細：
+
+評価: ${feedback.rating}/5 ⭐
+カテゴリ: ${getCategoryLabel(feedback.category)}
+日時: ${new Date(feedback.timestamp).toLocaleString('ja-JP')}
+
+コメント:
+${feedback.comment || 'コメントなし'}
+
+技術情報:
+- URL: ${feedback.url}
+- ブラウザ: ${feedback.userAgent}
+
+このフィードバックはAromaWiseアプリから送信されました。`;
+
+      const mailtoLink = `mailto:fumiyasu.dev@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoLink);
+      
+      let success = true;
       
       // 使用統計も更新
       const stats = JSON.parse(localStorage.getItem('aromawise_usage_stats') || '{}');
@@ -51,7 +81,8 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
         action: 'feedback_submit', 
         rating, 
         category, 
-        sent_successfully: success 
+        sent_successfully: success,
+        method: success ? 'api' : 'direct'
       }, 'feedback');
 
       setSubmitted(true);
