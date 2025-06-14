@@ -1,0 +1,296 @@
+/* フィードバックコンポーネントのスタイル */
+
+.feedback-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.feedback-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e0e7e2;
+}
+
+.feedback-header h3 {
+  margin: 0;
+  color: #2d5a3d;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.feedback-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.feedback-close:hover {
+  background: #f0f0f0;
+}
+
+.feedback-form {
+  padding: 24px;
+}
+
+.feedback-section {
+  margin-bottom: 24px;
+}
+
+.feedback-label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #2d5a3d;
+  font-size: 1rem;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  filter: grayscale(100%);
+}
+
+.star:hover {
+  transform: scale(1.1);
+}
+
+.star.active {
+  filter: grayscale(0%);
+  transform: scale(1.1);
+}
+
+.rating-text {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  min-height: 20px;
+}
+
+.feedback-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e7e2;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.feedback-select:focus {
+  outline: none;
+  border-color: #2d5a3d;
+  box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+}
+
+.feedback-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e7e2;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s ease;
+}
+
+.feedback-textarea:focus {
+  outline: none;
+  border-color: #2d5a3d;
+  box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+}
+
+.feedback-textarea::placeholder {
+  color: #999;
+}
+
+.feedback-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.feedback-cancel {
+  padding: 12px 24px;
+  border: 2px solid #e0e7e2;
+  background: white;
+  color: #666;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedback-cancel:hover {
+  border-color: #ccc;
+  background: #f8f8f8;
+}
+
+.feedback-submit {
+  padding: 12px 24px;
+  border: none;
+  background: #2d5a3d;
+  color: white;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedback-submit:hover:not(:disabled) {
+  background: #1e3d2a;
+  transform: translateY(-1px);
+}
+
+.feedback-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 成功画面 */
+.feedback-success {
+  max-width: 400px;
+}
+
+.feedback-success-content {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.success-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.feedback-success-content h3 {
+  color: #2d5a3d;
+  margin: 0 0 12px 0;
+  font-size: 1.3rem;
+}
+
+.feedback-success-content p {
+  color: #666;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.feedback-close-btn {
+  padding: 12px 24px;
+  border: none;
+  background: #2d5a3d;
+  color: white;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedback-close-btn:hover {
+  background: #1e3d2a;
+  transform: translateY(-1px);
+}
+
+/* タッチ操作最適化 */
+@media (max-width: 768px) {
+  .feedback-overlay {
+    padding: 16px;
+  }
+  
+  .feedback-modal {
+    border-radius: 12px;
+  }
+  
+  .feedback-header {
+    padding: 16px 20px 12px;
+  }
+  
+  .feedback-form {
+    padding: 20px;
+  }
+  
+  .feedback-section {
+    margin-bottom: 20px;
+  }
+  
+  .star {
+    font-size: 28px;
+    padding: 8px;
+  }
+  
+  .feedback-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  
+  .feedback-cancel,
+  .feedback-submit {
+    width: 100%;
+    padding: 14px 24px;
+  }
+}
+
+/* アクセシビリティ */
+@media (prefers-reduced-motion: reduce) {
+  .star,
+  .feedback-submit,
+  .feedback-cancel,
+  .feedback-close {
+    transition: none;
+  }
+  
+  .star:hover,
+  .star.active,
+  .feedback-submit:hover {
+    transform: none;
+  }
+}

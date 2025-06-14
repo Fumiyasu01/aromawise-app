@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Navigation.css';
+import Feedback from './Feedback';
 
 interface NavigationProps {
   currentScreen: string;
@@ -7,6 +8,8 @@ interface NavigationProps {
 }
 
 const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }) => {
+  const [showFeedback, setShowFeedback] = useState(false);
+  
   const navItems = [
     { id: 'home', label: 'ホーム', icon: '🏠' },
     { id: 'oils', label: 'オイル一覧', icon: '🌿' },
@@ -16,18 +19,32 @@ const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }
   ];
 
   return (
-    <nav className="navigation">
-      {navItems.map(item => (
+    <>
+      <nav className="navigation">
+        {navItems.map(item => (
+          <button
+            key={item.id}
+            className={`nav-item ${currentScreen === item.id ? 'active' : ''}`}
+            onClick={() => onScreenChange(item.id as any)}
+          >
+            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-label">{item.label}</span>
+          </button>
+        ))}
         <button
-          key={item.id}
-          className={`nav-item ${currentScreen === item.id ? 'active' : ''}`}
-          onClick={() => onScreenChange(item.id as any)}
+          className="nav-item feedback-nav-item"
+          onClick={() => setShowFeedback(true)}
+          title="フィードバックを送る"
         >
-          <span className="nav-icon">{item.icon}</span>
-          <span className="nav-label">{item.label}</span>
+          <span className="nav-icon">📝</span>
+          <span className="nav-label">フィードバック</span>
         </button>
-      ))}
-    </nav>
+      </nav>
+      
+      {showFeedback && (
+        <Feedback onClose={() => setShowFeedback(false)} />
+      )}
+    </>
   );
 };
 
