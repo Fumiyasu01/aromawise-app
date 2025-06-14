@@ -1,0 +1,504 @@
+/* Analytics Dashboard Styles */
+
+.analytics-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2500;
+  padding: 20px;
+}
+
+.analytics-modal {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 2px solid #f0f7f0;
+  background: linear-gradient(135deg, #2d5a3d 0%, #1e3d2a 100%);
+  color: white;
+}
+
+.analytics-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.analytics-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.analytics-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.analytics-tabs {
+  display: flex;
+  background: #f8fcf8;
+  border-bottom: 1px solid #e0e7e2;
+}
+
+.tab {
+  flex: 1;
+  padding: 16px 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.tab:hover {
+  background: rgba(45, 90, 61, 0.05);
+  color: #2d5a3d;
+}
+
+.tab.active {
+  background: white;
+  color: #2d5a3d;
+  border-bottom-color: #2d5a3d;
+}
+
+.analytics-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 32px;
+}
+
+/* Loading State */
+.analytics-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  color: #666;
+}
+
+.loading-spinner {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Overview Tab */
+.overview-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #d4e5d4;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(45, 90, 61, 0.1);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.stat-content h4 {
+  margin: 0 0 8px 0;
+  color: #2d5a3d;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e3d2a;
+}
+
+.device-info, .retention-info {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e0e7e2;
+}
+
+.device-info h4, .retention-info h4 {
+  margin: 0 0 16px 0;
+  color: #2d5a3d;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.device-details, .retention-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.device-details p, .retention-details p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status.active {
+  background: #e8f5e8;
+  color: #2d5a3d;
+}
+
+.status.inactive {
+  background: #fee;
+  color: #d32f2f;
+}
+
+/* Engagement Tab */
+.engagement-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.engagement-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e0e7e2;
+}
+
+.engagement-section h4 {
+  margin: 0 0 20px 0;
+  color: #2d5a3d;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #f8fcf8;
+  border-radius: 12px;
+  border: 1px solid #e8f5e8;
+  transition: all 0.2s ease;
+}
+
+.ranking-item:hover {
+  background: #f0f7f0;
+  transform: translateX(4px);
+}
+
+.ranking-position {
+  background: #2d5a3d;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ranking-name {
+  flex: 1;
+  color: #333;
+  font-weight: 500;
+}
+
+.ranking-count {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 40px;
+  margin: 0;
+}
+
+/* Feedback Tab */
+.feedback-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.feedback-overview {
+  display: flex;
+  justify-content: center;
+}
+
+.feedback-stat {
+  background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  border: 1px solid #d4e5d4;
+  min-width: 200px;
+}
+
+.feedback-stat h4 {
+  margin: 0 0 16px 0;
+  color: #2d5a3d;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.big-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1e3d2a;
+  margin: 0;
+}
+
+.feedback-data {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e0e7e2;
+}
+
+.feedback-data h4 {
+  margin: 0 0 20px 0;
+  color: #2d5a3d;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feedback-item {
+  background: #f8fcf8;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #e8f5e8;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.feedback-rating {
+  font-size: 1rem;
+}
+
+.feedback-date {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.feedback-category {
+  color: #2d5a3d;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.feedback-comment {
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Footer */
+.analytics-footer {
+  padding: 20px 32px;
+  border-top: 1px solid #e0e7e2;
+  background: #f8fcf8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.export-btn {
+  background: #2d5a3d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+  background: #1e3d2a;
+  transform: translateY(-1px);
+}
+
+.privacy-note {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0;
+  max-width: 300px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .analytics-overlay {
+    padding: 16px;
+  }
+  
+  .analytics-modal {
+    border-radius: 16px;
+    max-height: 95vh;
+  }
+  
+  .analytics-header {
+    padding: 20px 24px;
+  }
+  
+  .analytics-header h3 {
+    font-size: 1.2rem;
+  }
+  
+  .analytics-content {
+    padding: 24px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .tabs {
+    flex-direction: column;
+  }
+  
+  .tab {
+    padding: 12px 20px;
+  }
+  
+  .analytics-footer {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .engagement-section, .device-info, .retention-info, .feedback-data {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-header {
+    padding: 16px 20px;
+  }
+  
+  .analytics-content {
+    padding: 20px;
+  }
+  
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .ranking-item {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .ranking-item .ranking-position {
+    align-self: center;
+  }
+}

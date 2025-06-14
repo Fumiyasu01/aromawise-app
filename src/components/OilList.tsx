@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Oil } from '../types/Oil';
 import { oilsData } from '../data/oils';
+import { analytics } from '../utils/analytics';
 import './OilList.css';
 
 interface OilListProps {
@@ -80,7 +81,10 @@ const OilList: React.FC<OilListProps> = ({ onOilSelect }) => {
 
       <div className="oils-grid">
         {sortedOils.map(oil => (
-          <div key={oil.id} className="oil-item" onClick={() => onOilSelect(oil)}>
+          <div key={oil.id} className="oil-item" onClick={() => {
+            analytics.trackOilView(oil.id, oil.name, 'oils');
+            onOilSelect(oil);
+          }}>
             <div className="oil-item-header">
               <span className="oil-category-icon">{getCategoryIcon(oil.category)}</span>
               <h3>{oil.name}</h3>

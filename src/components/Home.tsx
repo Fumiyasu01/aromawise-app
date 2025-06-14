@@ -8,6 +8,7 @@ import { RecommendationEngine } from '../utils/recommendationEngine';
 import { SymptomCategory, RecommendationResult, RecommendationScore } from '../types/Recommendation';
 import { RecipeSafetyEvaluator } from '../utils/recipeSafety';
 import { UserPreferenceManager } from '../utils/userPreferences';
+import { analytics } from '../utils/analytics';
 import MedicalDisclaimer from './MedicalDisclaimer';
 import './Home.css';
 
@@ -100,6 +101,9 @@ const Home: React.FC<HomeProps> = ({
     setSearchTerm(term);
     updateHomeState({ searchTerm: term });
     if (term.trim()) {
+      // アナリティクス記録
+      analytics.trackSearch(term.trim(), 0, 'home');
+      
       // 検索実行時に上部にスクロール
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -124,6 +128,9 @@ const Home: React.FC<HomeProps> = ({
         })
       );
       setSearchResults(results);
+      
+      // 検索結果数をアナリティクスに記録
+      analytics.trackSearch(term.trim(), results.length, 'home');
     } else {
       setSearchResults([]);
     }
@@ -224,11 +231,16 @@ const Home: React.FC<HomeProps> = ({
     // 使用履歴を記録
     let category = '';
     
+    // アナリティクス記録
+    analytics.trackRecommendationClick(rec.itemType, rec.itemId, rec.score, 'home');
+    
     if (rec.itemType === 'oil') {
       const oil = getOilById(rec.itemId);
       if (oil) {
         category = oil.category;
         RecommendationEngine.recordUsage(rec.itemId, rec.itemType, category);
+        analytics.trackOilView(rec.itemId, oil.nameJa, 'home');
+        
         // EnhancedOilをOil型に変換
         const legacyOil = {
           id: oil.id,
@@ -269,7 +281,12 @@ const Home: React.FC<HomeProps> = ({
 
   const handleFavoriteToggle = (e: React.MouseEvent, oilId: string) => {
     e.stopPropagation(); // カードクリックイベントを防ぐ
+    const wasFavorite = UserPreferenceManager.isFavoriteOil(oilId);
     UserPreferenceManager.toggleFavoriteOil(oilId);
+    
+    // アナリティクス記録
+    analytics.trackFavoriteToggle(oilId, wasFavorite ? 'remove' : 'add', 'home');
+    
     // 推奨を再生成してお気に入り変更を反映
     const userProfile = RecipeSafetyEvaluator.getDefaultUserProfile();
     const recommendations = RecommendationEngine.generateRecommendations({
@@ -375,7 +392,10 @@ const Home: React.FC<HomeProps> = ({
             <h3>検索結果 ({searchResults.length}件)</h3>
             <div className="oil-cards">
               {searchResults.map(oil => (
-                <div key={oil.id} className="oil-card" onClick={() => onOilSelect(oil)}>
+                <div key={oil.id} className="oil-card" onClick={() => {
+                  analytics.trackOilView(oil.id, oil.name, 'home');
+                  onOilSelect(oil);
+                }}>
                   <h4>{oil.name}</h4>
                   <p className="oil-aroma">{oil.aroma}</p>
                   <div className="oil-benefits">

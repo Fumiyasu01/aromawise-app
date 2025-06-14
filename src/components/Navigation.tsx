@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Navigation.css';
 import Feedback from './Feedback';
+import AnalyticsDashboard from './AnalyticsDashboard';
 
 interface NavigationProps {
   currentScreen: string;
@@ -9,6 +10,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }) => {
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
   
   const navItems = [
     { id: 'home', label: 'ホーム', icon: '🏠' },
@@ -39,10 +41,22 @@ const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }
           <span className="nav-icon">📝</span>
           <span className="nav-label">フィードバック</span>
         </button>
+        <button
+          className="nav-item feedback-nav-item"
+          onClick={() => setShowAnalytics(true)}
+          title="使用統計を見る"
+        >
+          <span className="nav-icon">📊</span>
+          <span className="nav-label">統計</span>
+        </button>
       </nav>
       
       {showFeedback && (
         <Feedback onClose={() => setShowFeedback(false)} />
+      )}
+      
+      {showAnalytics && (
+        <AnalyticsDashboard onClose={() => setShowAnalytics(false)} />
       )}
     </>
   );

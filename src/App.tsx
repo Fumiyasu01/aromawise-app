@@ -10,12 +10,15 @@ import RecipeDetail from './components/RecipeDetail';
 import FragranceBlends from './components/FragranceBlends';
 import BlendDetail from './components/BlendDetail';
 import Navigation from './components/Navigation';
+import SatisfactionSurvey from './components/SatisfactionSurvey';
 import { Oil } from './types/Oil';
 import { BlendRecipe } from './types/BlendRecipe';
 import { BlendSuggestion } from './types/FragranceBlend';
 import { SymptomCategory, RecommendationResult } from './types/Recommendation';
 import { blendRecipes } from './data/blendRecipes';
 import { blendSuggestions } from './data/blendCompatibility';
+import { analytics } from './utils/analytics';
+import { SurveyManager } from './utils/surveyManager';
 
 type Screen = 'home' | 'oils' | 'detail' | 'myoils' | 'recipes' | 'recipe-detail' | 'blends' | 'blend-detail';
 
@@ -25,6 +28,7 @@ function App() {
   const [selectedRecipe, setSelectedRecipe] = useState<BlendRecipe | null>(null);
   const [selectedBlend, setSelectedBlend] = useState<BlendSuggestion | null>(null);
   const [myOils, setMyOils] = useState<Oil[]>([]);
+  const [showSurvey, setShowSurvey] = useState<boolean>(false);
   
   // ナビゲーション統合状態
   const [navigationHistory, setNavigationHistory] = useState<Screen[]>(['home']);
@@ -39,7 +43,19 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentScreen]);
 
+  // サーベイ表示チェック
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (SurveyManager.shouldShowSurvey()) {
+        setShowSurvey(true);
+      }
+    }, 10000); // 10秒後にチェック
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleOilSelect = (oil: Oil) => {
+    analytics.trackOilView(oil.id, oil.name, currentScreen);
     setSelectedOil(oil);
     setCurrentScreen('detail');
   };
@@ -171,7 +187,17 @@ function App() {
       <main className="main-content">
         {renderScreen()}
       </main>
-      <Navigation currentScreen={currentScreen} onScreenChange={setCurrentScreen} />
+      <Navigation 
+        currentScreen={currentScreen} 
+        onScreenChange={(screen) => {
+          analytics.trackPageView(screen);
+          setCurrentScreen(screen);
+        }} 
+      />
+      
+      {showSurvey && (
+        <SatisfactionSurvey onClose={() => setShowSurvey(false)} />
+      )}
     </div>
   );
 }

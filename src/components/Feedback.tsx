@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { analytics } from '../utils/analytics';
 import './Feedback.css';
 
 interface FeedbackProps {
@@ -43,6 +44,9 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
     stats.feedbackCount = (stats.feedbackCount || 0) + 1;
     stats.lastFeedbackDate = new Date().toISOString();
     localStorage.setItem('aromawise_usage_stats', JSON.stringify(stats));
+    
+    // アナリティクス記録
+    analytics.trackInteraction('navigation', { action: 'feedback_submit', rating, category }, 'feedback');
 
     setSubmitted(true);
     
