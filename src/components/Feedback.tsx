@@ -38,7 +38,9 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // ローカルストレージに保存
     const feedback = {
+      id: Date.now().toString(),
       rating,
       comment,
       category,
@@ -47,24 +49,30 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
       url: window.location.href
     };
 
+    const existingFeedback = JSON.parse(localStorage.getItem('aromawise_feedback') || '[]');
+    existingFeedback.push(feedback);
+    localStorage.setItem('aromawise_feedback', JSON.stringify(existingFeedback));
+
     try {
-      // Google Forms送信（暫定版）
+      // Google Forms送信
       const formData = new FormData();
-      
-      // 暫定フィールドマッピング
       formData.append('entry.521869119', `${feedback.rating}⭐`);
       formData.append('entry.1313356794', `${getCategoryLabel(feedback.category)} - ${feedback.comment || 'コメントなし'}`);
       
-      await fetch('https://docs.google.com/forms/d/e/1FAIpQLSfQMEwtCtjSCDvnV0_qRARQobaOxqjzC5K7_P9bP4o1_0oxxw/formResponse', {
+      console.log('Google Formsに送信中...', {
+        rating: `${feedback.rating}⭐`,
+        categoryAndComment: `${getCategoryLabel(feedback.category)} - ${feedback.comment || 'コメントなし'}`
+      });
+      
+      const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSfQMEwtCtjSCDvnV0_qRARQobaOxqjzC5K7_P9bP4o1_0oxxw/formResponse', {
         method: 'POST',
         mode: 'no-cors',
         body: formData
       });
       
-      let success = true;
-      console.log('Google Formsに送信しました');
+      console.log('Google Forms送信完了:', response);
       
-      // 使用統計も更新
+      // 使用統計更新
       const stats = JSON.parse(localStorage.getItem('aromawise_usage_stats') || '{}');
       stats.feedbackCount = (stats.feedbackCount || 0) + 1;
       stats.lastFeedbackDate = new Date().toISOString();
@@ -75,8 +83,8 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
         action: 'feedback_submit', 
         rating, 
         category, 
-        sent_successfully: success,
-        method: success ? 'api' : 'direct'
+        sent_successfully: true,
+        method: 'google_forms'
       }, 'feedback');
 
       setSubmitted(true);
@@ -86,8 +94,9 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
         onClose();
       }, 3000);
     } catch (error) {
-      console.error('フィードバック送信エラー:', error);
-      // エラーが発生してもローカルには保存されているのでフォームは閉じる
+      console.error('Google Forms送信エラー:', error);
+      
+      // エラーでもローカルには保存済みなので成功扱い
       setSubmitted(true);
       setTimeout(() => {
         onClose();
