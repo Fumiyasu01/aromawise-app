@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { analytics } from '../utils/analytics';
+import { FeedbackService } from '../utils/feedbackService';
 import './Feedback.css';
 
 interface FeedbackProps {
@@ -11,6 +12,7 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
   const [comment, setComment] = useState<string>('');
   const [category, setCategory] = useState<string>('general');
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const categories = [
     { value: 'general', label: '全般的な感想' },
@@ -21,12 +23,11 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
     { value: 'suggestion', label: '改善提案' }
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // ローカルストレージにフィードバックを保存
     const feedback = {
-      id: Date.now().toString(),
       rating,
       comment,
       category,
@@ -35,25 +36,40 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
       url: window.location.href
     };
 
-    const existingFeedback = JSON.parse(localStorage.getItem('aromawise_feedback') || '[]');
-    existingFeedback.push(feedback);
-    localStorage.setItem('aromawise_feedback', JSON.stringify(existingFeedback));
+    try {
+      // フィードバックを送信（ローカル保存も含む）
+      const success = await FeedbackService.submitFeedback(feedback);
+      
+      // 使用統計も更新
+      const stats = JSON.parse(localStorage.getItem('aromawise_usage_stats') || '{}');
+      stats.feedbackCount = (stats.feedbackCount || 0) + 1;
+      stats.lastFeedbackDate = new Date().toISOString();
+      localStorage.setItem('aromawise_usage_stats', JSON.stringify(stats));
+      
+      // アナリティクス記録
+      analytics.trackInteraction('navigation', { 
+        action: 'feedback_submit', 
+        rating, 
+        category, 
+        sent_successfully: success 
+      }, 'feedback');
 
-    // 使用統計も更新
-    const stats = JSON.parse(localStorage.getItem('aromawise_usage_stats') || '{}');
-    stats.feedbackCount = (stats.feedbackCount || 0) + 1;
-    stats.lastFeedbackDate = new Date().toISOString();
-    localStorage.setItem('aromawise_usage_stats', JSON.stringify(stats));
-    
-    // アナリティクス記録
-    analytics.trackInteraction('navigation', { action: 'feedback_submit', rating, category }, 'feedback');
-
-    setSubmitted(true);
-    
-    // 3秒後に自動で閉じる
-    setTimeout(() => {
-      onClose();
-    }, 3000);
+      setSubmitted(true);
+      
+      // 3秒後に自動で閉じる
+      setTimeout(() => {
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.error('フィードバック送信エラー:', error);
+      // エラーが発生してもローカルには保存されているのでフォームは閉じる
+      setSubmitted(true);
+      setTimeout(() => {
+        onClose();
+      }, 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -139,9 +155,9 @@ const Feedback: React.FC<FeedbackProps> = ({ onClose }) => {
             <button 
               type="submit" 
               className="feedback-submit"
-              disabled={rating === 0}
+              disabled={rating === 0 || isSubmitting}
             >
-              送信
+              {isSubmitting ? '送信中...' : '送信'}
             </button>
           </div>
         </form>
