@@ -1,0 +1,570 @@
+.home {
+  padding: 20px;
+  padding-bottom: 80px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.home-header h1 {
+  font-size: 2.5rem;
+  color: #2d5a3d;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.home-header p {
+  color: #5a7c65;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.search-section {
+  margin-bottom: 30px;
+}
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid #e0e7e2;
+  border-radius: 25px;
+  font-size: 1rem;
+  background: white;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #5a7c65;
+}
+
+.search-results h3 {
+  color: #2d5a3d;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.oil-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.oil-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.oil-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.oil-card h4 {
+  color: #2d5a3d;
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.oil-aroma {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.oil-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.benefit-tag {
+  background: #e8f5e8;
+  color: #2d5a3d;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.safety-warning {
+  color: #d4691a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  background: #f9f9f9;
+  border-radius: 15px;
+}
+
+.popular-section {
+  margin-bottom: 30px;
+}
+
+.popular-section h3 {
+  color: #2d5a3d;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.symptom-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.symptom-tag {
+  background: #f0f7f0;
+  color: #2d5a3d;
+  border: 1px solid #d4e5d4;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.symptom-tag:hover {
+  background: #e8f5e8;
+  border-color: #5a7c65;
+  transform: translateY(-1px);
+}
+
+.info-section {
+  display: grid;
+  gap: 15px;
+}
+
+.info-card {
+  background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid #d4e5d4;
+}
+
+.info-card h3 {
+  color: #2d5a3d;
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.info-card p {
+  color: #5a7c65;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* 推奨機能スタイル */
+.recommendations-section {
+  margin-bottom: 30px;
+}
+
+.recommendations-section h3 {
+  color: #2d5a3d;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.symptom-selector {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f9fcf9;
+  border-radius: 15px;
+  border: 1px solid #e8f5e8;
+}
+
+.symptom-selector h4 {
+  color: #2d5a3d;
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.symptom-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.symptom-tag {
+  background: white;
+  color: #2d5a3d;
+  border: 2px solid #e0e7e2;
+  padding: 12px 16px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.symptom-tag:hover {
+  background: #f0f7f0;
+  border-color: #5a7c65;
+  transform: translateY(-1px);
+}
+
+.symptom-tag.selected {
+  background: #2d5a3d;
+  color: white;
+  border-color: #2d5a3d;
+}
+
+.symptom-icon {
+  font-size: 1.1rem;
+}
+
+.recommendation-results {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid #e8f5e8;
+}
+
+.current-context {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f8fcf8 0%, #f0f7f0 100%);
+  border-radius: 12px;
+  border: 1px solid #e0e7e2;
+}
+
+.context-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.context-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.context-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.context-label {
+  color: #5a7c65;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.context-value {
+  color: #2d5a3d;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.rec-confidence {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #e8f5e8;
+  border-radius: 10px;
+  border: 1px solid #c8e6c9;
+}
+
+.rec-confidence span:first-child {
+  color: #2d5a3d;
+  font-weight: 600;
+}
+
+.rec-reason {
+  color: #5a7c65;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.rec-section {
+  margin-bottom: 25px;
+}
+
+.rec-section:last-child {
+  margin-bottom: 0;
+}
+
+.rec-section h4 {
+  color: #2d5a3d;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recommendation-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.recommendation-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f0f7f0;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.rec-header h4 {
+  color: #2d5a3d;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.rec-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.favorite-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-btn:hover {
+  background: rgba(0,0,0,0.1);
+  transform: scale(1.1);
+}
+
+.favorite-btn.favorited {
+  transform: scale(1);
+}
+
+.favorite-btn.favorited:hover {
+  transform: scale(1.1);
+}
+
+.rec-score {
+  background: #5a7c65;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.rec-category {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0 0 10px 0;
+  font-style: italic;
+}
+
+.rec-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.reason-tag {
+  background: #e8f5e8;
+  color: #2d5a3d;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .home {
+    padding: 15px;
+    padding-bottom: 80px;
+  }
+  
+  .home-header h1 {
+    font-size: 2rem;
+  }
+  
+  .oil-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-input {
+    padding: 12px 16px;
+  }
+
+  .recommendation-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .symptom-selector {
+    padding: 15px;
+  }
+
+  .rec-confidence {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .symptom-tag {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  .symptom-icon {
+    font-size: 1rem;
+  }
+
+  .current-context {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .context-item {
+    gap: 8px;
+  }
+
+  .context-icon {
+    font-size: 1.3rem;
+  }
+
+  .context-label {
+    font-size: 0.8rem;
+  }
+
+  .context-value {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .symptom-tags {
+    gap: 8px;
+  }
+
+  .symptom-tag {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .recommendation-results {
+    padding: 15px;
+  }
+
+  .rec-section h4 {
+    font-size: 1rem;
+  }
+
+  .recommendation-card {
+    padding: 14px;
+  }
+}
+
+/* タッチ操作特化改善 */
+.symptom-tag {
+  -webkit-tap-highlight-color: rgba(45, 90, 61, 0.2);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.oil-card, .recommendation-card {
+  -webkit-tap-highlight-color: rgba(45, 90, 61, 0.1);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.search-input {
+  -webkit-appearance: none;
+  touch-action: manipulation;
+}
+
+.favorite-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* スワイプジェスチャー対応準備 */
+.recommendation-cards {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.oil-cards {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* iOSでのスクロール改善 */
+.scrollable-content {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+/* Androidでのタッチ改善 */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .symptom-tag:active {
+    background: #2d5a3d !important;
+    color: white !important;
+    transform: scale(0.98);
+  }
+  
+  .oil-card:active, .recommendation-card:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}

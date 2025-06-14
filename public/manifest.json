@@ -1,0 +1,49 @@
+{
+  "short_name": "AromaWise",
+  "name": "AromaWise - Smart Aroma Guide",
+  "description": "智能芳香精油指南 - 根据症状推荐最佳精油、配方和混合方案",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2d5a3d",
+  "background_color": "#f0f7f0",
+  "categories": ["health", "lifestyle", "wellness"],
+  "lang": "ja",
+  "scope": "/",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "AromaWise main interface"
+    },
+    {
+      "src": "screenshot-narrow.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "AromaWise mobile view"
+    }
+  ]
+}

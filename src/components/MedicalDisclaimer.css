@@ -1,0 +1,276 @@
+/* 医療免責事項コンポーネント */
+.medical-disclaimer {
+  position: relative;
+  border-radius: 12px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+/* バナータイプ（控えめな情報バナー） */
+.medical-disclaimer--banner {
+  background: linear-gradient(135deg, #f8fcf8 0%, #f0f7f0 100%);
+  border: 1px solid #c8e6c9;
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-left: 4px solid #5a7c65;
+}
+
+.medical-disclaimer--banner .disclaimer-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.medical-disclaimer--banner .disclaimer-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.medical-disclaimer--banner .disclaimer-title {
+  color: #2d5a3d;
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.medical-disclaimer--banner .disclaimer-message {
+  color: #5a7c65;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.medical-disclaimer--banner .disclaimer-cta {
+  background: #5a7c65;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.medical-disclaimer--banner .disclaimer-cta:hover {
+  background: #4a6b55;
+}
+
+/* コンパクトタイプ（各セクション用） */
+.medical-disclaimer--compact {
+  background: #fffbeb;
+  border: 1px solid #f6d55c;
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-left: 4px solid #d69e2e;
+}
+
+.medical-disclaimer--compact .disclaimer-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.medical-disclaimer--compact .disclaimer-icon {
+  font-size: 1.2rem;
+  color: #d69e2e;
+}
+
+.medical-disclaimer--compact .disclaimer-title {
+  color: #744210;
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+}
+
+.medical-disclaimer--compact .disclaimer-message {
+  color: #975a16;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* フルタイプ（詳細ページ用） */
+.medical-disclaimer--full {
+  background: white;
+  border: 3px solid #fc8181;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 8px 24px rgba(252, 129, 129, 0.15);
+}
+
+.disclaimer-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #fed7d7;
+}
+
+.disclaimer-header .disclaimer-icon {
+  font-size: 2.5rem;
+}
+
+.disclaimer-header h2 {
+  color: #c53030;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.disclaimer-section {
+  margin-bottom: 24px;
+}
+
+.disclaimer-section:last-child {
+  margin-bottom: 0;
+}
+
+.disclaimer-section h3 {
+  color: #c53030;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.disclaimer-section ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #742a2a;
+}
+
+.disclaimer-section li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.disclaimer-section li:last-child {
+  margin-bottom: 0;
+}
+
+.disclaimer-section strong {
+  color: #c53030;
+  font-weight: 600;
+}
+
+.consultation-info {
+  display: grid;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.consultation-item {
+  background: #fff5f5;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #fc8181;
+}
+
+.consultation-item strong {
+  color: #c53030;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.consultation-item p {
+  margin: 0;
+  color: #742a2a;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.disclaimer-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #fed7d7;
+}
+
+.disclaimer-footer p {
+  margin: 4px 0;
+  color: #975a16;
+  font-size: 0.85rem;
+}
+
+/* 閉じるボタン */
+.disclaimer-dismiss {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #a0a0a0;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.disclaimer-dismiss:hover {
+  color: #666;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .medical-disclaimer--banner .disclaimer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .medical-disclaimer--banner .disclaimer-cta {
+    align-self: center;
+  }
+
+  .disclaimer-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .disclaimer-header .disclaimer-icon {
+    font-size: 2rem;
+  }
+
+  .disclaimer-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .consultation-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .medical-disclaimer--full {
+    padding: 16px;
+    margin: 16px 0;
+  }
+
+  .medical-disclaimer--banner {
+    padding: 12px 16px;
+  }
+
+  .medical-disclaimer--compact {
+    padding: 10px 14px;
+  }
+
+  .disclaimer-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .consultation-item {
+    padding: 12px;
+  }
+
+  .disclaimer-header h2 {
+    font-size: 1.2rem;
+  }
+}

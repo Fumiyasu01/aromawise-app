@@ -1,0 +1,90 @@
+.back-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  border-bottom: 1px solid #e0e7e2;
+  padding: 15px 20px;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  color: #2d5a3d;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.back-button:hover {
+  background: #f0f7f0;
+  transform: translateX(-2px);
+}
+
+.back-button:active {
+  transform: translateX(-4px);
+}
+
+.back-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.back-label {
+  color: #5a7c65;
+}
+
+.header-title-section {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.header-title {
+  font-size: 1.8rem;
+  color: #2d5a3d;
+  margin: 0 0 5px 0;
+  font-weight: 700;
+}
+
+.header-subtitle {
+  color: #5a7c65;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .back-header {
+    padding: 12px 15px;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+  }
+  
+  .back-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-header {
+    padding: 10px 15px;
+  }
+  
+  .header-title {
+    font-size: 1.3rem;
+  }
+  
+  .back-button {
+    margin-bottom: 8px;
+  }
+}

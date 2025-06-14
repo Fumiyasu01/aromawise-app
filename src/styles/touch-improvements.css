@@ -1,0 +1,268 @@
+/* タッチ操作最適化 CSS */
+
+/* 全体的なタッチ設定 */
+* {
+  -webkit-tap-highlight-color: rgba(45, 90, 61, 0.2);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* テキスト入力フィールドは選択可能に */
+input, textarea, [contenteditable] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* タッチターゲットサイズの最適化（最小44px） */
+button, .clickable, .oil-card, .recipe-card, .recommendation-card, .symptom-tag {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* タッチフィードバック効果 */
+button:active, .clickable:active, .oil-card:active, 
+.recipe-card:active, .recommendation-card:active, .symptom-tag:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+/* ボタンのアクティブ状態改善 */
+button {
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ナビゲーションボタンの改善 */
+.navigation button {
+  min-height: 48px;
+  min-width: 48px;
+  padding: 8px;
+  border-radius: 50%;
+  margin: 4px;
+}
+
+/* カードタッチ改善 */
+.oil-card, .recipe-card, .recommendation-card {
+  border-radius: 16px;
+  padding: 16px;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.oil-card:hover, .recipe-card:hover, .recommendation-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* 症状タグのタッチ改善 */
+.symptom-tag {
+  border-radius: 24px;
+  padding: 12px 20px;
+  margin: 6px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  background: #f0f7f0;
+  transition: all 0.2s ease;
+}
+
+.symptom-tag.selected {
+  background: #2d5a3d;
+  color: white;
+  transform: scale(1.05);
+}
+
+.symptom-tag:active {
+  transform: scale(0.95);
+}
+
+/* 検索入力フィールドの改善 */
+.search-input {
+  min-height: 48px;
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #2d5a3d;
+  box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+  outline: none;
+}
+
+/* お気に入りボタンの改善 */
+.favorite-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 20px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.favorite-btn:hover {
+  background: rgba(45, 90, 61, 0.1);
+}
+
+.favorite-btn:active {
+  transform: scale(1.2);
+}
+
+.favorite-btn.favorited {
+  animation: heartBeat 0.6s ease;
+}
+
+.favorite-btn:focus {
+  outline: 2px solid rgba(45, 90, 61, 0.5);
+  outline-offset: 2px;
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* 戻るボタンの改善 */
+.back-button {
+  min-height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  background: rgba(45, 90, 61, 0.1);
+  margin: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.back-button:active {
+  background: rgba(45, 90, 61, 0.2);
+  transform: scale(0.9);
+}
+
+/* スクロール改善 */
+.scrollable {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* フォーカス状態の改善 */
+button:focus, .clickable:focus {
+  outline: 3px solid rgba(45, 90, 61, 0.3);
+  outline-offset: 2px;
+}
+
+/* 長押し禁止（画像など） */
+img, .no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* スワイプジェスチャー準備 */
+.swipeable {
+  touch-action: pan-x pan-y;
+  -webkit-user-drag: none;
+}
+
+/* 安全性警告のタッチ改善 */
+.safety-warning {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 8px 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* モーダル・ポップアップのタッチ改善 */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* レスポンシブタッチ改善 */
+@media (max-width: 768px) {
+  button, .clickable {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 14px 18px;
+  }
+  
+  .oil-card, .recipe-card, .recommendation-card {
+    padding: 18px;
+    margin: 10px 0;
+  }
+  
+  .symptom-tag {
+    padding: 14px 22px;
+    margin: 8px;
+    font-size: 17px;
+  }
+}
+
+/* ダークモード対応準備 */
+@media (prefers-color-scheme: dark) {
+  .symptom-tag {
+    background: #2a2a2a;
+    color: #ffffff;
+  }
+  
+  .search-input {
+    background: #2a2a2a;
+    color: #ffffff;
+    border-color: #404040;
+  }
+}
