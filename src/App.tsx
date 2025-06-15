@@ -11,6 +11,7 @@ import FragranceBlends from './components/FragranceBlends';
 import BlendDetail from './components/BlendDetail';
 import Navigation from './components/Navigation';
 import SatisfactionSurvey from './components/SatisfactionSurvey';
+import SafetyGuidelines from './components/SafetyGuidelines';
 import { Oil } from './types/Oil';
 import { BlendRecipe } from './types/BlendRecipe';
 import { BlendSuggestion } from './types/FragranceBlend';
@@ -20,7 +21,7 @@ import { blendSuggestions } from './data/blendCompatibility';
 import { analytics } from './utils/analytics';
 import { SurveyManager } from './utils/surveyManager';
 
-type Screen = 'home' | 'oils' | 'detail' | 'myoils' | 'recipes' | 'recipe-detail' | 'blends' | 'blend-detail';
+type Screen = 'home' | 'oils' | 'detail' | 'myoils' | 'recipes' | 'recipe-detail' | 'blends' | 'blend-detail' | 'safety';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
@@ -168,6 +169,8 @@ function App() {
         return selectedBlend ? (
           <BlendDetail blend={selectedBlend} myOils={myOils} onBack={handleBack} />
         ) : null;
+      case 'safety':
+        return <SafetyGuidelines />;
       default:
         return (
           <Home 

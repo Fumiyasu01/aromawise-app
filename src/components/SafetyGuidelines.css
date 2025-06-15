@@ -1,0 +1,210 @@
+.safety-guidelines {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.safety-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.safety-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.safety-header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.safety-search {
+  margin-bottom: 25px;
+}
+
+.safety-search .search-input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.safety-search .search-input:focus {
+  border-color: #6366f1;
+}
+
+.category-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.category-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.category-filter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-filter.active {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+.guidelines-content {
+  margin-top: 30px;
+}
+
+.guideline-section {
+  margin-bottom: 40px;
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.guideline-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-left: 4px solid;
+}
+
+.guideline-icon {
+  font-size: 2rem;
+  margin-top: 5px;
+}
+
+.guideline-header h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin: 0 0 5px 0;
+}
+
+.guideline-description {
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.oils-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.oil-safety-card {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s;
+}
+
+.oil-safety-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.oil-safety-card h3 {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+}
+
+.restriction {
+  color: #e74c3c;
+  font-weight: 600;
+  margin: 5px 0;
+  font-size: 0.95rem;
+}
+
+.notes {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  margin: 5px 0 0 0;
+  line-height: 1.4;
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.safety-footer {
+  margin-top: 50px;
+}
+
+.important-notes {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 10px;
+  padding: 25px;
+}
+
+.important-notes h3 {
+  color: #856404;
+  margin: 0 0 15px 0;
+}
+
+.important-notes ul {
+  margin: 0;
+  padding-left: 25px;
+}
+
+.important-notes li {
+  color: #856404;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .safety-header h1 {
+    font-size: 2rem;
+  }
+  
+  .oils-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .guideline-header {
+    flex-direction: column;
+  }
+  
+  .guideline-icon {
+    font-size: 1.5rem;
+  }
+  
+  .category-filters {
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}

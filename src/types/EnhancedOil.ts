@@ -25,7 +25,7 @@ export interface EnhancedOil {
   id: string;
   nameJa: string;
   nameEn: string;
-  category: 'フローラル系' | '柑橘系' | 'ハーブ系' | 'ブレンド' | '樹木系' | 'スパイス系' | 'ウッディ系' | 'カンファー系' | 'アーシー系';
+  category: 'フローラル系' | '柑橘系' | 'ハーブ系' | 'ブレンド' | '樹木系' | 'スパイス系' | 'ウッディ系' | 'カンファー系' | 'アーシー系' | '感情アロマセラピー' | 'キッズコレクション' | '季節限定';
   productType: 'single_oil' | 'blend';
   blendIngredients?: string[];
   symptoms: string[];

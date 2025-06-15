@@ -4,7 +4,7 @@ import Feedback from './Feedback';
 
 interface NavigationProps {
   currentScreen: string;
-  onScreenChange: (screen: 'home' | 'oils' | 'recipes' | 'blends' | 'myoils') => void;
+  onScreenChange: (screen: 'home' | 'oils' | 'recipes' | 'blends' | 'myoils' | 'safety') => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }) => {
@@ -15,7 +15,8 @@ const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }
     { id: 'oils', label: 'オイル一覧', icon: '🌿' },
     { id: 'recipes', label: 'レシピ', icon: '🧪' },
     { id: 'blends', label: '香りブレンド', icon: '🌸' },
-    { id: 'myoils', label: 'マイオイル', icon: '💚' }
+    { id: 'myoils', label: 'マイオイル', icon: '💚' },
+    { id: 'safety', label: '安全ガイド', icon: '🛡️' }
   ];
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Oil } from '../types/Oil';
 import { getEnhancedOilById } from '../data/enhancedOils';
+import { getOilSafetyInfo } from '../data/safetyGuidelines';
 import BackHeader from './BackHeader';
 import SafetyChecker from './SafetyChecker';
 import './OilDetail.css';
@@ -14,6 +15,7 @@ interface OilDetailProps {
 
 const OilDetail: React.FC<OilDetailProps> = ({ oil, onAddToMyOils, isInMyOils, onBack }) => {
   const enhancedOil = getEnhancedOilById(oil.id);
+  const safetyGuidelines = getOilSafetyInfo(oil.name);
   
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, string> = {
@@ -138,6 +140,31 @@ const OilDetail: React.FC<OilDetailProps> = ({ oil, onAddToMyOils, isInMyOils, o
                 <strong>注意事項:</strong> {oil.safetyInfo.notes}
               </div>
             )}
+          </div>
+        )}
+        
+        {/* 安全ガイドラインからの追加情報 */}
+        {safetyGuidelines.length > 0 && (
+          <div className="additional-safety-guidelines">
+            <h4>🛡️ 追加の安全ガイドライン</h4>
+            {safetyGuidelines.map((guideline, index) => {
+              const icons = {
+                'age_restrictions': '👶',
+                'pregnancy': '🤰',
+                'photosensitivity': '☀️',
+                'hot_oils': '🔥',
+                'pet_safety': '🐾'
+              };
+              return (
+                <div key={index} className="guideline-item">
+                  <span className="guideline-icon">{icons[guideline.category]}</span>
+                  <div>
+                    <strong>{guideline.restriction}</strong>
+                    {guideline.notes && <p className="guideline-notes">{guideline.notes}</p>}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
