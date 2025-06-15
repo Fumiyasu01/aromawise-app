@@ -1,0 +1,290 @@
+.blend-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  padding: 20px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+body.dark-mode .blend-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.blend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .blend-card:hover {
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ヘッダー */
+.blend-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.blend-card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .blend-card-header h3 {
+  color: #4ade80;
+}
+
+.blend-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.blend-card-actions button {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: all 0.2s;
+  opacity: 0.6;
+}
+
+.blend-card-actions button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.edit-btn:hover {
+  filter: brightness(1.2);
+}
+
+.delete-btn:hover {
+  filter: saturate(2);
+}
+
+.like-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem !important;
+}
+
+/* メタ情報 */
+.blend-card-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+}
+
+.category-tag {
+  background: #e8f5e8;
+  color: #2d5a3d;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+body.dark-mode .category-tag {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+}
+
+.date {
+  color: #999;
+}
+
+body.dark-mode .date {
+  color: var(--text-secondary);
+}
+
+/* 説明 */
+.blend-description {
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  font-size: 0.95rem;
+}
+
+body.dark-mode .blend-description {
+  color: var(--text-secondary);
+}
+
+/* 配合オイル */
+.blend-ingredients {
+  margin-bottom: 20px;
+}
+
+.blend-ingredients h4 {
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+body.dark-mode .blend-ingredients h4 {
+  color: var(--text-secondary);
+}
+
+.blend-ingredients ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blend-ingredients li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 0.9rem;
+}
+
+.oil-name {
+  color: #333;
+  font-weight: 500;
+}
+
+body.dark-mode .oil-name {
+  color: var(--text-primary);
+}
+
+.oil-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+}
+
+body.dark-mode .oil-info {
+  color: var(--text-secondary);
+}
+
+.note-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: white;
+}
+
+.note-indicator.top {
+  background: #ff9800;
+}
+
+.note-indicator.middle {
+  background: #4caf50;
+}
+
+.note-indicator.base {
+  background: #9c27b0;
+}
+
+/* 詳細情報 */
+.blend-details {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body.dark-mode .blend-details {
+  border-color: var(--border-color);
+}
+
+.detail-item {
+  font-size: 0.9rem;
+}
+
+.detail-item .label {
+  color: #666;
+  margin-right: 5px;
+}
+
+body.dark-mode .detail-item .label {
+  color: var(--text-secondary);
+}
+
+.detail-item .value {
+  color: #333;
+  font-weight: 500;
+}
+
+body.dark-mode .detail-item .value {
+  color: var(--text-primary);
+}
+
+/* タグ */
+.blend-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.blend-tags .tag {
+  background: #f0f0f0;
+  color: #666;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+body.dark-mode .blend-tags .tag {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+}
+
+/* 安全性警告 */
+.safety-warnings {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff3cd;
+  color: #856404;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+body.dark-mode .safety-warnings {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+/* 公開インジケーター */
+.public-indicator {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+body.dark-mode .public-indicator {
+  color: var(--text-secondary);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .blend-card {
+    padding: 15px;
+  }
+  
+  .blend-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

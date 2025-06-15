@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import * as serviceWorker from './utils/serviceWorker';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,18 +14,16 @@ root.render(
   </React.StrictMode>
 );
 
-// PWA Service Worker 登録
-serviceWorker.register({
-  onSuccess: () => {
-    console.log('AromaWise PWA is ready for offline use!');
+// PWAとしてService Workerを登録
+serviceWorkerRegistration.register({
+  onSuccess: (registration) => {
+    console.log('AromaWise PWA is ready for offline use!', registration);
   },
-  onUpdate: () => {
-    console.log('New version available! Please reload to update.');
+  onUpdate: (registration) => {
+    console.log('New version available! Please reload to update.', registration);
+    // ユーザーに更新を促す通知を表示することも可能
   }
 });
-
-// オフライン検知機能を有効化
-serviceWorker.addOfflineListener();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

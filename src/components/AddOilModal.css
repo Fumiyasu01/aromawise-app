@@ -1,0 +1,300 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark-mode .modal-content {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body.dark-mode .modal-header {
+  border-bottom-color: var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #2d5a3d;
+}
+
+body.dark-mode .modal-header h2 {
+  color: #4ade80;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+body.dark-mode .close-btn {
+  color: var(--text-secondary);
+}
+
+.close-btn:hover {
+  background: #f0f0f0;
+}
+
+body.dark-mode .close-btn:hover {
+  background: var(--hover-bg);
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* オイル選択 */
+.oil-selection h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+body.dark-mode .oil-selection h3 {
+  color: var(--text-primary);
+}
+
+.oil-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.oil-option {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+body.dark-mode .oil-option {
+  background: var(--bg-tertiary);
+}
+
+.oil-option:hover {
+  transform: translateY(-2px);
+  border-color: #4ade80;
+}
+
+.oil-option h4 {
+  margin: 0 0 5px 0;
+  color: #2d5a3d;
+  font-size: 1rem;
+}
+
+body.dark-mode .oil-option h4 {
+  color: var(--text-primary);
+}
+
+.oil-option p {
+  margin: 0;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+body.dark-mode .oil-option p {
+  color: var(--text-secondary);
+}
+
+/* 選択されたオイル */
+.selected-oil {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f5e8;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+body.dark-mode .selected-oil {
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.selected-oil h3 {
+  margin: 0;
+  color: #2d5a3d;
+}
+
+body.dark-mode .selected-oil h3 {
+  color: #4ade80;
+}
+
+.change-oil-btn {
+  background: none;
+  border: 1px solid #2d5a3d;
+  color: #2d5a3d;
+  padding: 5px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+body.dark-mode .change-oil-btn {
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+/* フォーム */
+.form-section h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+body.dark-mode .form-section h4 {
+  color: var(--text-primary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+body.dark-mode .form-group label {
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.form-group small {
+  margin-top: 5px;
+  color: #999;
+  font-size: 0.8rem;
+}
+
+body.dark-mode .form-group small {
+  color: var(--text-tertiary);
+}
+
+/* モーダルアクション */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+body.dark-mode .modal-actions {
+  border-top-color: var(--border-color);
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.cancel-btn {
+  background: #e0e0e0;
+  color: #666;
+}
+
+body.dark-mode .cancel-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.cancel-btn:hover {
+  background: #d0d0d0;
+}
+
+.submit-btn {
+  background: #4ade80;
+  color: white;
+}
+
+.submit-btn:hover {
+  background: #22c55e;
+  transform: translateY(-1px);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .modal-content {
+    max-height: 100vh;
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .oil-selection-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -16,9 +16,17 @@
   margin-bottom: 5px;
 }
 
+body.dark-mode .oil-list-header h1 {
+  color: #4ade80;
+}
+
 .oil-list-header p {
   color: #5a7c65;
   margin: 0;
+}
+
+body.dark-mode .oil-list-header p {
+  color: #86efac;
 }
 
 .filters {
@@ -175,6 +183,91 @@
   }
 }
 
+/* 新しいレイアウト用のスタイル */
+.list-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 5px;
+}
+
+.results-info {
+  flex: 1;
+}
+
+.filter-info {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+body.dark-mode .filter-info {
+  color: var(--text-secondary);
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-control label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+body.dark-mode .sort-control label {
+  color: var(--text-secondary);
+}
+
+.oil-category-label {
+  color: #5a7c65;
+  font-size: 0.85rem;
+  margin: 5px 0 10px 0;
+  font-weight: 500;
+}
+
+body.dark-mode .oil-category-label {
+  color: #86efac;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+body.dark-mode .no-results {
+  color: var(--text-secondary);
+}
+
+/* ダークモード対応 */
+body.dark-mode .oil-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .oil-item h3 {
+  color: var(--text-primary);
+}
+
+body.dark-mode .oil-aroma {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .benefit-tag {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+body.dark-mode .sort-select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
 @media (max-width: 480px) {
   .sort-filter {
     justify-content: center;
@@ -183,5 +276,15 @@
   
   .filters {
     text-align: center;
+  }
+  
+  .list-controls {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .sort-control {
+    justify-content: space-between;
   }
 }

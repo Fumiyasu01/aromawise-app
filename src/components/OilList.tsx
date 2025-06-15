@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Oil } from '../types/Oil';
 import { oilsData } from '../data/oils';
 import { analytics } from '../utils/analytics';
+import AdvancedSearch from './AdvancedSearch';
 import './OilList.css';
 
 interface OilListProps {
@@ -9,23 +10,10 @@ interface OilListProps {
 }
 
 const OilList: React.FC<OilListProps> = ({ onOilSelect }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('name');
+  const [searchResults, setSearchResults] = useState<Oil[]>(oilsData);
 
-  const categories = [
-    { id: 'all', label: 'すべて', count: oilsData.length },
-    { id: 'citrus', label: '柑橘系', count: oilsData.filter(oil => oil.category === 'citrus').length },
-    { id: 'floral', label: 'フローラル', count: oilsData.filter(oil => oil.category === 'floral').length },
-    { id: 'herbal', label: 'ハーブ系', count: oilsData.filter(oil => oil.category === 'herbal').length },
-    { id: 'blend', label: 'ブレンド', count: oilsData.filter(oil => oil.category === 'blend').length },
-    { id: 'popular', label: '人気単品', count: oilsData.filter(oil => oil.category === 'popular').length }
-  ];
-
-  const filteredOils = selectedCategory === 'all' 
-    ? oilsData 
-    : oilsData.filter(oil => oil.category === selectedCategory);
-
-  const sortedOils = [...filteredOils].sort((a, b) => {
+  const sortedOils = [...searchResults].sort((a, b) => {
     switch (sortBy) {
       case 'name':
         return a.name.localeCompare(b.name);
@@ -42,33 +30,53 @@ const OilList: React.FC<OilListProps> = ({ onOilSelect }) => {
       floral: '🌸',
       herbal: '🌿',
       blend: '🧪',
-      popular: '⭐'
+      popular: '⭐',
+      'ウッディ系': '🌲',
+      'スパイス系': '🌶️',
+      'カンファー系': '🌬️',
+      'アーシー系': '🌍',
+      '感情アロマセラピー': '💝',
+      'キッズコレクション': '👶',
+      '季節限定': '🎄'
     };
     return icons[category] || '🌿';
+  };
+
+  const getCategoryName = (category: string) => {
+    const names: Record<string, string> = {
+      citrus: '柑橘系',
+      floral: 'フローラル',
+      herbal: 'ハーブ',
+      blend: 'ブレンド',
+      popular: '人気'
+    };
+    return names[category] || category;
   };
 
   return (
     <div className="oil-list">
       <header className="oil-list-header">
         <h1>オイル一覧</h1>
-        <p>{filteredOils.length}種類のオイル</p>
+        <p>{oilsData.length}種類のオイル</p>
       </header>
 
-      <div className="filters">
-        <div className="category-filters">
-          {categories.map(category => (
-            <button
-              key={category.id}
-              className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              {category.label} ({category.count})
-            </button>
-          ))}
-        </div>
+      <AdvancedSearch 
+        oils={oilsData}
+        onSearchResults={setSearchResults}
+      />
 
-        <div className="sort-filter">
+      <div className="list-controls">
+        <div className="results-info">
+          {searchResults.length < oilsData.length && (
+            <p className="filter-info">
+              {searchResults.length}件が条件に一致
+            </p>
+          )}
+        </div>
+        <div className="sort-control">
+          <label htmlFor="sort-select">並び順：</label>
           <select 
+            id="sort-select"
             value={sortBy} 
             onChange={(e) => setSortBy(e.target.value)}
             className="sort-select"
@@ -80,30 +88,39 @@ const OilList: React.FC<OilListProps> = ({ onOilSelect }) => {
       </div>
 
       <div className="oils-grid">
-        {sortedOils.map(oil => (
-          <div key={oil.id} className="oil-item" onClick={() => {
-            analytics.trackOilView(oil.id, oil.name, 'oils');
-            onOilSelect(oil);
-          }}>
-            <div className="oil-item-header">
-              <span className="oil-category-icon">{getCategoryIcon(oil.category)}</span>
-              <h3>{oil.name}</h3>
+        {sortedOils.length > 0 ? (
+          sortedOils.map(oil => (
+            <div key={oil.id} className="oil-item" onClick={() => {
+              analytics.trackOilView(oil.id, oil.name, 'oils');
+              onOilSelect(oil);
+            }}>
+              <div className="oil-item-header">
+                <span className="oil-category-icon">{getCategoryIcon(oil.category)}</span>
+                <h3>{oil.name}</h3>
+              </div>
+              <p className="oil-category-label">{getCategoryName(oil.category)}</p>
+              <p className="oil-aroma">{oil.aroma}</p>
+              <div className="oil-benefits">
+                {oil.benefits.slice(0, 3).map((benefit, index) => (
+                  <span key={index} className="benefit-tag">{benefit}</span>
+                ))}
+              </div>
+              <div className="oil-safety">
+                {oil.safetyInfo.pregnancy && oil.safetyInfo.children ? (
+                  <span className="safety-safe">✓ 一般使用OK</span>
+                ) : (
+                  <span className="safety-caution">⚠️ 使用注意</span>
+                )}
+              </div>
             </div>
-            <p className="oil-aroma">{oil.aroma}</p>
-            <div className="oil-benefits">
-              {oil.benefits.slice(0, 3).map((benefit, index) => (
-                <span key={index} className="benefit-tag">{benefit}</span>
-              ))}
-            </div>
-            <div className="oil-safety">
-              {oil.safetyInfo.pregnancy && oil.safetyInfo.children ? (
-                <span className="safety-safe">✓ 一般使用OK</span>
-              ) : (
-                <span className="safety-caution">⚠️ 使用注意</span>
-              )}
-            </div>
+          ))
+        ) : (
+          <div className="no-results">
+            <span style={{ fontSize: '3rem', marginBottom: '20px', display: 'block' }}>🔍</span>
+            <p>条件に一致するオイルが見つかりませんでした</p>
+            <p>フィルターを変更してお試しください</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

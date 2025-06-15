@@ -17,10 +17,18 @@
   font-weight: 700;
 }
 
+body.dark-mode .home-header h1 {
+  color: #4ade80;
+}
+
 .home-header p {
   color: #5a7c65;
   font-size: 1.1rem;
   margin: 0;
+}
+
+body.dark-mode .home-header p {
+  color: #86efac;
 }
 
 .search-section {

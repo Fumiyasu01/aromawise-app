@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import './styles/touch-improvements.css';
+import './styles/dark-mode.css';
+import './styles/app-header.css';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { SubscriptionProvider } from './contexts/SubscriptionContext';
 import Home from './components/Home';
 import OilList from './components/OilList';
 import OilDetail from './components/OilDetail';
-import MyOils from './components/MyOils';
+import MyOilsEnhanced from './components/MyOilsEnhanced';
 import Recipes from './components/Recipes';
 import RecipeDetail from './components/RecipeDetail';
 import FragranceBlends from './components/FragranceBlends';
@@ -12,6 +18,13 @@ import BlendDetail from './components/BlendDetail';
 import Navigation from './components/Navigation';
 import SatisfactionSurvey from './components/SatisfactionSurvey';
 import SafetyGuidelines from './components/SafetyGuidelines';
+import Settings from './components/Settings';
+import AuthModal from './components/auth/AuthModal';
+import Pricing from './components/subscription/Pricing';
+import SubscriptionManagement from './components/subscription/SubscriptionManagement';
+import OfflineIndicator from './components/OfflineIndicator';
+import InstallPrompt, { InstallBanner } from './components/InstallPrompt';
+import CustomBlends from './components/CustomBlends';
 import { Oil } from './types/Oil';
 import { BlendRecipe } from './types/BlendRecipe';
 import { BlendSuggestion } from './types/FragranceBlend';
@@ -21,15 +34,20 @@ import { blendSuggestions } from './data/blendCompatibility';
 import { analytics } from './utils/analytics';
 import { SurveyManager } from './utils/surveyManager';
 
-type Screen = 'home' | 'oils' | 'detail' | 'myoils' | 'recipes' | 'recipe-detail' | 'blends' | 'blend-detail' | 'safety';
+type Screen = 'home' | 'oils' | 'detail' | 'myoils' | 'recipes' | 'recipe-detail' | 'blends' | 'blend-detail' | 'safety' | 'settings' | 'pricing' | 'subscription' | 'custom-blends';
 
-function App() {
+function AppInner() {
+  const { isDarkMode, toggleDarkMode } = useTheme();
+  const { user, isAuthenticated } = useAuth();
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [selectedOil, setSelectedOil] = useState<Oil | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<BlendRecipe | null>(null);
   const [selectedBlend, setSelectedBlend] = useState<BlendSuggestion | null>(null);
-  const [myOils, setMyOils] = useState<Oil[]>([]);
+  // MyOilsEnhancedで管理するため削除
+  // const [myOils, setMyOils] = useState<Oil[]>([]);
   const [showSurvey, setShowSurvey] = useState<boolean>(false);
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   
   // ナビゲーション統合状態
   const [navigationHistory, setNavigationHistory] = useState<Screen[]>(['home']);
@@ -86,13 +104,8 @@ function App() {
   };
 
   const handleAddToMyOils = (oil: Oil) => {
-    if (!myOils.find(o => o.id === oil.id)) {
-      setMyOils([...myOils, oil]);
-    }
-  };
-
-  const handleRemoveFromMyOils = (oilId: string) => {
-    setMyOils(myOils.filter(oil => oil.id !== oilId));
+    // MyOilsEnhancedで管理
+    console.log('Add to my oils:', oil.id);
   };
 
   const handleBack = () => {
@@ -129,7 +142,7 @@ function App() {
             onOilSelect={handleOilSelect}
             onRecipeSelect={handleRecipeSelect}
             onBlendSelect={handleBlendSelect}
-            myOils={myOils}
+            myOils={[]} // TODO: MyOilsManagerから取得
             homeState={homeState}
             onHomeStateChange={setHomeState}
           />
@@ -141,43 +154,51 @@ function App() {
           <OilDetail 
             oil={selectedOil} 
             onAddToMyOils={handleAddToMyOils}
-            isInMyOils={myOils.some(o => o.id === selectedOil.id)}
+            isInMyOils={false} // TODO: MyOilsManagerから取得
             onBack={handleBack}
           />
         ) : null;
       case 'myoils':
-        return <MyOils oils={myOils} onRemoveOil={handleRemoveFromMyOils} onOilSelect={handleOilSelect} />;
+        return <MyOilsEnhanced onOilSelect={handleOilSelect} />;
       case 'recipes':
         return (
           <Recipes 
-            myOils={myOils} 
+            myOils={[]} // TODO: MyOilsManagerから取得 
             onRecipeSelect={handleRecipeSelect} 
           />
         );
       case 'recipe-detail':
         return selectedRecipe ? (
-          <RecipeDetail recipe={selectedRecipe} myOils={myOils} onBack={handleBack} />
+          <RecipeDetail recipe={selectedRecipe} myOils={[]} onBack={handleBack} />
         ) : null;
       case 'blends':
         return (
           <FragranceBlends 
-            myOils={myOils} 
+            myOils={[]} // TODO: MyOilsManagerから取得 
             onBlendSelect={handleBlendSelect} 
           />
         );
       case 'blend-detail':
         return selectedBlend ? (
-          <BlendDetail blend={selectedBlend} myOils={myOils} onBack={handleBack} />
+          <BlendDetail blend={selectedBlend} myOils={[]} onBack={handleBack} />
         ) : null;
       case 'safety':
         return <SafetyGuidelines />;
+      case 'settings':
+        return <Settings />;
+      case 'pricing':
+        return <Pricing onClose={() => setCurrentScreen('home')} />;
+      case 'subscription':
+        return <SubscriptionManagement />;
+      case 'custom-blends':
+        return <CustomBlends />;
       default:
         return (
           <Home 
             onOilSelect={handleOilSelect}
             onRecipeSelect={handleRecipeSelect}
             onBlendSelect={handleBlendSelect}
-            myOils={myOils}
+            myOils={[]} // TODO: MyOilsManagerから取得
             homeState={homeState}
             onHomeStateChange={setHomeState}
           />
@@ -187,6 +208,37 @@ function App() {
 
   return (
     <div className="App">
+      {/* PWAコンポーネント */}
+      <OfflineIndicator />
+      <InstallBanner />
+      
+      {/* ヘッダー部分 */}
+      <div className="app-header">
+        {/* ダークモード切り替えボタン */}
+        <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="ダークモード切り替え">
+          <span className="dark-mode-toggle-icon">{isDarkMode ? '☀️' : '🌙'}</span>
+        </button>
+        
+        {/* 認証状態表示 */}
+        <div className="auth-status">
+          {isAuthenticated && user ? (
+            <span className="user-welcome">
+              {user.isGuest ? 'ゲスト' : user.name}
+            </span>
+          ) : (
+            <button 
+              className="btn-secondary auth-button"
+              onClick={() => {
+                setAuthModalMode('login');
+                setShowAuthModal(true);
+              }}
+            >
+              ログイン
+            </button>
+          )}
+        </div>
+      </div>
+      
       <main className="main-content">
         {renderScreen()}
       </main>
@@ -201,7 +253,30 @@ function App() {
       {showSurvey && (
         <SatisfactionSurvey onClose={() => setShowSurvey(false)} />
       )}
+      
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authModalMode}
+      />
+      
+      {/* PWAインストールプロンプト */}
+      <InstallPrompt />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <SubscriptionProvider>
+          <SettingsProvider>
+            <AppInner />
+          </SettingsProvider>
+        </SubscriptionProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

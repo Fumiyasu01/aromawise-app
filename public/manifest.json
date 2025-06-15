@@ -1,7 +1,7 @@
 {
   "short_name": "AromaWise",
-  "name": "AromaWise - Smart Aroma Guide",
-  "description": "智能芳香精油指南 - 根据症状推荐最佳精油、配方和混合方案",
+  "name": "AromaWise - スマートアロマガイド",
+  "description": "エッセンシャルオイルの効果的な使い方をサポート。症状別レコメンド、安全情報、カスタムブレンド作成",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,31 +19,58 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
+    },
+    {
+      "src": "logo144.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "purpose": "any"
+    },
+    {
+      "src": "logo96.png",
+      "type": "image/png",
+      "sizes": "96x96",
+      "purpose": "any"
+    },
+    {
+      "src": "logo72.png",
+      "type": "image/png",
+      "sizes": "72x72",
+      "purpose": "any"
+    },
+    {
+      "src": "logo48.png",
+      "type": "image/png",
+      "sizes": "48x48",
+      "purpose": "any"
     }
   ],
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "theme_color": "#2d5a3d",
-  "background_color": "#f0f7f0",
-  "categories": ["health", "lifestyle", "wellness"],
+  "orientation": "portrait",
+  "theme_color": "#4ade80",
+  "background_color": "#fafbfa",
+  "categories": ["health", "lifestyle", "wellness", "medical"],
   "lang": "ja",
+  "dir": "ltr",
   "scope": "/",
-  "display_override": ["window-controls-overlay", "standalone"],
-  "screenshots": [
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "shortcuts": [
     {
-      "src": "screenshot-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "platform": "wide",
-      "label": "AromaWise main interface"
+      "name": "マイオイル",
+      "short_name": "マイオイル",
+      "description": "お気に入りのオイルを管理",
+      "url": "/#myoils",
+      "icons": [{ "src": "logo96.png", "sizes": "96x96" }]
     },
     {
-      "src": "screenshot-narrow.png", 
-      "sizes": "750x1334",
-      "type": "image/png",
-      "platform": "narrow",
-      "label": "AromaWise mobile view"
+      "name": "症状検索",
+      "short_name": "検索",
+      "description": "症状からオイルを検索",
+      "url": "/#home",
+      "icons": [{ "src": "logo96.png", "sizes": "96x96" }]
     }
-  ]
+  ],
+  "prefer_related_applications": false,
+  "related_applications": []
 }

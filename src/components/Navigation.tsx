@@ -1,51 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Navigation.css';
-import Feedback from './Feedback';
 
 interface NavigationProps {
   currentScreen: string;
-  onScreenChange: (screen: 'home' | 'oils' | 'recipes' | 'blends' | 'myoils' | 'safety') => void;
+  onScreenChange: (screen: 'home' | 'oils' | 'recipes' | 'blends' | 'myoils' | 'safety' | 'settings' | 'pricing' | 'subscription' | 'custom-blends') => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }) => {
-  const [showFeedback, setShowFeedback] = useState(false);
-  
   const navItems = [
     { id: 'home', label: 'ホーム', icon: '🏠' },
     { id: 'oils', label: 'オイル一覧', icon: '🌿' },
-    { id: 'recipes', label: 'レシピ', icon: '🧪' },
-    { id: 'blends', label: '香りブレンド', icon: '🌸' },
     { id: 'myoils', label: 'マイオイル', icon: '💚' },
-    { id: 'safety', label: '安全ガイド', icon: '🛡️' }
+    { id: 'recipes', label: 'レシピ', icon: '🧪' },
+    { id: 'custom-blends', label: 'カスタム', icon: '✨' },
+    { id: 'blends', label: '香り', icon: '🌸' },
+    { id: 'safety', label: '安全', icon: '🛡️' },
+    { id: 'settings', label: '設定', icon: '⚙️' }
   ];
 
   return (
-    <>
-      <nav className="navigation">
-        {navItems.map(item => (
-          <button
-            key={item.id}
-            className={`nav-item ${currentScreen === item.id ? 'active' : ''}`}
-            onClick={() => onScreenChange(item.id as any)}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            <span className="nav-label">{item.label}</span>
-          </button>
-        ))}
+    <nav className="navigation">
+      {navItems.map(item => (
         <button
-          className="nav-item feedback-nav-item"
-          onClick={() => setShowFeedback(true)}
-          title="フィードバックを送る"
+          key={item.id}
+          className={`nav-item ${currentScreen === item.id ? 'active' : ''}`}
+          onClick={() => onScreenChange(item.id as any)}
         >
-          <span className="nav-icon">📝</span>
-          <span className="nav-label">フィードバック</span>
+          <span className="nav-icon">{item.icon}</span>
+          <span className="nav-label">{item.label}</span>
         </button>
-      </nav>
-      
-      {showFeedback && (
-        <Feedback onClose={() => setShowFeedback(false)} />
-      )}
-    </>
+      ))}
+    </nav>
   );
 };
 

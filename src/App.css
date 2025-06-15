@@ -24,6 +24,7 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  margin-top: 60px; /* ヘッダーの高さ分 */
 }
 
 h1, h2, h3, h4, h5, h6 {
