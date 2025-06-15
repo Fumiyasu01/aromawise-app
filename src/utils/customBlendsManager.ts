@@ -94,6 +94,18 @@ export class CustomBlendsManager {
     const allBlends = this.getAllBlends();
     const filteredBlends = allBlends.filter(b => b.id !== blendId);
     this.saveBlends(filteredBlends);
+    
+    // 関連するレビューも削除
+    this.deleteRelatedReviews(blendId);
+  }
+  
+  // 関連レビューを削除（循環依存を避けるためイベント発行）
+  private static deleteRelatedReviews(blendId: string): void {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('blendDeleted', {
+        detail: { blendId }
+      }));
+    }
   }
 
   // ブレンドをコピー

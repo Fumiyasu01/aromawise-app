@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { MyOilsManager } from '../../utils/myOilsManager';
+import DataIntegrityCheck from '../DataIntegrityCheck';
 import './SettingsSection.css';
 
 const DataManagement: React.FC = () => {
   const { exportSettings, importSettings, resetSettings } = useSettings();
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [showIntegrityCheck, setShowIntegrityCheck] = useState(false);
 
   const handleExportAll = () => {
     // 設定データ
@@ -160,6 +162,20 @@ const DataManagement: React.FC = () => {
         </div>
       </div>
 
+      {/* データ整合性チェック */}
+      <div className="action-item">
+        <div className="action-info">
+          <h4>データ整合性チェック</h4>
+          <p>データの整合性をチェックし、問題があれば自動修復します。</p>
+        </div>
+        <button 
+          className="btn-secondary" 
+          onClick={() => setShowIntegrityCheck(true)}
+        >
+          整合性をチェック
+        </button>
+      </div>
+
       <div className="danger-zone">
         <h3>⚠️ 危険な操作</h3>
         
@@ -184,6 +200,11 @@ const DataManagement: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* データ整合性チェックモーダル */}
+      {showIntegrityCheck && (
+        <DataIntegrityCheck onClose={() => setShowIntegrityCheck(false)} />
+      )}
     </div>
   );
 };

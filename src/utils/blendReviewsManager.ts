@@ -4,6 +4,16 @@ const STORAGE_KEY = 'aromawise_blend_reviews';
 const USER_HELPFUL_KEY = 'aromawise_review_helpful';
 
 export class BlendReviewsManager {
+  // 初期化時にブレンド削除イベントリスナーを設定
+  static {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('blendDeleted', (event: any) => {
+        const { blendId } = event.detail;
+        this.deleteReviewsByBlend(blendId);
+      });
+    }
+  }
+
   // すべてのレビューを取得
   static getAllReviews(): BlendReview[] {
     try {
@@ -81,6 +91,19 @@ export class BlendReviewsManager {
 
       // ブレンドの平均評価を更新
       this.updateBlendRating(review.blendId);
+    }
+  }
+
+  // 特定のブレンドに関連するすべてのレビューを削除
+  static deleteReviewsByBlend(blendId: string): void {
+    const allReviews = this.getAllReviews();
+    const filteredReviews = allReviews.filter(r => r.blendId !== blendId);
+    this.saveReviews(filteredReviews);
+    
+    // 削除されたレビュー数をログ出力
+    const deletedCount = allReviews.length - filteredReviews.length;
+    if (deletedCount > 0) {
+      console.log(`Deleted ${deletedCount} reviews for blend ${blendId}`);
     }
   }
 

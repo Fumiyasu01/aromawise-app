@@ -1,0 +1,470 @@
+.integrity-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1004;
+  padding: 20px;
+}
+
+.integrity-modal {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .integrity-modal {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ヘッダー */
+.integrity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+body.dark-mode .integrity-header {
+  background: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.integrity-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .integrity-header h2 {
+  color: #4ade80;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.2s;
+  padding: 5px;
+}
+
+.close-btn:hover {
+  color: #333;
+  transform: scale(1.1);
+}
+
+body.dark-mode .close-btn:hover {
+  color: var(--text-primary);
+}
+
+/* コンテンツ */
+.integrity-content {
+  padding: 25px;
+}
+
+/* チェック中 */
+.integrity-checking {
+  text-align: center;
+  padding: 60px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #4ade80;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 概要 */
+.integrity-summary {
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+body.dark-mode .integrity-summary {
+  background: var(--bg-primary);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.summary-item .label {
+  color: #666;
+  font-weight: 500;
+}
+
+body.dark-mode .summary-item .label {
+  color: var(--text-secondary);
+}
+
+.summary-item .value {
+  font-weight: 600;
+  color: #333;
+}
+
+body.dark-mode .summary-item .value {
+  color: var(--text-primary);
+}
+
+.summary-item .value.good {
+  color: #22c55e;
+}
+
+.summary-item .value.warning {
+  color: #ea580c;
+}
+
+/* ストレージ使用量 */
+.storage-usage {
+  margin-bottom: 25px;
+}
+
+.storage-usage h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .storage-usage h3 {
+  color: #4ade80;
+}
+
+.storage-bar {
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+body.dark-mode .storage-bar {
+  background: var(--bg-primary);
+}
+
+.storage-fill {
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.storage-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+body.dark-mode .storage-details {
+  color: var(--text-secondary);
+}
+
+/* レコード統計 */
+.records-stats {
+  margin-bottom: 25px;
+}
+
+.records-stats h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .records-stats h3 {
+  color: #4ade80;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.stat-item {
+  text-align: center;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+body.dark-mode .stat-item {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2d5a3d;
+}
+
+body.dark-mode .stat-number {
+  color: #4ade80;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+body.dark-mode .stat-label {
+  color: var(--text-secondary);
+}
+
+/* 問題一覧 */
+.issues-section {
+  margin-bottom: 25px;
+}
+
+.issues-section h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .issues-section h3 {
+  color: #4ade80;
+}
+
+.issues-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.issue-item {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid #dc2626;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+body.dark-mode .issue-item {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.issue-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.issue-icon {
+  font-size: 1.2rem;
+}
+
+.issue-severity {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.fixable-badge {
+  background: #22c55e;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.issue-description {
+  margin: 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+body.dark-mode .issue-description {
+  color: var(--text-secondary);
+}
+
+/* 修復結果 */
+.fix-result {
+  background: #e8f5e8;
+  border: 1px solid #22c55e;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+body.dark-mode .fix-result {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.fix-result h3 {
+  margin: 0 0 10px 0;
+  color: #166534;
+}
+
+body.dark-mode .fix-result h3 {
+  color: #22c55e;
+}
+
+.fix-summary {
+  margin: 0 0 15px 0;
+  color: #166534;
+}
+
+body.dark-mode .fix-summary {
+  color: #22c55e;
+}
+
+.fix-errors {
+  margin-top: 15px;
+}
+
+.fix-errors h4 {
+  margin: 0 0 10px 0;
+  color: #dc2626;
+}
+
+.fix-errors ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fix-errors li {
+  color: #dc2626;
+  margin-bottom: 5px;
+}
+
+/* アクションボタン */
+.integrity-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.integrity-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.check-btn {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.check-btn:hover {
+  background: #bbdefb;
+}
+
+.fix-btn {
+  background: #22c55e;
+  color: white;
+}
+
+.fix-btn:hover:not(:disabled) {
+  background: #16a34a;
+}
+
+.fix-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cleanup-btn {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.cleanup-btn:hover {
+  background: #e9d5ff;
+}
+
+.backup-btn {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.backup-btn:hover {
+  background: #fde68a;
+}
+
+/* 警告メッセージ */
+.integrity-warning {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 15px;
+  color: #c53030;
+}
+
+body.dark-mode .integrity-warning {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .integrity-modal {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .integrity-modal-overlay {
+    padding: 0;
+  }
+  
+  .integrity-content {
+    padding: 20px;
+  }
+  
+  .integrity-actions {
+    flex-direction: column;
+  }
+  
+  .integrity-actions button {
+    width: 100%;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
