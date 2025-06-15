@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Custom Blends</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .error { color: red; background: #fee; padding: 10px; margin: 10px 0; }
+        .success { color: green; background: #efe; padding: 10px; margin: 10px 0; }
+        .info { color: blue; background: #eef; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        textarea { width: 100%; height: 200px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Custom Blends Debug Tool</h1>
+    
+    <div class="info">
+        <strong>このツールでカスタムブレンドの問題を診断します</strong>
+    </div>
+
+    <button onclick="checkLocalStorage()">LocalStorageチェック</button>
+    <button onclick="createTestBlend()">テストブレンド作成</button>
+    <button onclick="clearAllData()">データクリア</button>
+    <button onclick="loadTestData()">テストデータ読み込み</button>
+
+    <div id="output"></div>
+    
+    <h3>LocalStorage内容:</h3>
+    <textarea id="storageContent" readonly></textarea>
+
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            output.appendChild(div);
+        }
+
+        function updateStorageView() {
+            const content = document.getElementById('storageContent');
+            const aromaKeys = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('aromawise_')) {
+                    aromaKeys[key] = localStorage.getItem(key);
+                }
+            }
+            content.value = JSON.stringify(aromaKeys, null, 2);
+        }
+
+        function checkLocalStorage() {
+            log('LocalStorageのチェック開始...');
+            
+            const keys = ['aromawise_custom_blends', 'aromawise_user', 'aromawise_settings'];
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value) {
+                    try {
+                        const parsed = JSON.parse(value);
+                        log(`✅ ${key}: 正常 (${Object.keys(parsed).length || parsed.length || 'データあり'})`, 'success');
+                    } catch (e) {
+                        log(`❌ ${key}: JSON parse error - ${e.message}`, 'error');
+                    }
+                } else {
+                    log(`⚠️ ${key}: データなし`, 'info');
+                }
+            });
+            
+            updateStorageView();
+        }
+
+        function createTestBlend() {
+            log('テストブレンド作成中...');
+            
+            try {
+                const testBlend = {
+                    id: Date.now().toString(),
+                    name: 'テストブレンド',
+                    description: 'デバッグ用のテストブレンド',
+                    purpose: 'テスト',
+                    ingredients: [
+                        { oilId: 'lavender', drops: 3 },
+                        { oilId: 'lemon', drops: 2 }
+                    ],
+                    totalDrops: 5,
+                    dilutionRatio: 2,
+                    carrierOil: 'jojoba',
+                    carrierAmount: 10,
+                    category: 'custom',
+                    tags: ['テスト'],
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    createdBy: 'guest',
+                    isPublic: false,
+                    likes: 0
+                };
+
+                const existing = localStorage.getItem('aromawise_custom_blends');
+                const blends = existing ? JSON.parse(existing) : [];
+                blends.push(testBlend);
+                
+                localStorage.setItem('aromawise_custom_blends', JSON.stringify(blends));
+                log(`✅ テストブレンド作成完了: ${testBlend.name}`, 'success');
+                
+                updateStorageView();
+            } catch (e) {
+                log(`❌ テストブレンド作成失敗: ${e.message}`, 'error');
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('すべてのカスタムブレンドデータを削除しますか？')) {
+                localStorage.removeItem('aromawise_custom_blends');
+                localStorage.removeItem('aromawise_blend_likes_guest');
+                log('✅ データクリア完了', 'success');
+                updateStorageView();
+            }
+        }
+
+        function loadTestData() {
+            log('テストデータ読み込み中...');
+            
+            const testBlends = [
+                {
+                    id: '1',
+                    name: 'リラックスブレンド',
+                    description: '夜のリラックスタイムに',
+                    purpose: 'リラクゼーション',
+                    ingredients: [
+                        { oilId: 'lavender', drops: 4 },
+                        { oilId: 'bergamot', drops: 2 }
+                    ],
+                    totalDrops: 6,
+                    category: 'relaxation',
+                    tags: ['リラックス', '夜'],
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    createdBy: 'guest',
+                    isPublic: true,
+                    likes: 5
+                },
+                {
+                    id: '2',
+                    name: '集中力アップ',
+                    description: '仕事や勉強のお供に',
+                    purpose: '集中力向上',
+                    ingredients: [
+                        { oilId: 'peppermint', drops: 2 },
+                        { oilId: 'rosemary', drops: 2 },
+                        { oilId: 'lemon', drops: 2 }
+                    ],
+                    totalDrops: 6,
+                    category: 'focus',
+                    tags: ['集中力', '仕事'],
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    createdBy: 'guest',
+                    isPublic: false,
+                    likes: 0
+                }
+            ];
+
+            localStorage.setItem('aromawise_custom_blends', JSON.stringify(testBlends));
+            log(`✅ テストデータ読み込み完了: ${testBlends.length}件`, 'success');
+            updateStorageView();
+        }
+
+        // 初回チェック
+        window.onload = function() {
+            checkLocalStorage();
+        };
+    </script>
+</body>
+</html>

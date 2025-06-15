@@ -24,14 +24,37 @@ const CustomBlends: React.FC = () => {
 
   useEffect(() => {
     loadBlends();
+    // 初回の場合、テンプレートを表示
+    if (myBlends.length === 0 && publicBlends.length === 0) {
+      setViewMode('templates');
+    }
   }, []);
 
+  useEffect(() => {
+    // ブレンドが作成されたら「マイブレンド」タブに切り替え
+    if (myBlends.length > 0 && viewMode === 'templates') {
+      setViewMode('my');
+    }
+  }, [myBlends.length, viewMode]);
+
   const loadBlends = () => {
-    const userBlends = CustomBlendsManager.getUserBlends(user?.id || 'guest');
-    const allPublicBlends = CustomBlendsManager.getPublicBlends();
-    
-    setMyBlends(userBlends);
-    setPublicBlends(allPublicBlends);
+    try {
+      const userBlends = CustomBlendsManager.getUserBlends(user?.id || 'guest');
+      const allPublicBlends = CustomBlendsManager.getPublicBlends();
+      
+      console.log('Loading blends:', { 
+        userBlends: userBlends.length, 
+        publicBlends: allPublicBlends.length,
+        userId: user?.id || 'guest'
+      });
+      
+      setMyBlends(userBlends);
+      setPublicBlends(allPublicBlends);
+    } catch (error) {
+      console.error('Error loading blends:', error);
+      setMyBlends([]);
+      setPublicBlends([]);
+    }
   };
 
   const handleCreateBlend = () => {
@@ -179,6 +202,20 @@ const CustomBlends: React.FC = () => {
         </select>
       </div>
 
+      {/* デバッグ情報（開発環境のみ） */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{ 
+          background: '#f0f0f0', 
+          padding: '10px', 
+          borderRadius: '5px', 
+          fontSize: '0.8rem', 
+          marginBottom: '20px' 
+        }}>
+          <strong>Debug Info:</strong> My: {myBlends.length}, Public: {publicBlends.length}, 
+          Filtered: {filteredBlends.length}, View: {viewMode}, User: {user?.id || 'guest'}
+        </div>
+      )}
+
       {/* ブレンドリスト */}
       {viewMode === 'templates' ? (
         <div className="templates-grid">
@@ -252,11 +289,25 @@ const CustomBlends: React.FC = () => {
               ))
             ) : (
               <div className="empty-state">
-                <p>ブレンドが見つかりません</p>
-                {viewMode === 'my' && (
-                  <button onClick={handleCreateBlend}>
-                    最初のブレンドを作成
-                  </button>
+                <div className="empty-icon">🧪</div>
+                {viewMode === 'my' ? (
+                  <>
+                    <h3>まだブレンドがありません</h3>
+                    <p>オリジナルのエッセンシャルオイルブレンドを作成してみましょう</p>
+                    <button className="btn-primary" onClick={handleCreateBlend}>
+                      最初のブレンドを作成
+                    </button>
+                  </>
+                ) : viewMode === 'public' ? (
+                  <>
+                    <h3>公開ブレンドがありません</h3>
+                    <p>まだ公開されているブレンドがないようです</p>
+                  </>
+                ) : (
+                  <>
+                    <h3>条件に一致するブレンドが見つかりません</h3>
+                    <p>検索条件やカテゴリーを変更してお試しください</p>
+                  </>
                 )}
               </div>
             )}
