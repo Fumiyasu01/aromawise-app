@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Forms Debug</title>
+</head>
+<body>
+    <h1>Google Forms フィールドID確認</h1>
+    
+    <p>以下の手順でフィールドIDを確認してください：</p>
+    
+    <ol>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfQMEwtCtjSCDvnV0_qRARQobaOxqjzC5K7_P9bP4o1_0oxxw/viewform" target="_blank">フォームを開く</a></li>
+        <li>F12で開発者ツールを開く</li>
+        <li>満足度の選択肢を右クリック → 「検証」</li>
+        <li>name="entry.XXXXXXXX" を確認</li>
+    </ol>
+    
+    <h2>テスト送信</h2>
+    <form id="testForm">
+        <p>満足度: 
+            <input type="radio" name="test_rating" value="5"> 5⭐
+        </p>
+        <p>コメント: 
+            <input type="text" name="test_comment" value="テスト送信">
+        </p>
+        <button type="button" onclick="testSubmit()">テスト送信</button>
+    </form>
+    
+    <div id="result"></div>
+    
+    <script>
+        function testSubmit() {
+            const formData = new FormData();
+            
+            // 現在のフィールドIDでテスト
+            formData.append('entry.521869119', '5⭐');
+            formData.append('entry.1313356794', 'テスト送信 - デバッグ用');
+            
+            console.log('送信データ:', {
+                'entry.521869119': '5⭐',
+                'entry.1313356794': 'テスト送信 - デバッグ用'
+            });
+            
+            fetch('https://docs.google.com/forms/d/e/1FAIpQLSfQMEwtCtjSCDvnV0_qRARQobaOxqjzC5K7_P9bP4o1_0oxxw/formResponse', {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            })
+            .then(() => {
+                document.getElementById('result').innerHTML = '送信完了！Google Formsを確認してください。';
+                console.log('送信完了');
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = 'エラー: ' + error;
+                console.error('送信エラー:', error);
+            });
+        }
+    </script>
+</body>
+</html>
