@@ -12,6 +12,7 @@ interface BlendCardProps {
   onEdit: () => void;
   onDelete: () => void;
   onToggleLike: () => void;
+  onViewReviews?: () => void;
 }
 
 const BlendCard: React.FC<BlendCardProps> = ({
@@ -19,7 +20,8 @@ const BlendCard: React.FC<BlendCardProps> = ({
   isOwner,
   onEdit,
   onDelete,
-  onToggleLike
+  onToggleLike,
+  onViewReviews
 }) => {
   const [showShareModal, setShowShareModal] = useState(false);
   const calculation = BlendCalculator.calculate(blend);
@@ -111,6 +113,18 @@ const BlendCard: React.FC<BlendCardProps> = ({
             </span>
           </div>
         )}
+        {blend.rating && blend.rating > 0 && (
+          <div className="detail-item">
+            <span className="label">評価:</span>
+            <span className="value rating-display">
+              {'★'.repeat(Math.round(blend.rating))}
+              <span className="rating-number">{blend.rating.toFixed(1)}</span>
+              {blend.reviewCount && (
+                <span className="review-count">({blend.reviewCount})</span>
+              )}
+            </span>
+          </div>
+        )}
       </div>
 
       {blend.tags.length > 0 && (
@@ -133,6 +147,18 @@ const BlendCard: React.FC<BlendCardProps> = ({
       {blend.isPublic && (
         <div className="public-indicator">
           <span>🌍 公開中</span>
+        </div>
+      )}
+
+      {/* レビュー表示ボタン */}
+      {blend.isPublic && onViewReviews && (
+        <div className="review-action">
+          <button onClick={onViewReviews} className="view-reviews-btn">
+            📝 レビューを見る
+            {blend.reviewCount && blend.reviewCount > 0 && (
+              <span className="review-badge">{blend.reviewCount}</span>
+            )}
+          </button>
         </div>
       )}
 

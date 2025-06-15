@@ -22,10 +22,29 @@ export interface CustomBlend {
   createdBy: string; // ユーザーID
   isPublic: boolean; // 公開/非公開
   likes: number;
-  rating?: number;
+  rating?: number; // 平均評価
+  reviewCount?: number; // レビュー数
   instructions?: string; // 使用方法
   precautions?: string; // 注意事項
   imageUrl?: string;
+}
+
+export interface BlendReview {
+  id: string;
+  blendId: string;
+  userId: string;
+  userName: string;
+  rating: number; // 1-5
+  title: string;
+  comment: string;
+  effectiveness: number; // 効果 1-5
+  fragrance: number; // 香り 1-5
+  easeOfUse: number; // 使いやすさ 1-5
+  wouldRecommend: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  helpful: number; // 役に立った数
+  reported: boolean; // 報告済み
 }
 
 export type BlendCategory = 

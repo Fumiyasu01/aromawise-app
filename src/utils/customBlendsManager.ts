@@ -5,6 +5,16 @@ const PUBLIC_BLENDS_KEY = 'aromawise_public_blends';
 const USER_LIKES_KEY = 'aromawise_blend_likes';
 
 export class CustomBlendsManager {
+  // 初期化時にレビュー更新イベントリスナーを設定
+  static {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('blendRatingUpdated', (event: any) => {
+        const { blendId, rating, reviewCount } = event.detail;
+        this.updateBlendRating(blendId, rating, reviewCount);
+      });
+    }
+  }
+
   // すべてのブレンドを取得
   static getAllBlends(): CustomBlend[] {
     try {
@@ -274,6 +284,19 @@ export class CustomBlendsManager {
       mostUsedOils,
       popularCategories
     };
+  }
+
+  // ブレンドの評価を更新
+  static updateBlendRating(blendId: string, rating: number, reviewCount: number): void {
+    const allBlends = this.getAllBlends();
+    const blend = allBlends.find(b => b.id === blendId);
+    
+    if (blend) {
+      blend.rating = rating;
+      blend.reviewCount = reviewCount;
+      blend.updatedAt = new Date();
+      this.saveBlends(allBlends);
+    }
   }
 
   // プライベートメソッド
