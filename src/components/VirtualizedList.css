@@ -1,0 +1,130 @@
+.virtualized-list {
+  position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  overflow: hidden;
+}
+
+body.dark-mode .virtualized-list {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.virtualized-list-content {
+  position: relative;
+}
+
+.virtualized-list-items {
+  position: absolute;
+  width: 100%;
+}
+
+.virtualized-list-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body.dark-mode .virtualized-list-item {
+  border-bottom-color: var(--border-color);
+}
+
+.virtualized-list-item:last-child {
+  border-bottom: none;
+}
+
+/* 仮想化された油リスト専用スタイル */
+.oils-virtualized {
+  margin-top: 20px;
+}
+
+/* 開発用の仮想化トグル */
+.virtualization-toggle {
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+body.dark-mode .virtualization-toggle {
+  background: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.virtualization-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.virtualization-toggle input[type="checkbox"] {
+  margin: 0;
+}
+
+/* スクロールバーのカスタマイズ */
+.virtualized-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.virtualized-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.virtualized-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.virtualized-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+body.dark-mode .virtualized-list::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+body.dark-mode .virtualized-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+body.dark-mode .virtualized-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* パフォーマンス最適化 */
+.virtualized-list-item {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* 読み込み状態 */
+.virtualized-list.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.virtualized-list.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #e0e0e0;
+  border-top: 2px solid #4ade80;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

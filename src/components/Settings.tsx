@@ -7,6 +7,7 @@ import SafetySettings from './settings/SafetySettings';
 import DataManagement from './settings/DataManagement';
 import Support from './settings/Support';
 import AppInfo from './settings/AppInfo';
+import MobileTestSuite from './MobileTestSuite';
 import './Settings.css';
 
 type SettingsSection = 'profile' | 'preferences' | 'safety' | 'data' | 'support' | 'info';
@@ -14,6 +15,7 @@ type SettingsSection = 'profile' | 'preferences' | 'safety' | 'data' | 'support'
 const Settings: React.FC = () => {
   const [activeSection, setActiveSection] = useState<SettingsSection>('profile');
   const { userProfile } = useSettings();
+  const [showMobileTestSuite, setShowMobileTestSuite] = useState(false);
 
   const sections = [
     { id: 'profile' as SettingsSection, icon: '👤', label: 'アカウント', badge: null },
@@ -50,6 +52,14 @@ const Settings: React.FC = () => {
         {userProfile.name && (
           <p className="user-greeting">こんにちは、{userProfile.name}さん</p>
         )}
+        {process.env.NODE_ENV === 'development' && (
+          <button 
+            className="mobile-test-btn"
+            onClick={() => setShowMobileTestSuite(true)}
+          >
+            📱 Mobile Test
+          </button>
+        )}
       </header>
 
       <div className="settings-container">
@@ -74,6 +84,10 @@ const Settings: React.FC = () => {
           {renderSection()}
         </div>
       </div>
+
+      {showMobileTestSuite && (
+        <MobileTestSuite onClose={() => setShowMobileTestSuite(false)} />
+      )}
     </div>
   );
 };

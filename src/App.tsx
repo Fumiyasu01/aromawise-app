@@ -3,10 +3,12 @@ import './App.css';
 import './styles/touch-improvements.css';
 import './styles/dark-mode.css';
 import './styles/app-header.css';
+import './styles/mobile-optimizations.css';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './components/Home';
 import OilDetail from './components/OilDetail';
 import RecipeDetail from './components/RecipeDetail';
@@ -199,73 +201,88 @@ function AppInner() {
   };
 
   return (
-    <div className="App">
-      {/* PWAコンポーネント */}
-      <OfflineIndicator />
-      <InstallBanner />
-      
-      {/* ヘッダー部分 */}
-      <div className="app-header">
-        {/* ダークモード切り替えボタン */}
-        <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="ダークモード切り替え">
-          <span className="dark-mode-toggle-icon">{isDarkMode ? '☀️' : '🌙'}</span>
-        </button>
+    <ErrorBoundary>
+      <div className="App">
+        {/* PWAコンポーネント */}
+        <OfflineIndicator />
+        <InstallBanner />
         
-        {/* 認証状態表示 */}
-        <div className="auth-status">
-          {isAuthenticated && user ? (
-            <span className="user-welcome">
-              {user.isGuest ? 'ゲスト' : user.name}
-            </span>
-          ) : (
-            <button 
-              className="btn-secondary auth-button"
-              onClick={() => {
-                setAuthModalMode('login');
-                setShowAuthModal(true);
-              }}
-            >
-              ログイン
-            </button>
-          )}
+        {/* ヘッダー部分 */}
+        <div className="app-header">
+          {/* ダークモード切り替えボタン */}
+          <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="ダークモード切り替え">
+            <span className="dark-mode-toggle-icon">{isDarkMode ? '☀️' : '🌙'}</span>
+          </button>
+          
+          {/* 認証状態表示 */}
+          <div className="auth-status">
+            {isAuthenticated && user ? (
+              <span className="user-welcome">
+                {user.isGuest ? 'ゲスト' : user.name}
+              </span>
+            ) : (
+              <button 
+                className="btn-secondary auth-button"
+                onClick={() => {
+                  setAuthModalMode('login');
+                  setShowAuthModal(true);
+                }}
+              >
+                ログイン
+              </button>
+            )}
+          </div>
         </div>
+        
+        <ErrorBoundary>
+          <main className="main-content">
+            {renderScreen()}
+          </main>
+        </ErrorBoundary>
+        
+        <ErrorBoundary>
+          <Navigation 
+            currentScreen={currentScreen} 
+            onScreenChange={(screen) => {
+              analytics.trackPageView(screen);
+              setCurrentScreen(screen);
+            }} 
+          />
+        </ErrorBoundary>
+        
+        {showSurvey && (
+          <ErrorBoundary>
+            <SatisfactionSurvey onClose={() => setShowSurvey(false)} />
+          </ErrorBoundary>
+        )}
+        
+        <ErrorBoundary>
+          <AuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            initialMode={authModalMode}
+          />
+        </ErrorBoundary>
+        
+        {/* PWAインストールプロンプト */}
+        <ErrorBoundary>
+          <InstallPrompt />
+        </ErrorBoundary>
+        
+        {/* 共有ブレンド */}
+        {sharedBlendData && (
+          <ErrorBoundary>
+            <SharedBlend
+              encodedData={sharedBlendData}
+              onClose={() => {
+                setSharedBlendData(null);
+                window.history.pushState({}, '', '/');
+              }}
+            />
+          </ErrorBoundary>
+        )}
       </div>
-      
-      <main className="main-content">
-        {renderScreen()}
-      </main>
-      <Navigation 
-        currentScreen={currentScreen} 
-        onScreenChange={(screen) => {
-          analytics.trackPageView(screen);
-          setCurrentScreen(screen);
-        }} 
-      />
-      
-      {showSurvey && (
-        <SatisfactionSurvey onClose={() => setShowSurvey(false)} />
-      )}
-      
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        initialMode={authModalMode}
-      />
-      
-      {/* PWAインストールプロンプト */}
-      <InstallPrompt />
-      
-      {/* 共有ブレンド */}
-      {sharedBlendData && (
-        <SharedBlend
-          encodedData={sharedBlendData}
-          onClose={() => {
-            setSharedBlendData(null);
-            window.history.pushState({}, '', '/');
-          }}
-        />
-      )}
-    </div>
+    </ErrorBoundary>
   );
 }
 

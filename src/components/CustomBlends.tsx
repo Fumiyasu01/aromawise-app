@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { CustomBlend, BLEND_TEMPLATES, BlendCategory } from '../types/CustomBlend';
 import { CustomBlendsManager } from '../utils/customBlendsManager';
 import BlendEditor from './BlendEditor';
 import BlendCard from './BlendCard';
+import VirtualizedList from './VirtualizedList';
+import { useDebounce, PerformanceMonitor } from '../utils/performanceOptimizer';
 import './CustomBlends.css';
 
 const CustomBlends: React.FC = () => {
@@ -15,6 +17,10 @@ const CustomBlends: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<BlendCategory | 'all'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'my' | 'public' | 'templates'>('my');
+  const [useVirtualization, setUseVirtualization] = useState(false);
+  
+  // 検索クエリのデバウンス
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   useEffect(() => {
     loadBlends();
@@ -72,7 +78,10 @@ const CustomBlends: React.FC = () => {
     setShowEditor(true);
   };
 
-  const filteredBlends = (() => {
+  // メモ化されたフィルター処理
+  const filteredBlends = useMemo(() => {
+    const endMeasurement = PerformanceMonitor.startMeasurement('blend-filtering');
+    
     let blends: CustomBlend[] = [];
     
     if (viewMode === 'my') {
@@ -85,8 +94,8 @@ const CustomBlends: React.FC = () => {
       blends = blends.filter(b => b.category === selectedCategory);
     }
 
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
+    if (debouncedSearchTerm) {
+      const term = debouncedSearchTerm.toLowerCase();
       blends = blends.filter(b => 
         b.name.toLowerCase().includes(term) ||
         b.description.toLowerCase().includes(term) ||
@@ -94,8 +103,14 @@ const CustomBlends: React.FC = () => {
       );
     }
 
+    endMeasurement();
     return blends;
-  })();
+  }, [myBlends, publicBlends, viewMode, selectedCategory, debouncedSearchTerm]);
+  
+  // 大量データの場合は仮想化を自動有効化
+  useEffect(() => {
+    setUseVirtualization(filteredBlends.length > 20);
+  }, [filteredBlends.length]);
 
   const categories: { value: BlendCategory | 'all'; label: string }[] = [
     { value: 'all', label: 'すべて' },
@@ -190,9 +205,27 @@ const CustomBlends: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="blends-grid">
-          {filteredBlends.length > 0 ? (
-            filteredBlends.map(blend => (
+        <div>
+          {/* 仮想化オプション（開発用） */}
+          {process.env.NODE_ENV === 'development' && filteredBlends.length > 0 && (
+            <div className="virtualization-toggle">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={useVirtualization}
+                  onChange={(e) => setUseVirtualization(e.target.checked)}
+                />
+                仮想化リストを使用 ({filteredBlends.length}件)
+              </label>
+            </div>
+          )}
+        
+        {useVirtualization && filteredBlends.length > 0 ? (
+          <VirtualizedList
+            items={filteredBlends}
+            itemHeight={200}
+            containerHeight={400}
+            renderItem={(blend, index) => (
               <BlendCard
                 key={blend.id}
                 blend={blend}
@@ -201,17 +234,34 @@ const CustomBlends: React.FC = () => {
                 onDelete={() => handleDeleteBlend(blend.id)}
                 onToggleLike={() => handleToggleLike(blend.id)}
               />
-            ))
-          ) : (
-            <div className="empty-state">
-              <p>ブレンドが見つかりません</p>
-              {viewMode === 'my' && (
-                <button onClick={handleCreateBlend}>
-                  最初のブレンドを作成
-                </button>
-              )}
-            </div>
-          )}
+            )}
+            className="blends-virtualized"
+          />
+        ) : (
+          <div className="blends-grid">
+            {filteredBlends.length > 0 ? (
+              filteredBlends.map(blend => (
+                <BlendCard
+                  key={blend.id}
+                  blend={blend}
+                  isOwner={blend.createdBy === (user?.id || 'guest')}
+                  onEdit={() => handleEditBlend(blend)}
+                  onDelete={() => handleDeleteBlend(blend.id)}
+                  onToggleLike={() => handleToggleLike(blend.id)}
+                />
+              ))
+            ) : (
+              <div className="empty-state">
+                <p>ブレンドが見つかりません</p>
+                {viewMode === 'my' && (
+                  <button onClick={handleCreateBlend}>
+                    最初のブレンドを作成
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         </div>
       )}
 

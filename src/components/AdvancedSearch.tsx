@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Oil } from '../types/Oil';
 import { getEnhancedOilById } from '../data/enhancedOils';
+import { useDebounce, SearchOptimizer, PerformanceMonitor } from '../utils/performanceOptimizer';
 import './AdvancedSearch.css';
 
 interface AdvancedSearchProps {
@@ -36,6 +37,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ oils, onSearchResults, 
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [filteredCount, setFilteredCount] = useState(oils.length);
+  
+  // 検索クエリのデバウンス
+  const debouncedSearchTerm = useDebounce(filters.searchTerm, 300);
 
   // 利用可能なカテゴリーを取得
   const availableCategories = Array.from(new Set(oils.map(oil => oil.category)));
@@ -78,20 +82,44 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ oils, onSearchResults, 
   // 使用方法のオプション
   const usageMethods = ['アロマ', '局所塗布', '内服'];
 
-  // フィルター適用
+  // 検索インデックスの初期化と更新
   useEffect(() => {
+    const endMeasurement = PerformanceMonitor.startMeasurement('search-index-creation');
+    
+    SearchOptimizer.createIndex('oils', oils, (oil) => [
+      oil.name,
+      oil.description,
+      oil.aroma,
+      ...oil.benefits,
+      ...oil.symptoms
+    ]);
+    
+    endMeasurement();
+  }, [oils]);
+  
+  // 最適化されたフィルター適用
+  const filteredResults = useMemo(() => {
+    const endMeasurement = PerformanceMonitor.startMeasurement('oil-filtering');
+    
     let results = [...oils];
 
-    // テキスト検索
-    if (filters.searchTerm) {
-      const searchLower = filters.searchTerm.toLowerCase();
-      results = results.filter(oil => 
-        oil.name.toLowerCase().includes(searchLower) ||
-        oil.description.toLowerCase().includes(searchLower) ||
-        oil.aroma.toLowerCase().includes(searchLower) ||
-        oil.benefits.some(b => b.toLowerCase().includes(searchLower)) ||
-        oil.symptoms.some(s => s.toLowerCase().includes(searchLower))
-      );
+    // インデックスを使用した高速テキスト検索
+    if (debouncedSearchTerm) {
+      const searchResults = SearchOptimizer.search('oils', debouncedSearchTerm);
+      if (searchResults.length > 0) {
+        const searchIds = new Set(searchResults.map(oil => (oil as Oil).id));
+        results = results.filter(oil => searchIds.has(oil.id));
+      } else {
+        // インデックスで見つからない場合は従来の検索
+        const searchLower = debouncedSearchTerm.toLowerCase();
+        results = results.filter(oil => 
+          oil.name.toLowerCase().includes(searchLower) ||
+          oil.description.toLowerCase().includes(searchLower) ||
+          oil.aroma.toLowerCase().includes(searchLower) ||
+          oil.benefits.some(b => b.toLowerCase().includes(searchLower)) ||
+          oil.symptoms.some(s => s.toLowerCase().includes(searchLower))
+        );
+      }
     }
 
     // カテゴリーフィルター
@@ -134,9 +162,15 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ oils, onSearchResults, 
       );
     }
 
-    setFilteredCount(results.length);
-    onSearchResults(results);
-  }, [filters, oils, onSearchResults]);
+    endMeasurement();
+    return results;
+  }, [oils, debouncedSearchTerm, filters.categories, filters.symptoms, filters.safety, filters.usage]);
+  
+  // 結果の更新
+  useEffect(() => {
+    setFilteredCount(filteredResults.length);
+    onSearchResults(filteredResults);
+  }, [filteredResults, onSearchResults]);
 
   // フィルターのリセット
   const resetFilters = () => {

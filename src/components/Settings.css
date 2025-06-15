@@ -8,6 +8,38 @@
 .settings-header {
   text-align: center;
   margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mobile-test-btn {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.mobile-test-btn:hover {
+  background: #bbdefb;
+  transform: translateY(-1px);
+}
+
+body.dark-mode .mobile-test-btn {
+  background: rgba(25, 118, 210, 0.1);
+  border-color: rgba(25, 118, 210, 0.3);
+  color: #64b5f6;
+}
+
+body.dark-mode .mobile-test-btn:hover {
+  background: rgba(25, 118, 210, 0.2);
 }
 
 .settings-header h1 {
