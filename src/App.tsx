@@ -25,6 +25,7 @@ import SubscriptionManagement from './components/subscription/SubscriptionManage
 import OfflineIndicator from './components/OfflineIndicator';
 import InstallPrompt, { InstallBanner } from './components/InstallPrompt';
 import CustomBlends from './components/CustomBlends';
+import SharedBlend from './components/SharedBlend';
 import { Oil } from './types/Oil';
 import { BlendRecipe } from './types/BlendRecipe';
 import { BlendSuggestion } from './types/FragranceBlend';
@@ -48,6 +49,7 @@ function AppInner() {
   const [showSurvey, setShowSurvey] = useState<boolean>(false);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
+  const [sharedBlendData, setSharedBlendData] = useState<string | null>(null);
   
   // ナビゲーション統合状態
   const [navigationHistory, setNavigationHistory] = useState<Screen[]>(['home']);
@@ -71,6 +73,15 @@ function AppInner() {
     }, 10000); // 10秒後にチェック
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // URLパラメータをチェックして共有ブレンドを処理
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.startsWith('/shared-blend/')) {
+      const encodedData = path.substring('/shared-blend/'.length);
+      setSharedBlendData(encodedData);
+    }
   }, []);
 
   const handleOilSelect = (oil: Oil) => {
@@ -262,6 +273,17 @@ function AppInner() {
       
       {/* PWAインストールプロンプト */}
       <InstallPrompt />
+      
+      {/* 共有ブレンド */}
+      {sharedBlendData && (
+        <SharedBlend
+          encodedData={sharedBlendData}
+          onClose={() => {
+            setSharedBlendData(null);
+            window.history.pushState({}, '', '/');
+          }}
+        />
+      )}
     </div>
   );
 }

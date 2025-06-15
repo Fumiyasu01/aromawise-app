@@ -1,0 +1,353 @@
+.shared-blend-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1002;
+  padding: 20px;
+}
+
+.shared-blend-card,
+.shared-blend-error,
+.shared-blend-loading {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .shared-blend-card,
+body.dark-mode .shared-blend-error,
+body.dark-mode .shared-blend-loading {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* ヘッダー */
+.shared-blend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+body.dark-mode .shared-blend-header {
+  background: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.shared-blend-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .shared-blend-header h2 {
+  color: #4ade80;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.2s;
+  padding: 5px;
+}
+
+.close-btn:hover {
+  color: #333;
+  transform: scale(1.1);
+}
+
+body.dark-mode .close-btn:hover {
+  color: var(--text-primary);
+}
+
+/* コンテンツ */
+.shared-blend-content {
+  padding: 25px;
+}
+
+.shared-blend-content h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.5rem;
+  color: #2d5a3d;
+}
+
+body.dark-mode .shared-blend-content h3 {
+  color: #4ade80;
+}
+
+.blend-description {
+  color: #666;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+body.dark-mode .blend-description {
+  color: var(--text-secondary);
+}
+
+/* セクション */
+.ingredients-section,
+.carrier-section,
+.instructions-section,
+.precautions-section {
+  margin-bottom: 25px;
+}
+
+.shared-blend-content h4 {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+body.dark-mode .shared-blend-content h4 {
+  color: var(--text-secondary);
+}
+
+/* 材料リスト */
+.ingredients-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+}
+
+.ingredients-list li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+body.dark-mode .ingredients-list li {
+  background: var(--bg-primary);
+}
+
+.oil-name {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+}
+
+body.dark-mode .oil-name {
+  color: var(--text-primary);
+}
+
+.oil-drops {
+  color: #2d5a3d;
+  font-weight: 600;
+}
+
+body.dark-mode .oil-drops {
+  color: #4ade80;
+}
+
+.oil-note {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: white;
+  background: #999;
+}
+
+.oil-note[data-note="top"] {
+  background: #ff9800;
+}
+
+.oil-note[data-note="middle"] {
+  background: #4caf50;
+}
+
+.oil-note[data-note="base"] {
+  background: #9c27b0;
+}
+
+.total-drops {
+  text-align: right;
+  font-weight: 600;
+  color: #2d5a3d;
+}
+
+body.dark-mode .total-drops {
+  color: #4ade80;
+}
+
+/* キャリアオイル・使用方法・注意事項 */
+.carrier-section p,
+.instructions-section p,
+.precautions-section p {
+  margin: 0 0 8px 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+body.dark-mode .carrier-section p,
+body.dark-mode .instructions-section p,
+body.dark-mode .precautions-section p {
+  color: var(--text-secondary);
+}
+
+/* 安全性警告 */
+.safety-warnings {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+body.dark-mode .safety-warnings {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.safety-warnings h4 {
+  color: #c53030;
+  margin-bottom: 10px;
+}
+
+body.dark-mode .safety-warnings h4 {
+  color: #ef4444;
+}
+
+.safety-warnings ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.safety-warnings li {
+  color: #9b2c2c;
+  margin-bottom: 5px;
+}
+
+body.dark-mode .safety-warnings li {
+  color: #f87171;
+}
+
+/* アクション */
+.shared-blend-actions {
+  padding: 20px 25px;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+body.dark-mode .shared-blend-actions {
+  border-top-color: var(--border-color);
+}
+
+.import-btn {
+  padding: 12px 40px;
+  background: #4ade80;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.import-btn:hover {
+  background: #22c55e;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 222, 128, 0.3);
+}
+
+.import-success {
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* エラー */
+.shared-blend-error {
+  padding: 40px;
+  text-align: center;
+}
+
+.shared-blend-error h2 {
+  margin: 0 0 15px 0;
+  color: #c53030;
+}
+
+body.dark-mode .shared-blend-error h2 {
+  color: #ef4444;
+}
+
+.shared-blend-error p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+body.dark-mode .shared-blend-error p {
+  color: var(--text-secondary);
+}
+
+.shared-blend-error .close-btn {
+  padding: 10px 30px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+body.dark-mode .shared-blend-error .close-btn {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.shared-blend-error .close-btn:hover {
+  background: #e0e0e0;
+}
+
+/* ローディング */
+.shared-blend-loading {
+  padding: 60px;
+  text-align: center;
+}
+
+.shared-blend-loading p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+body.dark-mode .shared-blend-loading p {
+  color: var(--text-secondary);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .shared-blend-container {
+    padding: 0;
+  }
+  
+  .shared-blend-card,
+  .shared-blend-error,
+  .shared-blend-loading {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}

@@ -74,6 +74,10 @@ body.dark-mode .blend-card-header h3 {
   font-size: 0.9rem !important;
 }
 
+.share-btn:hover {
+  filter: hue-rotate(15deg) brightness(1.2);
+}
+
 /* メタ情報 */
 .blend-card-meta {
   display: flex;

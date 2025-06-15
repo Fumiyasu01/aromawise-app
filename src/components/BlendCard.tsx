@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CustomBlend } from '../types/CustomBlend';
 import { oilsData } from '../data/oils';
 import { getEnhancedOilById } from '../data/enhancedOils';
 import { BlendCalculator } from '../utils/blendCalculator';
+import BlendShareModal from './BlendShareModal';
 import './BlendCard.css';
 
 interface BlendCardProps {
@@ -20,6 +21,7 @@ const BlendCard: React.FC<BlendCardProps> = ({
   onDelete,
   onToggleLike
 }) => {
+  const [showShareModal, setShowShareModal] = useState(false);
   const calculation = BlendCalculator.calculate(blend);
   
   const formatDate = (date: Date) => {
@@ -59,6 +61,9 @@ const BlendCard: React.FC<BlendCardProps> = ({
           )}
           <button onClick={onToggleLike} className="like-btn" title="いいね">
             ❤️ {blend.likes}
+          </button>
+          <button onClick={() => setShowShareModal(true)} className="share-btn" title="共有">
+            🔗
           </button>
         </div>
       </div>
@@ -129,6 +134,13 @@ const BlendCard: React.FC<BlendCardProps> = ({
         <div className="public-indicator">
           <span>🌍 公開中</span>
         </div>
+      )}
+
+      {showShareModal && (
+        <BlendShareModal
+          blend={blend}
+          onClose={() => setShowShareModal(false)}
+        />
       )}
     </div>
   );
