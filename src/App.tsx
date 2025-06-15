@@ -8,24 +8,21 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
 import Home from './components/Home';
-import OilList from './components/OilList';
 import OilDetail from './components/OilDetail';
-import MyOilsEnhanced from './components/MyOilsEnhanced';
-import Recipes from './components/Recipes';
 import RecipeDetail from './components/RecipeDetail';
-import FragranceBlends from './components/FragranceBlends';
 import BlendDetail from './components/BlendDetail';
 import Navigation from './components/Navigation';
 import SatisfactionSurvey from './components/SatisfactionSurvey';
-import SafetyGuidelines from './components/SafetyGuidelines';
 import Settings from './components/Settings';
 import AuthModal from './components/auth/AuthModal';
 import Pricing from './components/subscription/Pricing';
 import SubscriptionManagement from './components/subscription/SubscriptionManagement';
 import OfflineIndicator from './components/OfflineIndicator';
 import InstallPrompt, { InstallBanner } from './components/InstallPrompt';
-import CustomBlends from './components/CustomBlends';
 import SharedBlend from './components/SharedBlend';
+import OilsHub from './components/OilsHub';
+import BlendsHub from './components/BlendsHub';
+import GuideHub from './components/GuideHub';
 import { Oil } from './types/Oil';
 import { BlendRecipe } from './types/BlendRecipe';
 import { BlendSuggestion } from './types/FragranceBlend';
@@ -35,7 +32,7 @@ import { blendSuggestions } from './data/blendCompatibility';
 import { analytics } from './utils/analytics';
 import { SurveyManager } from './utils/surveyManager';
 
-type Screen = 'home' | 'oils' | 'detail' | 'myoils' | 'recipes' | 'recipe-detail' | 'blends' | 'blend-detail' | 'safety' | 'settings' | 'pricing' | 'subscription' | 'custom-blends';
+type Screen = 'home' | 'oils' | 'detail' | 'blends' | 'recipe-detail' | 'blend-detail' | 'guide' | 'settings' | 'pricing' | 'subscription';
 
 function AppInner() {
   const { isDarkMode, toggleDarkMode } = useTheme();
@@ -134,7 +131,7 @@ function AppInner() {
           setCurrentScreen('oils');
           break;
         case 'recipe-detail':
-          setCurrentScreen('recipes');
+          setCurrentScreen('blends');
           break;
         case 'blend-detail':
           setCurrentScreen('blends');
@@ -159,7 +156,7 @@ function AppInner() {
           />
         );
       case 'oils':
-        return <OilList onOilSelect={handleOilSelect} />;
+        return <OilsHub onOilSelect={handleOilSelect} />;
       case 'detail':
         return selectedOil ? (
           <OilDetail 
@@ -169,40 +166,24 @@ function AppInner() {
             onBack={handleBack}
           />
         ) : null;
-      case 'myoils':
-        return <MyOilsEnhanced onOilSelect={handleOilSelect} />;
-      case 'recipes':
-        return (
-          <Recipes 
-            myOils={[]} // TODO: MyOilsManagerから取得 
-            onRecipeSelect={handleRecipeSelect} 
-          />
-        );
+      case 'blends':
+        return <BlendsHub onRecipeSelect={handleRecipeSelect} onBlendSelect={handleBlendSelect} />;
       case 'recipe-detail':
         return selectedRecipe ? (
           <RecipeDetail recipe={selectedRecipe} myOils={[]} onBack={handleBack} />
         ) : null;
-      case 'blends':
-        return (
-          <FragranceBlends 
-            myOils={[]} // TODO: MyOilsManagerから取得 
-            onBlendSelect={handleBlendSelect} 
-          />
-        );
       case 'blend-detail':
         return selectedBlend ? (
           <BlendDetail blend={selectedBlend} myOils={[]} onBack={handleBack} />
         ) : null;
-      case 'safety':
-        return <SafetyGuidelines />;
+      case 'guide':
+        return <GuideHub />;
       case 'settings':
         return <Settings />;
       case 'pricing':
         return <Pricing onClose={() => setCurrentScreen('home')} />;
       case 'subscription':
         return <SubscriptionManagement />;
-      case 'custom-blends':
-        return <CustomBlends />;
       default:
         return (
           <Home 
