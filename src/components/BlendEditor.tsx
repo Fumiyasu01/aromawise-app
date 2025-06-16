@@ -144,13 +144,14 @@ const BlendEditor: React.FC<BlendEditorProps> = ({ blend, onSave, onClose }) => 
       tags: formData.tags || [],
       createdAt: blend?.createdAt || new Date(),
       updatedAt: new Date(),
-      createdBy: blend?.createdBy || '',
+      createdBy: blend?.createdBy || 'guest',
       isPublic: formData.isPublic || false,
       likes: blend?.likes || 0,
       instructions: formData.instructions,
       precautions: formData.precautions
     };
 
+    console.log('BlendEditor: Saving blend:', blendToSave);
     onSave(blendToSave);
   };
 

@@ -68,15 +68,26 @@ const CustomBlends: React.FC = () => {
   };
 
   const handleSaveBlend = (blend: CustomBlend) => {
-    if (editingBlend) {
-      CustomBlendsManager.updateBlend(blend);
-    } else {
-      const newBlend = CustomBlendsManager.createBlend(blend, user?.id || 'guest');
-      setMyBlends([...myBlends, newBlend]);
+    console.log('CustomBlends: handleSaveBlend called with:', blend);
+    
+    try {
+      if (editingBlend) {
+        console.log('Updating existing blend');
+        CustomBlendsManager.updateBlend(blend);
+      } else {
+        console.log('Creating new blend');
+        const newBlend = CustomBlendsManager.createBlend(blend, user?.id || 'guest');
+        console.log('New blend created:', newBlend);
+      }
+      
+      // リロードして最新の状態を取得
+      loadBlends();
+      setShowEditor(false);
+      setEditingBlend(null);
+    } catch (error) {
+      console.error('Error saving blend:', error);
+      alert('ブレンドの保存に失敗しました。もう一度お試しください。');
     }
-    loadBlends();
-    setShowEditor(false);
-    setEditingBlend(null);
   };
 
   const handleDeleteBlend = (blendId: string) => {

@@ -4,6 +4,9 @@ const STORAGE_KEY = 'aromawise_custom_blends';
 const PUBLIC_BLENDS_KEY = 'aromawise_public_blends';
 const USER_LIKES_KEY = 'aromawise_blend_likes';
 
+// デバッグ用
+console.log('CustomBlendsManager initialized. Storage key:', STORAGE_KEY);
+
 export class CustomBlendsManager {
   // 初期化時にレビュー更新イベントリスナーを設定
   static {
@@ -47,6 +50,8 @@ export class CustomBlendsManager {
 
   // ブレンドを作成
   static createBlend(blendData: Partial<CustomBlend>, userId: string): CustomBlend {
+    console.log('CustomBlendsManager.createBlend called with:', { blendData, userId });
+    
     const newBlend: CustomBlend = {
       id: Date.now().toString(),
       name: blendData.name || '',
@@ -68,9 +73,15 @@ export class CustomBlendsManager {
       precautions: blendData.precautions
     };
 
+    console.log('New blend object:', newBlend);
+
     const allBlends = this.getAllBlends();
+    console.log('Current blends count:', allBlends.length);
+    
     allBlends.push(newBlend);
     this.saveBlends(allBlends);
+    
+    console.log('Blend saved. New total:', allBlends.length);
 
     return newBlend;
   }
@@ -314,9 +325,16 @@ export class CustomBlendsManager {
   // プライベートメソッド
   private static saveBlends(blends: CustomBlend[]): void {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(blends));
+      console.log('Saving blends to localStorage:', blends.length, 'items');
+      const jsonData = JSON.stringify(blends);
+      localStorage.setItem(STORAGE_KEY, jsonData);
+      
+      // 保存確認
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      console.log('Saved to localStorage successfully:', savedData ? 'Yes' : 'No');
     } catch (error) {
       console.error('Error saving blends:', error);
+      throw error; // エラーを上位に伝播
     }
   }
 
