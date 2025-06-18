@@ -34,6 +34,7 @@ import { blendRecipes } from './data/blendRecipes';
 import { blendSuggestions } from './data/blendCompatibility';
 import { analytics } from './utils/analytics';
 import { SurveyManager } from './utils/surveyManager';
+import { MyOilsManager } from './utils/myOilsManager';
 
 type Screen = 'home' | 'oils' | 'detail' | 'blends' | 'recipe-detail' | 'blend-detail' | 'guide' | 'settings' | 'pricing' | 'subscription';
 
@@ -115,8 +116,16 @@ function AppInner() {
   };
 
   const handleAddToMyOils = (oil: Oil) => {
-    // MyOilsEnhancedで管理
-    console.log('Add to my oils:', oil.id);
+    // シンプルに追加（デフォルトの在庫情報で）
+    MyOilsManager.addOil(oil, {
+      quantity: 1,
+      unit: 'bottles',
+      purchaseDate: new Date(),
+      expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1年後
+    });
+    
+    // 追加成功のフィードバック
+    alert(`${oil.name}をマイオイルに追加しました！`);
   };
 
   const handleBack = () => {
@@ -165,7 +174,7 @@ function AppInner() {
           <OilDetail 
             oil={selectedOil} 
             onAddToMyOils={handleAddToMyOils}
-            isInMyOils={false} // TODO: MyOilsManagerから取得
+            isInMyOils={MyOilsManager.getMyOils().some(myOil => myOil.oilId === selectedOil.id)}
             onBack={handleBack}
           />
         ) : null;

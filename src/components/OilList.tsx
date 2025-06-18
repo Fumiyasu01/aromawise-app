@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Oil } from '../types/Oil';
 import { oilsData } from '../data/oils';
+import { enhancedOilsData } from '../data/enhancedOils';
 import { analytics } from '../utils/analytics';
 import AdvancedSearch from './AdvancedSearch';
 import VirtualizedList from './VirtualizedList';
@@ -13,7 +14,23 @@ interface OilListProps {
 
 const OilList: React.FC<OilListProps> = ({ onOilSelect }) => {
   const [sortBy, setSortBy] = useState<string>('name');
-  const [searchResults, setSearchResults] = useState<Oil[]>(oilsData);
+  
+  // enhancedOilsDataをOil形式に変換
+  const allOils = useMemo(() => {
+    return enhancedOilsData.map(oil => ({
+      id: oil.id,
+      name: oil.nameJa,
+      category: oil.category as any,
+      aroma: oil.aroma,
+      benefits: oil.benefits,
+      symptoms: oil.symptoms,
+      usage: oil.usage.methods,
+      description: oil.description,
+      safetyInfo: oil.safetyInfo
+    }));
+  }, []);
+  
+  const [searchResults, setSearchResults] = useState<Oil[]>(allOils);
   const [useVirtualization, setUseVirtualization] = useState(false);
 
   // パフォーマンス測定とメモ化されたソート

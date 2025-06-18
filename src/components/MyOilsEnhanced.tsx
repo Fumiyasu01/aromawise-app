@@ -3,6 +3,7 @@ import { Oil } from '../types/Oil';
 import { MyOilData, MyOilInventory, MyOilUsage } from '../types/MyOil';
 import { MyOilsManager } from '../utils/myOilsManager';
 import { oilsData } from '../data/oils';
+import { enhancedOilsData } from '../data/enhancedOils';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { useAuth } from '../contexts/AuthContext';
 import AddOilModal from './AddOilModal';
@@ -34,11 +35,29 @@ const MyOilsEnhanced: React.FC<MyOilsEnhancedProps> = ({ onOilSelect }) => {
 
   const loadMyOils = () => {
     const oils = MyOilsManager.getMyOils();
-    // オイルデータを紐付け
-    const oilsWithData = oils.map(myOil => ({
-      ...myOil,
-      oil: oilsData.find(o => o.id === myOil.oilId)
-    }));
+    // オイルデータを紐付け（enhancedOilsから優先的に取得）
+    const oilsWithData = oils.map(myOil => {
+      const enhancedOil = enhancedOilsData.find(o => o.id === myOil.oilId);
+      const basicOil = oilsData.find(o => o.id === myOil.oilId);
+      
+      // enhancedOilがあればそれを基本のOil形式に変換
+      const oil = enhancedOil ? {
+        id: enhancedOil.id,
+        name: enhancedOil.nameJa,
+        category: enhancedOil.category as any,
+        aroma: enhancedOil.aroma,
+        benefits: enhancedOil.benefits,
+        symptoms: enhancedOil.symptoms,
+        usage: enhancedOil.usage.methods,
+        description: enhancedOil.description,
+        safetyInfo: enhancedOil.safetyInfo
+      } : basicOil;
+      
+      return {
+        ...myOil,
+        oil
+      };
+    });
     setMyOils(oilsWithData);
   };
 
