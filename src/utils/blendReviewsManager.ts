@@ -5,17 +5,22 @@ const USER_HELPFUL_KEY = 'aromawise_review_helpful';
 
 export class BlendReviewsManager {
   // 初期化時にブレンド削除イベントリスナーを設定
-  static {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('blendDeleted', (event: any) => {
-        const { blendId } = event.detail;
-        this.deleteReviewsByBlend(blendId);
-      });
-    }
+  private static initialized = false;
+  
+  private static initialize() {
+    if (this.initialized || typeof window === 'undefined') return;
+    
+    window.addEventListener('blendDeleted', (event: any) => {
+      const { blendId } = event.detail;
+      this.deleteReviewsByBlend(blendId);
+    });
+    
+    this.initialized = true;
   }
 
   // すべてのレビューを取得
   static getAllReviews(): BlendReview[] {
+    this.initialize();
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) return [];

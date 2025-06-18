@@ -4,6 +4,7 @@ import './styles/touch-improvements.css';
 import './styles/dark-mode.css';
 import './styles/app-header.css';
 import './styles/mobile-optimizations.css';
+import './styles/effects-analyzer.css';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';

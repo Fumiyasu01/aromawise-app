@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Recipes from './Recipes';
 import CustomBlends from './CustomBlends';
 import FragranceBlends from './FragranceBlends';
+import { EffectsFinder } from './EffectsFinder';
 import { Oil } from '../types/Oil';
 import { BlendRecipe } from '../types/BlendRecipe';
 import { BlendSuggestion } from '../types/FragranceBlend';
@@ -13,7 +14,7 @@ interface BlendsHubProps {
 }
 
 const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) => {
-  const [activeTab, setActiveTab] = useState<'recipes' | 'custom' | 'fragrance'>('recipes');
+  const [activeTab, setActiveTab] = useState<'recipes' | 'custom' | 'fragrance' | 'effects'>('recipes');
 
   const myOils: Oil[] = []; // TODO: MyOilsManagerから取得
 
@@ -46,6 +47,13 @@ const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) 
           <span className="tab-icon">🌸</span>
           <span className="tab-label">香り</span>
         </button>
+        <button 
+          className={`tab-btn ${activeTab === 'effects' ? 'active' : ''}`}
+          onClick={() => setActiveTab('effects')}
+        >
+          <span className="tab-icon">🎯</span>
+          <span className="tab-label">効果</span>
+        </button>
       </div>
 
       <div className="blends-content">
@@ -63,6 +71,9 @@ const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) 
             myOils={myOils}
             onBlendSelect={onBlendSelect}
           />
+        )}
+        {activeTab === 'effects' && (
+          <EffectsFinder />
         )}
       </div>
     </div>

@@ -9,17 +9,22 @@ console.log('CustomBlendsManager initialized. Storage key:', STORAGE_KEY);
 
 export class CustomBlendsManager {
   // 初期化時にレビュー更新イベントリスナーを設定
-  static {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('blendRatingUpdated', (event: any) => {
-        const { blendId, rating, reviewCount } = event.detail;
-        this.updateBlendRating(blendId, rating, reviewCount);
-      });
-    }
+  private static initialized = false;
+  
+  private static initialize() {
+    if (this.initialized || typeof window === 'undefined') return;
+    
+    window.addEventListener('blendRatingUpdated', (event: any) => {
+      const { blendId, rating, reviewCount } = event.detail;
+      this.updateBlendRating(blendId, rating, reviewCount);
+    });
+    
+    this.initialized = true;
   }
 
   // すべてのブレンドを取得
   static getAllBlends(): CustomBlend[] {
+    this.initialize();
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) return [];

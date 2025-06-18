@@ -8,6 +8,8 @@ import {
 } from '../types/CustomBlend';
 import { BlendCalculator } from '../utils/blendCalculator';
 import { oilsData } from '../data/oils';
+import { enhancedOilsData } from '../data/enhancedOils';
+import { EffectsAnalyzer } from './EffectsAnalyzer';
 import './BlendEditor.css';
 
 interface BlendEditorProps {
@@ -317,6 +319,19 @@ const BlendEditor: React.FC<BlendEditorProps> = ({ blend, onSave, onClose }) => 
             {balance && !balance.balanced && (
               <div className="balance-warning">
                 {balance.recommendation}
+              </div>
+            )}
+
+            {/* 効果分析 */}
+            {formData.ingredients && formData.ingredients.length > 0 && (
+              <div className="effects-analysis-section" style={{ marginTop: '20px' }}>
+                <EffectsAnalyzer 
+                  selectedOils={formData.ingredients.map(ing => {
+                    const enhancedOil = enhancedOilsData.find(o => o.id === ing.oilId);
+                    return enhancedOil;
+                  }).filter(oil => oil !== undefined) as any[]}
+                  compact={true}
+                />
               </div>
             )}
           </div>
