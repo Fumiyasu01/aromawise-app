@@ -5,7 +5,6 @@ import {
   TextField,
   Autocomplete,
   Paper,
-  Grid,
   Card,
   CardContent,
   CardActions,
@@ -68,8 +67,8 @@ export const EffectsFinder: React.FC<EffectsFinderProps> = ({ onAddToBlend }) =>
             fullWidth
             options={allEffects}
             value={selectedEffect}
-            onChange={(_, value) => handleEffectSelect(value)}
-            renderInput={(params) => (
+            onChange={(_, value: string | null) => handleEffectSelect(value)}
+            renderInput={(params: any) => (
               <TextField
                 {...params}
                 label="求める効果を選択"
@@ -93,9 +92,9 @@ export const EffectsFinder: React.FC<EffectsFinderProps> = ({ onAddToBlend }) =>
             「{selectedEffect}」におすすめの組み合わせ
           </Typography>
           
-          <Grid container spacing={2}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
             {combinations.map((combo, index) => (
-              <Grid item xs={12} md={6} key={index}>
+              <Box key={index}>
                 <Card sx={{ height: '100%' }}>
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
@@ -140,9 +139,9 @@ export const EffectsFinder: React.FC<EffectsFinderProps> = ({ onAddToBlend }) =>
                       </Typography>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
                         {combo.oils.flatMap((oil: EnhancedOil) => oil.effects || [])
-                          .filter((effect, i, arr) => arr.indexOf(effect) === i && effect !== selectedEffect)
+                          .filter((effect: string, i: number, arr: string[]) => arr.indexOf(effect) === i && effect !== selectedEffect)
                           .slice(0, 5)
-                          .map((effect, i) => (
+                          .map((effect: string, i: number) => (
                             <Chip
                               key={i}
                               label={effect}
@@ -167,9 +166,9 @@ export const EffectsFinder: React.FC<EffectsFinderProps> = ({ onAddToBlend }) =>
                     </CardActions>
                   )}
                 </Card>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Box>
       )}
     </Box>

@@ -47,9 +47,9 @@ export class EffectsCalculator {
 
       // Symptoms
       oil.symptoms?.forEach(symptom => {
-        const mapping = symptomMappings[symptom];
+        const mapping = (symptomMappings as any)[symptom];
         if (mapping) {
-          const oilMapping = mapping.oils.find(o => o.id === oil.id);
+          const oilMapping = mapping.oils.find((o: any) => o.id === oil.id);
           if (oilMapping) {
             const current = symptomsMap.get(symptom) || { score: 0, oils: [] };
             current.score += oilMapping.score;
@@ -94,9 +94,9 @@ export class EffectsCalculator {
       .sort((a, b) => b.score - a.score);
 
     // Check for safety warnings
-    const hasPhototoxic = oils.some(oil => oil.safety?.photosensitivity);
-    const hasPregnancyWarning = oils.some(oil => !oil.safety?.pregnancy);
-    const hasChildWarning = oils.some(oil => !oil.safety?.children);
+    const hasPhototoxic = oils.some(oil => oil.safety?.photosensitivity?.sensitive);
+    const hasPregnancyWarning = oils.some(oil => !oil.safety?.pregnancy?.safe);
+    const hasChildWarning = oils.some(oil => !oil.safety?.baby?.safe);
 
     if (hasPhototoxic) {
       warnings.push('光毒性のあるオイルが含まれています。使用後は直射日光を避けてください。');
@@ -121,11 +121,12 @@ export class EffectsCalculator {
    * Get compatibility score between two oils
    */
   private static getCompatibility(oil1Id: string, oil2Id: string) {
-    return blendCompatibilities.find(
-      compat => 
-        (compat.oil1 === oil1Id && compat.oil2 === oil2Id) ||
-        (compat.oil1 === oil2Id && compat.oil2 === oil1Id)
+    const compat = blendCompatibilities.find(
+      c => 
+        (c.oilId1 === oil1Id && c.oilId2 === oil2Id) ||
+        (c.oilId1 === oil2Id && c.oilId2 === oil1Id)
     );
+    return compat ? { score: compat.compatibility } : null;
   }
 
   /**
