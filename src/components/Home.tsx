@@ -413,7 +413,6 @@ const Home: React.FC<HomeProps> = ({
             >
               <div className="oil-bottle">🌿</div>
               <h1 className="oil-name">{todayOil.name}</h1>
-              <p className="oil-category">{getCategoryName(todayOil.category)}</p>
             </div>
             
             {/* ストーリー */}

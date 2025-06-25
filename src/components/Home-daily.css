@@ -95,6 +95,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border: 3px solid;
   cursor: pointer;
@@ -126,7 +127,6 @@
 
 .oil-bottle {
   font-size: 4rem;
-  margin-bottom: 10px;
 }
 
 .oil-name {
@@ -135,12 +135,7 @@
   color: var(--elegant-text-primary, #4A4A4A);
   margin: 0;
   font-family: var(--font-serif, 'Noto Serif JP', serif);
-}
-
-.oil-category {
-  font-size: 0.9rem;
-  color: var(--elegant-text-secondary, #7A6F65);
-  margin: 5px 0 0;
+  text-align: center;
 }
 
 /* ストーリー部分 */
