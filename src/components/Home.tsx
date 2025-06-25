@@ -42,6 +42,39 @@ const Home: React.FC<HomeProps> = ({
   const [currentRecommendations, setCurrentRecommendations] = useState<RecommendationResult | null>(homeState?.currentRecommendations || null);
   const [selectedSymptoms, setSelectedSymptoms] = useState<SymptomCategory[]>(homeState?.selectedSymptoms || []);
 
+  // 検索ロジックを関数として定義
+  const performSearch = (term: string): Oil[] => {
+    if (!term.trim()) return [];
+    
+    const searchTerms = expandSearchTerms(term.trim());
+    
+    return oilsData.filter(oil => 
+      searchTerms.some(searchTerm => {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        return (
+          oil.symptoms.some(symptom => 
+            symptom.toLowerCase().includes(lowerSearchTerm)
+          ) ||
+          oil.benefits.some(benefit => 
+            benefit.toLowerCase().includes(lowerSearchTerm)
+          ) ||
+          oil.name.toLowerCase().includes(lowerSearchTerm) ||
+          oil.aroma.toLowerCase().includes(lowerSearchTerm) ||
+          oil.description.toLowerCase().includes(lowerSearchTerm) ||
+          getCategoryName(oil.category).toLowerCase().includes(lowerSearchTerm)
+        );
+      })
+    );
+  };
+
+  // homeStateから復帰した時に検索を再実行
+  useEffect(() => {
+    if (homeState?.searchTerm && homeState.searchTerm.trim()) {
+      const results = performSearch(homeState.searchTerm);
+      setSearchResults(results);
+    }
+  }, []); // 初回マウント時のみ実行
+
   const getCategoryName = (category: string) => {
     const names: Record<string, string> = {
       citrus: '柑橘系',
@@ -108,25 +141,8 @@ const Home: React.FC<HomeProps> = ({
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
-      const searchTerms = expandSearchTerms(term.trim());
       
-      const results = oilsData.filter(oil => 
-        searchTerms.some(searchTerm => {
-          const lowerSearchTerm = searchTerm.toLowerCase();
-          return (
-            oil.symptoms.some(symptom => 
-              symptom.toLowerCase().includes(lowerSearchTerm)
-            ) ||
-            oil.benefits.some(benefit => 
-              benefit.toLowerCase().includes(lowerSearchTerm)
-            ) ||
-            oil.name.toLowerCase().includes(lowerSearchTerm) ||
-            oil.aroma.toLowerCase().includes(lowerSearchTerm) ||
-            oil.description.toLowerCase().includes(lowerSearchTerm) ||
-            getCategoryName(oil.category).toLowerCase().includes(lowerSearchTerm)
-          );
-        })
-      );
+      const results = performSearch(term);
       setSearchResults(results);
       
       // 検索結果数をアナリティクスに記録
@@ -380,13 +396,24 @@ const Home: React.FC<HomeProps> = ({
 
       <div className="search-section">
         <div className="search-box">
-          <input
-            type="text"
-            placeholder="症状や気になることを入力してください"
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="search-input"
-          />
+          <div className="search-input-wrapper">
+            <input
+              type="text"
+              placeholder="症状や気になることを入力してください"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="search-input"
+            />
+            {searchTerm && (
+              <button 
+                className="search-clear-btn"
+                onClick={() => handleSearch('')}
+                aria-label="検索をクリア"
+              >
+                ×
+              </button>
+            )}
+          </div>
         </div>
 
         {searchTerm && searchResults.length > 0 && (
