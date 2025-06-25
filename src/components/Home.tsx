@@ -371,7 +371,8 @@ const Home: React.FC<HomeProps> = ({
 
   return (
     <div className="home">
-      <div className="decorative-leaf"></div>
+      <div className="decorative-line line-horizontal" style={{ top: '80px' }}></div>
+      <div className="decorative-line line-horizontal" style={{ bottom: '80px' }}></div>
       <header className="home-header">
         <h1>AromaWise</h1>
         <p className="subtitle">あなたのアロマセラピーガイド</p>
@@ -502,12 +503,14 @@ const Home: React.FC<HomeProps> = ({
           <MedicalDisclaimer variant="banner" />
           
           <div className="info-card">
-            <h3>🌿 エッセンシャルオイルについて</h3>
-            <p>厳選された127種類のプレミアムエッセンシャルオイルの情報を検索できます。</p>
+            <h3>エッセンシャルオイル</h3>
+            <div className="divider" style={{ margin: '20px auto', width: '60px' }}></div>
+            <p>厳選された127種類の<br/>プレミアムオイル情報</p>
           </div>
           <div className="info-card">
-            <h3>🎯 パーソナライズ機能</h3>
-            <p>あなたの使用履歴と安全性プロファイルに基づいて、最適なオイル・レシピ・ブレンドを推奨します。</p>
+            <h3>パーソナライズ</h3>
+            <div className="divider" style={{ margin: '20px auto', width: '60px' }}></div>
+            <p>あなたに最適な<br/>オイルとレシピを提案</p>
           </div>
         </div>
       )}
