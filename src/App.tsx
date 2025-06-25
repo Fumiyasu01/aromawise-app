@@ -256,8 +256,11 @@ function AppInner() {
           <Navigation 
             currentScreen={currentScreen} 
             onScreenChange={(screen) => {
+              console.log('Navigation clicked:', screen);
               analytics.trackPageView(screen);
               setCurrentScreen(screen);
+              // ナビゲーション履歴を更新
+              setNavigationHistory(prev => [...prev, screen]);
             }} 
           />
         </ErrorBoundary>
