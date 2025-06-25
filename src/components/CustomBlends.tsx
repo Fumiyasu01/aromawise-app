@@ -332,6 +332,7 @@ const CustomBlends: React.FC = () => {
             setShowEditor(false);
             setEditingBlend(null);
           }}
+          filterByMyOils={true}
         />
       )}
     </div>

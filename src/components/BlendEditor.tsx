@@ -10,15 +10,17 @@ import { BlendCalculator } from '../utils/blendCalculator';
 import { oilsData } from '../data/oils';
 import { enhancedOilsData } from '../data/enhancedOils';
 import { EffectsAnalyzer } from './EffectsAnalyzer';
+import { MyOilsManager } from '../utils/myOilsManager';
 import './BlendEditor.css';
 
 interface BlendEditorProps {
   blend?: CustomBlend | null;
   onSave: (blend: CustomBlend) => void;
   onClose: () => void;
+  filterByMyOils?: boolean;
 }
 
-const BlendEditor: React.FC<BlendEditorProps> = ({ blend, onSave, onClose }) => {
+const BlendEditor: React.FC<BlendEditorProps> = ({ blend, onSave, onClose, filterByMyOils = false }) => {
   const [formData, setFormData] = useState<Partial<CustomBlend>>({
     name: '',
     description: '',
@@ -41,6 +43,13 @@ const BlendEditor: React.FC<BlendEditorProps> = ({ blend, onSave, onClose }) => 
   const [selectedNote, setSelectedNote] = useState<'top' | 'middle' | 'base'>('middle');
   const [errors, setErrors] = useState<string[]>([]);
   const [showCalculation, setShowCalculation] = useState(false);
+  const [onlyShowMyOils, setOnlyShowMyOils] = useState(filterByMyOils);
+
+  // マイオイルの取得
+  const myOilIds = MyOilsManager.getMyOils().map(mo => mo.oilId);
+  const availableOils = onlyShowMyOils 
+    ? oilsData.filter(oil => myOilIds.includes(oil.id))
+    : oilsData;
 
   useEffect(() => {
     if (blend) {
@@ -245,14 +254,30 @@ const BlendEditor: React.FC<BlendEditorProps> = ({ blend, onSave, onClose }) => 
           <div className="form-section">
             <h3>エッセンシャルオイル配合</h3>
             
+            {myOilIds.length > 0 && (
+              <div className="my-oils-filter">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={onlyShowMyOils}
+                    onChange={(e) => setOnlyShowMyOils(e.target.checked)}
+                  />
+                  <span>マイオイルのみ表示 ({myOilIds.length}種類)</span>
+                </label>
+              </div>
+            )}
+            
             <div className="ingredient-add">
               <select
                 value={selectedOil}
                 onChange={(e) => setSelectedOil(e.target.value)}
               >
                 <option value="">オイルを選択</option>
-                {oilsData.map(oil => (
-                  <option key={oil.id} value={oil.id}>{oil.name}</option>
+                {availableOils.map(oil => (
+                  <option key={oil.id} value={oil.id}>
+                    {oil.name}
+                    {onlyShowMyOils && myOilIds.includes(oil.id) && ' ✓'}
+                  </option>
                 ))}
               </select>
               

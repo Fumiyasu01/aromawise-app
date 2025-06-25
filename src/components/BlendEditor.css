@@ -197,6 +197,29 @@ body.dark-mode .form-group select {
   cursor: not-allowed;
 }
 
+/* マイオイルフィルター */
+.my-oils-filter {
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background: var(--elegant-bg-secondary, #F5F0E8);
+  border-radius: 8px;
+}
+
+.my-oils-filter label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--elegant-text-primary, #4A4A4A);
+}
+
+.my-oils-filter input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
 /* 材料リスト */
 .ingredients-list {
   background: #f5f5f5;

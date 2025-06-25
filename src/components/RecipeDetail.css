@@ -191,6 +191,36 @@
   font-weight: 500;
 }
 
+.additional-ingredients-info {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  margin-top: 15px;
+}
+
+.additional-ingredients-info h4 {
+  color: #2d5a3d;
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+}
+
+.additional-ingredients-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.additional-ingredients-list li {
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #333;
+  border: 1px solid #e8e8e8;
+}
+
 .instructions-list {
   counter-reset: step-counter;
   padding-left: 0;

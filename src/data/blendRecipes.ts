@@ -1,11 +1,228 @@
 import { BlendRecipe } from '../types/BlendRecipe';
 
 export const blendRecipes: BlendRecipe[] = [
-  // 虫よけスプレー
+  // ===== 日用品レシピ =====
+  // 柔軟剤
+  {
+    id: 'fabric-softener',
+    name: '天然柔軟剤',
+    category: '洗濯',
+    description: 'マイクロプラスチックフリーの環境に優しい柔軟剤です。お好みの香りでカスタマイズできます。',
+    oils: [
+      { oilId: 'lavender', oilName: 'Lavender', drops: 20 },
+      { oilId: 'lemon', oilName: 'Lemon', drops: 10 }
+    ],
+    carrier: {
+      type: 'クエン酸水',
+      amount: '500ml'
+    },
+    additionalIngredients: [
+      { name: 'クエン酸', amount: '大さじ2' },
+      { name: '精製水', amount: '500ml' }
+    ],
+    instructions: [
+      'ボトルに精製水500mlを入れます',
+      'クエン酸大さじ2を加えてよく溶かします',
+      'ラベンダーオイル20滴を加えます',
+      'レモンオイル10滴を加えます',
+      'よく振り混ぜて完成',
+      '洗濯機の柔軟剤投入口に50ml程度入れて使用'
+    ],
+    benefits: [
+      '衣類をふんわり仕上げる',
+      '静電気を防ぐ',
+      '自然な香り付け',
+      '環境に優しい'
+    ],
+    safetyNotes: [
+      '使用前によく振ってください',
+      '直射日光を避けて保管',
+      '作成後1ヶ月以内に使い切ってください'
+    ],
+    difficulty: 'easy',
+    prepTime: '10分',
+    usage: ['洗濯']
+  },
+  
+  // デオドラントスプレー
+  {
+    id: 'deodorant-spray',
+    name: 'ナチュラルデオドラントスプレー',
+    category: 'ボディケア',
+    description: '汗の匂いを抑え、爽やかな香りが持続する天然デオドラントです。',
+    oils: [
+      { oilId: 'tea-tree', oilName: 'Tea Tree', drops: 10 },
+      { oilId: 'peppermint', oilName: 'Peppermint', drops: 5 },
+      { oilId: 'lavender', oilName: 'Lavender', drops: 5 }
+    ],
+    carrier: {
+      type: '精製水',
+      amount: '100ml'
+    },
+    additionalIngredients: [
+      { name: '無水エタノール', amount: '20ml' },
+      { name: '精製水', amount: '80ml' }
+    ],
+    instructions: [
+      'スプレーボトルに無水エタノール20mlを入れます',
+      'ティーツリーオイル10滴を加えます',
+      'ペパーミントオイル5滴を加えます',
+      'ラベンダーオイル5滴を加えます',
+      '精製水80mlを加えます',
+      'よく振り混ぜて完成'
+    ],
+    benefits: [
+      '抗菌作用で匂いを防ぐ',
+      '清涼感のある使い心地',
+      '肌に優しい天然成分',
+      'リフレッシュ効果'
+    ],
+    safetyNotes: [
+      '肌に異常がある場合は使用を避けてください',
+      '目に入らないよう注意',
+      '敏感肌の方はパッチテストを行ってください'
+    ],
+    difficulty: 'easy',
+    prepTime: '5分',
+    usage: ['スプレー']
+  },
+
+  // ヘアオイル
+  {
+    id: 'hair-oil',
+    name: 'ナチュラルヘアオイル',
+    category: 'ボディケア',
+    description: '髪に艶とまとまりを与える、天然成分100%のヘアオイルです。',
+    oils: [
+      { oilId: 'rosemary', oilName: 'Rosemary', drops: 5 },
+      { oilId: 'ylang-ylang', oilName: 'Ylang Ylang', drops: 3 },
+      { oilId: 'lavender', oilName: 'Lavender', drops: 2 }
+    ],
+    carrier: {
+      type: 'ホホバオイル',
+      amount: '30ml'
+    },
+    additionalIngredients: [
+      { name: 'アルガンオイル', amount: '10ml' },
+      { name: 'ホホバオイル', amount: '20ml' }
+    ],
+    instructions: [
+      '遮光ボトルにホホバオイル20mlを入れます',
+      'アルガンオイル10mlを加えます',
+      'ローズマリーオイル5滴を加えます',
+      'イランイランオイル3滴を加えます',
+      'ラベンダーオイル2滴を加えます',
+      'よく振り混ぜて完成'
+    ],
+    benefits: [
+      '髪に艶を与える',
+      '頭皮の健康促進',
+      'くせ毛をまとめる',
+      'リラックス効果'
+    ],
+    safetyNotes: [
+      '頭皮に異常がある場合は使用を避けてください',
+      '妊娠中の方はローズマリーの使用に注意',
+      '少量から試してください'
+    ],
+    difficulty: 'easy',
+    prepTime: '5分',
+    usage: ['ヘアケア']
+  },
+
+  // マルチクリーナー
+  {
+    id: 'multi-cleaner',
+    name: '万能マルチクリーナー',
+    category: '掃除',
+    description: '家中どこでも使える、抗菌作用のある天然クリーナーです。',
+    oils: [
+      { oilId: 'tea-tree', oilName: 'Tea Tree', drops: 15 },
+      { oilId: 'lemon', oilName: 'Lemon', drops: 20 },
+      { oilId: 'eucalyptus', oilName: 'Eucalyptus', drops: 10 }
+    ],
+    carrier: {
+      type: '精製水',
+      amount: '400ml'
+    },
+    additionalIngredients: [
+      { name: '無水エタノール', amount: '50ml' },
+      { name: '精製水', amount: '350ml' },
+      { name: '重曹', amount: '大さじ1' }
+    ],
+    instructions: [
+      'スプレーボトルに無水エタノール50mlを入れます',
+      'ティーツリーオイル15滴を加えます',
+      'レモンオイル20滴を加えます',
+      'ユーカリオイル10滴を加えます',
+      '重曹大さじ1を加えてよく混ぜます',
+      '精製水350mlを加えてよく振ります'
+    ],
+    benefits: [
+      '強力な抗菌・除菌効果',
+      '油汚れに効果的',
+      '爽やかな香り',
+      '環境に優しい'
+    ],
+    safetyNotes: [
+      '大理石や天然石には使用しないでください',
+      '使用前によく振ってください',
+      '直射日光を避けて保管'
+    ],
+    difficulty: 'easy',
+    prepTime: '10分',
+    usage: ['掃除']
+  },
+
+  // バスボム
+  {
+    id: 'bath-bomb',
+    name: 'リラックスバスボム',
+    category: 'バス',
+    description: 'お風呂にポンと入れるだけで、スパのようなリラックスタイムを演出します。',
+    oils: [
+      { oilId: 'lavender', oilName: 'Lavender', drops: 10 },
+      { oilId: 'geranium', oilName: 'Geranium', drops: 5 },
+      { oilId: 'bergamot', oilName: 'Bergamot', drops: 5 }
+    ],
+    additionalIngredients: [
+      { name: '重曹', amount: '100g' },
+      { name: 'クエン酸', amount: '50g' },
+      { name: 'コーンスターチ', amount: '50g' },
+      { name: '塩', amount: '大さじ1' },
+      { name: '水', amount: '霧吹きで適量' }
+    ],
+    instructions: [
+      'ボウルに重曹100gを入れます',
+      'クエン酸50gを加えます',
+      'コーンスターチ50gを加えます',
+      '塩大さじ1を加えてよく混ぜます',
+      'エッセンシャルオイルを合計20滴加えます',
+      '霧吹きで水を少しずつ加えながら固めます',
+      '型に入れて1日乾燥させます'
+    ],
+    benefits: [
+      '深いリラクゼーション',
+      '肌をなめらかに',
+      '疲労回復',
+      'アロマテラピー効果'
+    ],
+    safetyNotes: [
+      '妊娠中の方は使用前に医師に相談',
+      '敏感肌の方は少量から試してください',
+      '湿気を避けて保管'
+    ],
+    difficulty: 'medium',
+    prepTime: '30分（乾燥時間除く）',
+    usage: ['入浴']
+  },
+
+  // ===== アロマケアレシピ =====
+  // 虫よけスプレー（日用品）
   {
     id: 'insect-repellent-spray',
     name: '天然虫よけスプレー',
-    category: '虫よけ',
+    category: '虫対策',
     description: '化学薬品を使わない、天然成分100%の虫よけスプレーです。',
     oils: [
       { oilId: 'lemon', oilName: 'Lemon', drops: 10 },

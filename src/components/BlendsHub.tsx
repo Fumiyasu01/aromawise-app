@@ -14,7 +14,7 @@ interface BlendsHubProps {
 }
 
 const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) => {
-  const [activeTab, setActiveTab] = useState<'recipes' | 'custom' | 'fragrance' | 'effects'>('recipes');
+  const [activeTab, setActiveTab] = useState<'recipes' | 'create'>('recipes');
 
   const myOils: Oil[] = []; // TODO: MyOilsManagerから取得
 
@@ -27,28 +27,14 @@ const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) 
           onClick={() => setActiveTab('recipes')}
         >
           <span className="tab-icon">📖</span>
-          <span className="tab-label">レシピ</span>
+          <span className="tab-label">レシピ集</span>
         </button>
         <button 
-          className={`tab-btn ${activeTab === 'custom' ? 'active' : ''}`}
-          onClick={() => setActiveTab('custom')}
+          className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
+          onClick={() => setActiveTab('create')}
         >
-          <span className="tab-icon">✨</span>
-          <span className="tab-label">カスタム</span>
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'fragrance' ? 'active' : ''}`}
-          onClick={() => setActiveTab('fragrance')}
-        >
-          <span className="tab-icon">🌸</span>
-          <span className="tab-label">香り</span>
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'effects' ? 'active' : ''}`}
-          onClick={() => setActiveTab('effects')}
-        >
-          <span className="tab-icon">🎯</span>
-          <span className="tab-label">効果</span>
+          <span className="tab-icon">🎨</span>
+          <span className="tab-label">ブレンド作成</span>
         </button>
       </div>
 
@@ -59,17 +45,8 @@ const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) 
             onRecipeSelect={onRecipeSelect}
           />
         )}
-        {activeTab === 'custom' && (
+        {activeTab === 'create' && (
           <CustomBlends />
-        )}
-        {activeTab === 'fragrance' && (
-          <FragranceBlends 
-            myOils={myOils}
-            onBlendSelect={onBlendSelect}
-          />
-        )}
-        {activeTab === 'effects' && (
-          <EffectsFinder />
         )}
       </div>
     </div>

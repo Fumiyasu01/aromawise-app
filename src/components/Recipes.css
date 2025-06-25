@@ -22,6 +22,54 @@
   font-size: 1rem;
 }
 
+.recipe-type-selector {
+  display: flex;
+  gap: 10px;
+  margin: 30px auto;
+  justify-content: center;
+}
+
+.type-btn {
+  background: var(--elegant-bg-secondary, #F5F0E8);
+  border: 1px solid var(--elegant-border, #E8DFD3);
+  color: var(--elegant-text-primary, #4A4A4A);
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  position: relative;
+}
+
+.type-btn:hover {
+  background: var(--elegant-bg-accent, #EBE5DC);
+  transform: translateY(-1px);
+}
+
+.type-btn.active {
+  background: var(--elegant-accent, #7A9A65);
+  color: white;
+  border-color: var(--elegant-accent, #7A9A65);
+}
+
+.type-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background: var(--elegant-accent, #7A9A65);
+}
+
+.type-icon {
+  font-size: 1.2rem;
+}
+
 .category-filters {
   display: flex;
   flex-wrap: wrap;

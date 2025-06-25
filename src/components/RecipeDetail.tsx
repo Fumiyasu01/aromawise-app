@@ -171,6 +171,19 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe, myOils, onBack }) =
             <p>{recipe.carrier.type} {recipe.carrier.amount}</p>
           </div>
         )}
+        
+        {recipe.additionalIngredients && recipe.additionalIngredients.length > 0 && (
+          <div className="additional-ingredients-info">
+            <h4>その他の材料:</h4>
+            <ul className="additional-ingredients-list">
+              {recipe.additionalIngredients.map((ingredient, index) => (
+                <li key={index}>
+                  {ingredient.name} - {ingredient.amount}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="recipe-instructions-section">

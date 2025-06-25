@@ -11,8 +11,9 @@ interface RecipesProps {
 
 const Recipes: React.FC<RecipesProps> = ({ myOils, onRecipeSelect }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [recipeType, setRecipeType] = useState<'therapy' | 'daily'>('therapy');
 
-  const categories = [
+  const therapyCategories = [
     { id: 'all', label: 'すべて', icon: '🧪' },
     { id: '虫よけ', label: '虫よけ', icon: '🦟' },
     { id: '安眠', label: '安眠', icon: '😴' },
@@ -22,9 +23,29 @@ const Recipes: React.FC<RecipesProps> = ({ myOils, onRecipeSelect }) => {
     { id: '気分転換', label: '気分転換', icon: '✨' }
   ];
 
+  const dailyCategories = [
+    { id: 'all', label: 'すべて', icon: '🏠' },
+    { id: '洗濯', label: '洗濯', icon: '🧺' },
+    { id: '掃除', label: '掃除', icon: '🧹' },
+    { id: 'ボディケア', label: 'ボディケア', icon: '💆' },
+    { id: '虫対策', label: '虫対策', icon: '🦟' },
+    { id: 'バス', label: 'バス', icon: '🛁' },
+    { id: 'その他', label: 'その他', icon: '✨' }
+  ];
+
+  const categories = recipeType === 'therapy' ? therapyCategories : dailyCategories;
+
+  const typeFilteredRecipes = blendRecipes.filter(recipe => {
+    if (recipeType === 'therapy') {
+      return !['洗濯', '掃除', 'ボディケア', '虫対策', 'バス', 'その他'].includes(recipe.category);
+    } else {
+      return ['洗濯', '掃除', 'ボディケア', '虫対策', 'バス', 'その他', '虫よけ'].includes(recipe.category);
+    }
+  });
+
   const filteredRecipes = selectedCategory === 'all' 
-    ? blendRecipes 
-    : blendRecipes.filter(recipe => recipe.category === selectedCategory);
+    ? typeFilteredRecipes 
+    : typeFilteredRecipes.filter(recipe => recipe.category === selectedCategory);
 
   const checkCanMake = (recipe: BlendRecipe) => {
     return recipe.oils.every(recipeOil => 
@@ -56,6 +77,29 @@ const Recipes: React.FC<RecipesProps> = ({ myOils, onRecipeSelect }) => {
         <h1>🧪 ブレンドレシピ</h1>
         <p>アロマを組み合わせて新しい効能を生み出そう</p>
       </header>
+
+      <div className="recipe-type-selector">
+        <button
+          className={`type-btn ${recipeType === 'therapy' ? 'active' : ''}`}
+          onClick={() => {
+            setRecipeType('therapy');
+            setSelectedCategory('all');
+          }}
+        >
+          <span className="type-icon">🌿</span>
+          アロマブレンド
+        </button>
+        <button
+          className={`type-btn ${recipeType === 'daily' ? 'active' : ''}`}
+          onClick={() => {
+            setRecipeType('daily');
+            setSelectedCategory('all');
+          }}
+        >
+          <span className="type-icon">🏠</span>
+          日用品レシピ
+        </button>
+      </div>
 
       <div className="category-filters">
         {categories.map(category => (
