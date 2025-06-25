@@ -64,6 +64,24 @@ function AppInner() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentScreen]);
+  
+  // カスタムイベントリスナー（ナビゲーションの代替）
+  useEffect(() => {
+    const handleNavigateTo = (event: CustomEvent) => {
+      const screen = event.detail as Screen;
+      console.log('Custom navigation event received:', screen);
+      if (['home', 'oils', 'blends', 'guide', 'settings'].includes(screen)) {
+        setCurrentScreen(screen);
+        analytics.trackPageView(screen);
+      }
+    };
+    
+    window.addEventListener('navigate-to', handleNavigateTo as EventListener);
+    
+    return () => {
+      window.removeEventListener('navigate-to', handleNavigateTo as EventListener);
+    };
+  }, []);
 
   // サーベイ表示チェック
   useEffect(() => {
@@ -165,6 +183,7 @@ function AppInner() {
             myOils={[]} // TODO: MyOilsManagerから取得
             homeState={homeState}
             onHomeStateChange={setHomeState}
+            onScreenChange={setCurrentScreen}
           />
         );
       case 'oils':
@@ -205,6 +224,7 @@ function AppInner() {
             myOils={[]} // TODO: MyOilsManagerから取得
             homeState={homeState}
             onHomeStateChange={setHomeState}
+            onScreenChange={setCurrentScreen}
           />
         );
     }

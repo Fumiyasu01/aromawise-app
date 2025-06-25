@@ -27,6 +27,7 @@ interface HomeProps {
     selectedSymptoms: SymptomCategory[];
     currentRecommendations: RecommendationResult | null;
   }) => void;
+  onScreenChange?: (screen: string) => void; // 追加
 }
 
 const Home: React.FC<HomeProps> = ({ 
@@ -35,7 +36,8 @@ const Home: React.FC<HomeProps> = ({
   onBlendSelect, 
   myOils = [],
   homeState,
-  onHomeStateChange
+  onHomeStateChange,
+  onScreenChange
 }) => {
   const [currentRecommendations, setCurrentRecommendations] = useState<RecommendationResult | null>(homeState?.currentRecommendations || null);
   const [selectedSymptoms, setSelectedSymptoms] = useState<SymptomCategory[]>(homeState?.selectedSymptoms || []);
@@ -498,6 +500,72 @@ const Home: React.FC<HomeProps> = ({
           </div>
         </div>
       )}
+      
+      {/* クイックアクセスボタン（ナビゲーションの代替） */}
+      <div className="quick-access-section">
+        <h3>メニュー</h3>
+        <div className="quick-access-grid">
+          <button 
+            className="quick-access-btn oils"
+            onClick={() => {
+              console.log('Quick access to oils');
+              if (onScreenChange) {
+                onScreenChange('oils');
+              } else {
+                window.dispatchEvent(new CustomEvent('navigate-to', { detail: 'oils' }));
+              }
+            }}
+          >
+            <span className="quick-icon">🌿</span>
+            <span className="quick-label">オイル一覧</span>
+          </button>
+          
+          <button 
+            className="quick-access-btn blends"
+            onClick={() => {
+              console.log('Quick access to blends');
+              if (onScreenChange) {
+                onScreenChange('blends');
+              } else {
+                window.dispatchEvent(new CustomEvent('navigate-to', { detail: 'blends' }));
+              }
+            }}
+          >
+            <span className="quick-icon">🧪</span>
+            <span className="quick-label">ブレンド</span>
+          </button>
+          
+          <button 
+            className="quick-access-btn guide"
+            onClick={() => {
+              console.log('Quick access to guide');
+              if (onScreenChange) {
+                onScreenChange('guide');
+              } else {
+                window.dispatchEvent(new CustomEvent('navigate-to', { detail: 'guide' }));
+              }
+            }}
+          >
+            <span className="quick-icon">📖</span>
+            <span className="quick-label">ガイド</span>
+          </button>
+          
+          <button 
+            className="quick-access-btn settings"
+            onClick={() => {
+              console.log('Quick access to settings');
+              if (onScreenChange) {
+                onScreenChange('settings');
+              } else {
+                window.dispatchEvent(new CustomEvent('navigate-to', { detail: 'settings' }));
+              }
+            }}
+          >
+            <span className="quick-icon">⚙️</span>
+            <span className="quick-label">設定</span>
+          </button>
+        </div>
+      </div>
       
     </div>
   );
