@@ -20,10 +20,6 @@ const BlendsHub: React.FC<BlendsHubProps> = ({ onRecipeSelect, onBlendSelect }) 
 
   return (
     <div className="blends-hub">
-      <div className="blends-hub-header">
-        <h1>ブレンドレシピ</h1>
-        <p>お気に入りのブレンドを見つけて、オリジナルレシピを作成</p>
-      </div>
 
       <div className="blends-tabs">
         <button 
