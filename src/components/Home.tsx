@@ -610,11 +610,6 @@ const Home: React.FC<HomeProps> = ({
             )}
           </div>
         </div>
-                ×
-              </button>
-            )}
-          </div>
-        </div>
 
         {searchTerm && searchResults.length > 0 && (
           <div className="search-results">
