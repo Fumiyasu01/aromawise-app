@@ -371,9 +371,10 @@ const Home: React.FC<HomeProps> = ({
 
   return (
     <div className="home">
+      <div className="decorative-leaf"></div>
       <header className="home-header">
         <h1>AromaWise</h1>
-        <p>スマートアロマガイド</p>
+        <p className="subtitle">あなたのアロマセラピーガイド</p>
       </header>
 
       <div className="search-section">
