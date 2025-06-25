@@ -16,6 +16,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }
   ];
 
   console.log('Navigation rendered with currentScreen:', currentScreen);
+  
+  // Debug: Check if onScreenChange is properly passed
+  React.useEffect(() => {
+    console.log('Navigation mounted, onScreenChange function:', typeof onScreenChange);
+  }, []);
 
   return (
     <nav className="navigation">

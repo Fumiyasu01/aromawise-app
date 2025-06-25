@@ -49,7 +49,7 @@ body::before {
   height: 100%;
   overflow: hidden;
   pointer-events: none;
-  z-index: 1;
+  z-index: -1; /* Behind everything */
 }
 
 .decorative-circles::before {
