@@ -10,6 +10,8 @@ import { RecipeSafetyEvaluator } from '../utils/recipeSafety';
 import { UserPreferenceManager } from '../utils/userPreferences';
 import { analytics } from '../utils/analytics';
 import MedicalDisclaimer from './MedicalDisclaimer';
+import { getDailyOil, generateDailyStory, DailyOilStory } from '../data/dailyOilStories';
+import { OilUsageTracker, OilUsageRecord, UsageStats } from '../utils/oilUsageTracker';
 import './Home.css';
 
 interface HomeProps {
@@ -41,6 +43,14 @@ const Home: React.FC<HomeProps> = ({
   const [searchResults, setSearchResults] = useState<Oil[]>([]);
   const [currentRecommendations, setCurrentRecommendations] = useState<RecommendationResult | null>(homeState?.currentRecommendations || null);
   const [selectedSymptoms, setSelectedSymptoms] = useState<SymptomCategory[]>(homeState?.selectedSymptoms || []);
+  
+  // 新しいステート
+  const [todayStory, setTodayStory] = useState<DailyOilStory | null>(null);
+  const [todayOil, setTodayOil] = useState<Oil | null>(null);
+  const [usageRecord, setUsageRecord] = useState<OilUsageRecord | null>(null);
+  const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [showNoteModal, setShowNoteModal] = useState(false);
 
   // 検索ロジックを関数として定義
   const performSearch = (term: string): Oil[] => {
@@ -74,6 +84,53 @@ const Home: React.FC<HomeProps> = ({
       setSearchResults(results);
     }
   }, []); // 初回マウント時のみ実行
+  
+  // 今日のオイルストーリーを読み込む
+  useEffect(() => {
+    const today = new Date();
+    const todayStr = formatDate(today);
+    
+    // 今日のオイルを取得
+    const dailyOilId = getDailyOil(today);
+    const oil = oilsData.find(o => o.id === dailyOilId);
+    
+    if (oil) {
+      setTodayOil(oil);
+      
+      // ストーリーを生成
+      const story = generateDailyStory(dailyOilId, today);
+      setTodayStory(story);
+      
+      // 既存の使用記録を取得
+      const existingRecord = OilUsageTracker.getRecordByDate(todayStr);
+      if (existingRecord) {
+        setUsageRecord(existingRecord);
+      } else {
+        // 新しいレコードを作成
+        const newRecord: OilUsageRecord = {
+          oilId: dailyOilId,
+          date: todayStr,
+          missions: story.missions.map(m => ({
+            missionId: m.id,
+            completed: false
+          }))
+        };
+        setUsageRecord(newRecord);
+        OilUsageTracker.recordUsage(newRecord);
+      }
+    }
+    
+    // 統計情報を取得
+    const stats = OilUsageTracker.getStats();
+    setUsageStats(stats);
+  }, []);
+  
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const getCategoryName = (category: string) => {
     const names: Record<string, string> = {
@@ -315,6 +372,31 @@ const Home: React.FC<HomeProps> = ({
     setCurrentRecommendations(recommendations);
     updateHomeState({ currentRecommendations: recommendations });
   };
+  
+  // ミッション完了のハンドラー
+  const handleMissionToggle = (missionId: string) => {
+    if (!usageRecord || !todayStory) return;
+    
+    const mission = usageRecord.missions.find(m => m.missionId === missionId);
+    if (mission) {
+      const newCompleted = !mission.completed;
+      OilUsageTracker.updateMissionStatus(usageRecord.date, missionId, newCompleted);
+      
+      // ローカルステートを更新
+      setUsageRecord({
+        ...usageRecord,
+        missions: usageRecord.missions.map(m =>
+          m.missionId === missionId
+            ? { ...m, completed: newCompleted, completedAt: newCompleted ? new Date().toISOString() : undefined }
+            : m
+        )
+      });
+      
+      // 統計情報を更新
+      const stats = OilUsageTracker.getStats();
+      setUsageStats(stats);
+    }
+  };
 
   const renderRecommendationCard = (rec: RecommendationScore) => {
     if (rec.itemType === 'oil') {
@@ -386,20 +468,133 @@ const Home: React.FC<HomeProps> = ({
   };
 
   return (
-    <div className="home">
-      <div className="decorative-line line-horizontal" style={{ top: '80px' }}></div>
-      <div className="decorative-line line-horizontal" style={{ bottom: '80px' }}></div>
-      <header className="home-header">
-        <h1>AromaWise</h1>
-        <p className="subtitle">あなたのアロマセラピーガイド</p>
-      </header>
-
-      <div className="search-section">
+    <div className="home daily-oil-home">
+      {todayOil && todayStory && (
+        <div 
+          className="daily-oil-section"
+          style={{
+            background: `linear-gradient(180deg, ${todayStory.visualTheme.secondaryColor} 0%, #FFFFFF 100%)`
+          }}
+        >
+          {/* ヘッダー部分 */}
+          <div className="daily-header">
+            <div className="date-display">
+              <span className="date-day">{new Date().getDate()}</span>
+              <span className="date-month">{new Date().toLocaleDateString('ja-JP', { month: 'long' })}</span>
+            </div>
+            <div className="streak-display">
+              <span className="streak-icon">🔥</span>
+              <span className="streak-number">{usageStats?.currentStreak || 0}</span>
+              <span className="streak-label">日連続</span>
+            </div>
+          </div>
+          
+          {/* 今日のオイル */}
+          <div className="today-oil-showcase">
+            <h2 className="today-label">今日のアロマ</h2>
+            <div 
+              className="oil-visual"
+              style={{ borderColor: todayStory.visualTheme.primaryColor }}
+              onClick={() => onOilSelect(todayOil)}
+            >
+              <div className="oil-bottle">🌿</div>
+              <h1 className="oil-name">{todayOil.name}</h1>
+              <p className="oil-category">{getCategoryName(todayOil.category)}</p>
+            </div>
+            
+            {/* ストーリー */}
+            <div className="oil-story">
+              <p>{todayStory.story}</p>
+              <p className="affirmation">"{todayStory.affirmation}"</p>
+            </div>
+          </div>
+          
+          {/* デイリーミッション */}
+          <div className="daily-missions">
+            <h3><span className="mission-icon">💫</span> 今日のミッション</h3>
+            <div className="missions-list">
+              {todayStory.missions.map((mission, index) => {
+                const missionRecord = usageRecord?.missions.find(m => m.missionId === mission.id);
+                const isCompleted = missionRecord?.completed || false;
+                
+                return (
+                  <div 
+                    key={mission.id}
+                    className={`mission-item ${isCompleted ? 'completed' : ''} ${mission.timing}`}
+                    onClick={() => handleMissionToggle(mission.id)}
+                  >
+                    <input 
+                      type="checkbox" 
+                      checked={isCompleted}
+                      onChange={() => {}}
+                      className="mission-checkbox"
+                    />
+                    <div className="mission-content">
+                      <span className="mission-timing">
+                        {mission.timing === 'morning' ? '朝' : 
+                         mission.timing === 'afternoon' ? '午後' : '夜'}
+                      </span>
+                      <span className="mission-description">{mission.description}</span>
+                    </div>
+                    {isCompleted && <span className="mission-check">✓</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* 今日のレシピ */}
+          <div className="daily-recipe">
+            <h3><span className="recipe-icon">🎁</span> 今日のレシピ</h3>
+            <div 
+              className="recipe-card"
+              style={{ borderColor: todayStory.visualTheme.primaryColor }}
+            >
+              <h4>{todayStory.recipe.name}</h4>
+              <p>{todayStory.recipe.description}</p>
+              <div className="recipe-oils">
+                {todayStory.recipe.oils.map((oil, index) => (
+                  <span key={index} className="recipe-oil">
+                    {oil.oilId} {oil.drops}滴
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* 豆知識 */}
+          <div className="oil-trivia">
+            <h3><span className="trivia-icon">📖</span> 豆知識</h3>
+            <p>{todayStory.trivia}</p>
+          </div>
+          
+          {/* コレクション進捗 */}
+          <div className="collection-progress">
+            <h3><span className="collection-icon">🏆</span> コレクション</h3>
+            <div className="progress-bar">
+              <div 
+                className="progress-fill"
+                style={{ 
+                  width: `${(usageStats ? (OilUsageTracker.getCollectionProgress().percentage) : 0)}%`,
+                  backgroundColor: todayStory.visualTheme.primaryColor
+                }}
+              />
+            </div>
+            <p className="progress-text">
+              {OilUsageTracker.getCollectionProgress().used} / {OilUsageTracker.getCollectionProgress().total} 種類
+            </p>
+          </div>
+        </div>
+      )}
+      
+      {/* 従来の検索機能（下部に配置） */}
+      <div className="search-section compact">
+        <h3>オイルを検索</h3>
         <div className="search-box">
           <div className="search-input-wrapper">
             <input
               type="text"
-              placeholder="症状や気になることを入力してください"
+              placeholder="症状や気になることを入力"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
               className="search-input"
@@ -410,6 +605,11 @@ const Home: React.FC<HomeProps> = ({
                 onClick={() => handleSearch('')}
                 aria-label="検索をクリア"
               >
+                ×
+              </button>
+            )}
+          </div>
+        </div>
                 ×
               </button>
             )}
@@ -449,98 +649,6 @@ const Home: React.FC<HomeProps> = ({
           </div>
         )}
       </div>
-
-      {!searchTerm && (
-        <div className="recommendations-section">
-          <h3>🎯 あなたへのおすすめ</h3>
-          
-          <div className="symptom-selector">
-            <h4>気になる症状を選択してください</h4>
-            <div className="symptom-tags">
-              {popularSymptoms.map((item, index) => (
-                <button
-                  key={index}
-                  className={`symptom-tag ${selectedSymptoms.includes(item.symptom) ? 'selected' : ''}`}
-                  onClick={() => handleSymptomSelect(item.symptom)}
-                >
-                  <span className="symptom-icon">{item.icon}</span>
-                  {item.nameJa}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {currentRecommendations && (
-            <div className="recommendation-results">
-              <div className="current-context">
-                <div className="context-item">
-                  <span className="context-icon">🕐</span>
-                  <div className="context-info">
-                    <span className="context-label">現在の時間帯</span>
-                    <span className="context-value">{getTimeOfDayLabel(RecommendationEngine.getCurrentTimeOfDay())}</span>
-                  </div>
-                </div>
-                <div className="context-item">
-                  <span className="context-icon">🍂</span>
-                  <div className="context-info">
-                    <span className="context-label">季節</span>
-                    <span className="context-value">{getSeasonLabel(RecommendationEngine.getCurrentSeason())}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="rec-confidence">
-                <span>推奨度: {currentRecommendations.confidence}%</span>
-                <span className="rec-reason">{currentRecommendations.primaryReason}</span>
-              </div>
-              
-              {currentRecommendations.oils.length > 0 && (
-                <div className="rec-section">
-                  <h4>🌿 おすすめオイル</h4>
-                  <div className="recommendation-cards">
-                    {currentRecommendations.oils.slice(0, 3).map(renderRecommendationCard)}
-                  </div>
-                </div>
-              )}
-              
-              {currentRecommendations.recipes.length > 0 && onRecipeSelect && (
-                <div className="rec-section">
-                  <h4>📝 おすすめレシピ</h4>
-                  <div className="recommendation-cards">
-                    {currentRecommendations.recipes.slice(0, 3).map(renderRecommendationCard)}
-                  </div>
-                </div>
-              )}
-              
-              {currentRecommendations.blends.length > 0 && onBlendSelect && (
-                <div className="rec-section">
-                  <h4>🌸 おすすめブレンド</h4>
-                  <div className="recommendation-cards">
-                    {currentRecommendations.blends.slice(0, 3).map(renderRecommendationCard)}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {!searchTerm && (
-        <div className="info-section">
-          <MedicalDisclaimer variant="banner" />
-          
-          <div className="info-card">
-            <h3>エッセンシャルオイル</h3>
-            <div className="divider" style={{ margin: '20px auto', width: '60px' }}></div>
-            <p>厳選された127種類の<br/>プレミアムオイル情報</p>
-          </div>
-          <div className="info-card">
-            <h3>パーソナライズ</h3>
-            <div className="divider" style={{ margin: '20px auto', width: '60px' }}></div>
-            <p>あなたに最適な<br/>オイルとレシピを提案</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

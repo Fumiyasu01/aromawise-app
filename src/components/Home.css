@@ -1,3 +1,6 @@
+/* デイリーオイルホーム画面のスタイル */
+@import './Home-daily.css';
+
 .home {
   padding: 20px;
   padding-bottom: 80px;

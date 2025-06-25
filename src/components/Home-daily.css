@@ -1,0 +1,534 @@
+/* 今日のアロマ物語型ホーム画面 */
+.daily-oil-home {
+  padding: 0;
+  padding-bottom: 80px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.daily-oil-section {
+  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ヘッダー部分 */
+.daily-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.date-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.date-day {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--elegant-text-primary, #4A4A4A);
+  line-height: 1;
+}
+
+.date-month {
+  font-size: 0.9rem;
+  color: var(--elegant-text-secondary, #7A6F65);
+  margin-top: 4px;
+}
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.streak-icon {
+  font-size: 1.5rem;
+}
+
+.streak-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FF6B6B;
+}
+
+.streak-label {
+  font-size: 0.9rem;
+  color: var(--elegant-text-secondary, #7A6F65);
+}
+
+/* 今日のオイル表示 */
+.today-oil-showcase {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.today-label {
+  font-size: 1.2rem;
+  color: var(--elegant-text-secondary, #7A6F65);
+  font-family: var(--font-serif-italic, 'Crimson Text', serif);
+  font-style: italic;
+  margin-bottom: 20px;
+  letter-spacing: 0.1em;
+}
+
+.oil-visual {
+  background: white;
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 3px solid;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.oil-visual:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.oil-visual::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.oil-visual:hover::before {
+  opacity: 1;
+}
+
+.oil-bottle {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.oil-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--elegant-text-primary, #4A4A4A);
+  margin: 0;
+  font-family: var(--font-serif, 'Noto Serif JP', serif);
+}
+
+.oil-category {
+  font-size: 0.9rem;
+  color: var(--elegant-text-secondary, #7A6F65);
+  margin: 5px 0 0;
+}
+
+/* ストーリー部分 */
+.oil-story {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.oil-story p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--elegant-text-primary, #4A4A4A);
+  margin-bottom: 20px;
+  font-family: var(--font-mincho, 'Noto Serif JP', serif);
+}
+
+.affirmation {
+  font-style: italic;
+  color: var(--elegant-accent, #7A9A65);
+  font-size: 1.2rem;
+  font-family: var(--font-serif-italic, 'Crimson Text', serif);
+  position: relative;
+  padding: 20px 40px;
+}
+
+.affirmation::before,
+.affirmation::after {
+  content: '"';
+  font-size: 2rem;
+  opacity: 0.3;
+  position: absolute;
+}
+
+.affirmation::before {
+  top: 10px;
+  left: 10px;
+}
+
+.affirmation::after {
+  bottom: 10px;
+  right: 10px;
+}
+
+/* デイリーミッション */
+.daily-missions {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.daily-missions h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--elegant-text-primary, #4A4A4A);
+  font-size: 1.3rem;
+  margin: 0 0 20px 0;
+}
+
+.mission-icon {
+  font-size: 1.5rem;
+}
+
+.missions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mission-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: var(--elegant-bg-secondary, #F5F0E8);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.mission-item:hover {
+  background: var(--elegant-bg-accent, #EBE5DC);
+  transform: translateX(5px);
+}
+
+.mission-item.completed {
+  background: #E8F5E8;
+  opacity: 0.8;
+}
+
+.mission-checkbox {
+  width: 22px;
+  height: 22px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.mission-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mission-timing {
+  font-size: 0.8rem;
+  color: var(--elegant-text-secondary, #7A6F65);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mission-timing::before {
+  content: '● ';
+  color: #FFB74D;
+}
+
+.mission-item.morning .mission-timing::before {
+  color: #FFD93D;
+}
+
+.mission-item.afternoon .mission-timing::before {
+  color: #4ECDC4;
+}
+
+.mission-item.evening .mission-timing::before {
+  color: #9B7EDE;
+}
+
+.mission-description {
+  font-size: 1rem;
+  color: var(--elegant-text-primary, #4A4A4A);
+}
+
+.mission-check {
+  position: absolute;
+  right: 15px;
+  font-size: 1.5rem;
+  color: #4CAF50;
+  animation: checkAppear 0.3s ease;
+}
+
+@keyframes checkAppear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 今日のレシピ */
+.daily-recipe {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.daily-recipe h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--elegant-text-primary, #4A4A4A);
+  font-size: 1.3rem;
+  margin: 0 0 20px 0;
+}
+
+.recipe-icon {
+  font-size: 1.5rem;
+}
+
+.recipe-card {
+  background: var(--elegant-bg-light, #FDFCFB);
+  border-radius: 15px;
+  padding: 20px;
+  border: 2px solid;
+}
+
+.recipe-card h4 {
+  font-size: 1.2rem;
+  color: var(--elegant-text-primary, #4A4A4A);
+  margin: 0 0 10px 0;
+}
+
+.recipe-card p {
+  color: var(--elegant-text-secondary, #7A6F65);
+  font-size: 0.9rem;
+  margin: 0 0 15px 0;
+}
+
+.recipe-oils {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recipe-oil {
+  background: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--elegant-text-primary, #4A4A4A);
+  border: 1px solid var(--elegant-border, #E8DFD3);
+}
+
+/* 豆知識 */
+.oil-trivia {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.oil-trivia h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--elegant-text-primary, #4A4A4A);
+  font-size: 1.3rem;
+  margin: 0 0 15px 0;
+}
+
+.trivia-icon {
+  font-size: 1.5rem;
+}
+
+.oil-trivia p {
+  color: var(--elegant-text-primary, #4A4A4A);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* コレクション進捗 */
+.collection-progress {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.collection-progress h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--elegant-text-primary, #4A4A4A);
+  font-size: 1.3rem;
+  margin: 0 0 20px 0;
+}
+
+.collection-icon {
+  font-size: 1.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: var(--elegant-bg-secondary, #F5F0E8);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 30px 30px;
+  animation: progressStripes 1s linear infinite;
+}
+
+@keyframes progressStripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 30px 0;
+  }
+}
+
+.progress-text {
+  text-align: center;
+  color: var(--elegant-text-secondary, #7A6F65);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* コンパクトな検索セクション */
+.search-section.compact {
+  background: white;
+  padding: 30px 20px;
+  border-top: 1px solid var(--elegant-border, #E8DFD3);
+}
+
+.search-section.compact h3 {
+  text-align: center;
+  color: var(--elegant-text-primary, #4A4A4A);
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.search-section.compact .search-box {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .daily-oil-section {
+    padding: 15px;
+  }
+  
+  .oil-visual {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .oil-bottle {
+    font-size: 3rem;
+  }
+  
+  .oil-name {
+    font-size: 1.5rem;
+  }
+  
+  .affirmation {
+    font-size: 1.1rem;
+    padding: 15px 30px;
+  }
+  
+  .daily-missions,
+  .daily-recipe,
+  .oil-trivia,
+  .collection-progress {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .oil-visual {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .oil-story p {
+    font-size: 1rem;
+  }
+  
+  .mission-item {
+    padding: 12px;
+  }
+  
+  .mission-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+  }
+}

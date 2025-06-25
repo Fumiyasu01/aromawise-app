@@ -95,7 +95,7 @@ export const blendRecipes: BlendRecipe[] = [
     description: '髪に艶とまとまりを与える、天然成分100%のヘアオイルです。',
     oils: [
       { oilId: 'rosemary', oilName: 'Rosemary', drops: 5 },
-      { oilId: 'ylang-ylang', oilName: 'Ylang Ylang', drops: 3 },
+      { oilId: 'ylang_ylang', oilName: 'Ylang Ylang', drops: 3 },
       { oilId: 'lavender', oilName: 'Lavender', drops: 2 }
     ],
     carrier: {
