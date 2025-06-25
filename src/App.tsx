@@ -58,8 +58,7 @@ function AppInner() {
   const [homeState, setHomeState] = useState<{
     selectedSymptoms: SymptomCategory[];
     currentRecommendations: RecommendationResult | null;
-    searchTerm: string;
-  }>({ selectedSymptoms: [], currentRecommendations: null, searchTerm: '' });
+  }>({ selectedSymptoms: [], currentRecommendations: null });
 
   // ページ遷移時に一番上にスクロール
   useEffect(() => {
@@ -257,10 +256,16 @@ function AppInner() {
             currentScreen={currentScreen} 
             onScreenChange={(screen) => {
               console.log('Navigation clicked:', screen);
-              analytics.trackPageView(screen);
-              setCurrentScreen(screen);
-              // ナビゲーション履歴を更新
-              setNavigationHistory(prev => [...prev, screen]);
+              // ナビゲーション可能な画面のみ処理
+              const validScreens: Screen[] = ['home', 'oils', 'blends', 'guide', 'settings'];
+              if (validScreens.includes(screen as Screen)) {
+                analytics.trackPageView(screen);
+                setCurrentScreen(screen as Screen);
+                // ナビゲーション履歴を更新
+                setNavigationHistory(prev => [...prev, screen as Screen]);
+              } else {
+                console.error('Invalid screen:', screen);
+              }
             }} 
           />
         </ErrorBoundary>

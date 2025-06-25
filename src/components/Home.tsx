@@ -22,12 +22,10 @@ interface HomeProps {
   homeState?: {
     selectedSymptoms: SymptomCategory[];
     currentRecommendations: RecommendationResult | null;
-    searchTerm: string;
   };
   onHomeStateChange?: (state: {
     selectedSymptoms: SymptomCategory[];
     currentRecommendations: RecommendationResult | null;
-    searchTerm: string;
   }) => void;
 }
 
@@ -39,8 +37,6 @@ const Home: React.FC<HomeProps> = ({
   homeState,
   onHomeStateChange
 }) => {
-  const [searchTerm, setSearchTerm] = useState(homeState?.searchTerm || '');
-  const [searchResults, setSearchResults] = useState<Oil[]>([]);
   const [currentRecommendations, setCurrentRecommendations] = useState<RecommendationResult | null>(homeState?.currentRecommendations || null);
   const [selectedSymptoms, setSelectedSymptoms] = useState<SymptomCategory[]>(homeState?.selectedSymptoms || []);
   
@@ -52,38 +48,6 @@ const Home: React.FC<HomeProps> = ({
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [showNoteModal, setShowNoteModal] = useState(false);
 
-  // 検索ロジックを関数として定義
-  const performSearch = (term: string): Oil[] => {
-    if (!term.trim()) return [];
-    
-    const searchTerms = expandSearchTerms(term.trim());
-    
-    return oilsData.filter(oil => 
-      searchTerms.some(searchTerm => {
-        const lowerSearchTerm = searchTerm.toLowerCase();
-        return (
-          oil.symptoms.some(symptom => 
-            symptom.toLowerCase().includes(lowerSearchTerm)
-          ) ||
-          oil.benefits.some(benefit => 
-            benefit.toLowerCase().includes(lowerSearchTerm)
-          ) ||
-          oil.name.toLowerCase().includes(lowerSearchTerm) ||
-          oil.aroma.toLowerCase().includes(lowerSearchTerm) ||
-          oil.description.toLowerCase().includes(lowerSearchTerm) ||
-          getCategoryName(oil.category).toLowerCase().includes(lowerSearchTerm)
-        );
-      })
-    );
-  };
-
-  // homeStateから復帰した時に検索を再実行
-  useEffect(() => {
-    if (homeState?.searchTerm && homeState.searchTerm.trim()) {
-      const results = performSearch(homeState.searchTerm);
-      setSearchResults(results);
-    }
-  }, []); // 初回マウント時のみ実行
   
   // 今日のオイルストーリーを読み込む
   useEffect(() => {
@@ -143,69 +107,17 @@ const Home: React.FC<HomeProps> = ({
     return names[category] || category;
   };
 
-  const expandSearchTerms = (term: string): string[] => {
-    const synonyms: Record<string, string[]> = {
-      '頭痛': ['頭が痛い', '頭の痛み', 'ずつう'],
-      '不眠': ['眠れない', '寝付けない', '寝れない', '睡眠不足'],
-      'ストレス': ['イライラ', 'いらいら', '緊張', 'プレッシャー'],
-      '疲労': ['疲れ', 'つかれ', 'だるい', 'やる気がない', '元気がない'],
-      '不安': ['心配', '不安感', 'あんしん'],
-      '消化不良': ['胃もたれ', 'お腹の調子', '胃腸', '消化'],
-      '筋肉痛': ['筋肉の痛み', '体が痛い', '肩こり'],
-      '集中力': ['集中', '集中できない', '注意力'],
-      '免疫': ['免疫力', '体調', '風邪'],
-      '肌荒れ': ['肌トラブル', '肌の調子', '美肌'],
-      'リラックス': ['リラクゼーション', 'くつろぎ', '癒し'],
-      '気分': ['気持ち', 'きぶん', 'メンタル'],
-      '香り': ['匂い', 'におい', 'かおり', 'アロマ']
-    };
-
-    const expandedTerms = [term];
-    const lowerTerm = term.toLowerCase();
-    
-    Object.entries(synonyms).forEach(([key, values]) => {
-      if (key.toLowerCase().includes(lowerTerm) || values.some(v => v.toLowerCase().includes(lowerTerm))) {
-        expandedTerms.push(key, ...values);
-      }
-    });
-
-    return Array.from(new Set(expandedTerms));
-  };
 
   const updateHomeState = (updates: Partial<{
     selectedSymptoms: SymptomCategory[];
     currentRecommendations: RecommendationResult | null;
-    searchTerm: string;
   }>) => {
     if (onHomeStateChange) {
       onHomeStateChange({
         selectedSymptoms,
         currentRecommendations,
-        searchTerm,
         ...updates
       });
-    }
-  };
-
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
-    updateHomeState({ searchTerm: term });
-    if (term.trim()) {
-      // アナリティクス記録
-      analytics.trackSearch(term.trim(), 0, 'home');
-      
-      // 検索実行時に上部にスクロール
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 100);
-      
-      const results = performSearch(term);
-      setSearchResults(results);
-      
-      // 検索結果数をアナリティクスに記録
-      analytics.trackSearch(term.trim(), results.length, 'home');
-    } else {
-      setSearchResults([]);
     }
   };
 
@@ -587,63 +499,6 @@ const Home: React.FC<HomeProps> = ({
         </div>
       )}
       
-      {/* 従来の検索機能（下部に配置） */}
-      <div className="search-section compact">
-        <h3>オイルを検索</h3>
-        <div className="search-box">
-          <div className="search-input-wrapper">
-            <input
-              type="text"
-              placeholder="症状や気になることを入力"
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="search-input"
-            />
-            {searchTerm && (
-              <button 
-                className="search-clear-btn"
-                onClick={() => handleSearch('')}
-                aria-label="検索をクリア"
-              >
-                ×
-              </button>
-            )}
-          </div>
-        </div>
-
-        {searchTerm && searchResults.length > 0 && (
-          <div className="search-results">
-            <h3>検索結果 ({searchResults.length}件)</h3>
-            <div className="oil-cards">
-              {searchResults.map(oil => (
-                <div key={oil.id} className="oil-card" onClick={() => {
-                  analytics.trackOilView(oil.id, oil.name, 'home');
-                  onOilSelect(oil);
-                }}>
-                  <h4>{oil.name}</h4>
-                  <p className="oil-aroma">{oil.aroma}</p>
-                  <div className="oil-benefits">
-                    {oil.benefits.slice(0, 2).map((benefit, index) => (
-                      <span key={index} className="benefit-tag">{benefit}</span>
-                    ))}
-                  </div>
-                  {(!oil.safetyInfo.pregnancy || !oil.safetyInfo.children) && (
-                    <div className="safety-warning">⚠️ 使用注意</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {searchTerm && searchResults.length === 0 && (
-          <div className="no-results">
-            <span style={{fontSize: '2rem', marginBottom: '10px', display: 'block'}}>🔍</span>
-            <p>「{searchTerm}」に該当するオイルが見つかりませんでした。</p>
-            <p>他のキーワードでお試しください。</p>
-          </div>
-        )}
-      </div>
     </div>
   );
 };

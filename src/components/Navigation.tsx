@@ -3,7 +3,7 @@ import './Navigation.css';
 
 interface NavigationProps {
   currentScreen: string;
-  onScreenChange: (screen: 'home' | 'oils' | 'blends' | 'guide' | 'settings') => void;
+  onScreenChange: (screen: string) => void;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }) => {
@@ -15,13 +15,18 @@ const Navigation: React.FC<NavigationProps> = ({ currentScreen, onScreenChange }
     { id: 'settings', label: '設定', icon: '⚙️' }
   ];
 
+  console.log('Navigation rendered with currentScreen:', currentScreen);
+
   return (
     <nav className="navigation">
       {navItems.map(item => (
         <button
           key={item.id}
           className={`nav-item ${currentScreen === item.id ? 'active' : ''}`}
-          onClick={() => onScreenChange(item.id as any)}
+          onClick={() => {
+            console.log('Navigation button clicked:', item.id);
+            onScreenChange(item.id);
+          }}
         >
           <span className="nav-icon">{item.icon}</span>
           <span className="nav-label">{item.label}</span>
