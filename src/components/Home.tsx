@@ -27,7 +27,7 @@ interface HomeProps {
     selectedSymptoms: SymptomCategory[];
     currentRecommendations: RecommendationResult | null;
   }) => void;
-  onScreenChange?: (screen: string) => void; // 追加
+  onScreenChange?: (screen: 'home' | 'oils' | 'blends' | 'guide' | 'settings') => void; // 追加
 }
 
 const Home: React.FC<HomeProps> = ({ 
