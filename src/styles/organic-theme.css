@@ -215,20 +215,15 @@ input:focus, textarea:focus {
   font-weight: 300;
 }
 
-/* Info cards with circular style */
+/* Info cards with rounded style */
 .info-card {
   background: var(--organic-bg-light);
   border: 1px solid var(--organic-accent);
-  border-radius: 50%;
-  padding: 40px;
+  border-radius: 20px;
+  padding: 25px 20px;
   text-align: center;
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   box-shadow: 0 4px 12px var(--organic-shadow);
-  max-width: 200px;
+  max-width: 300px;
   margin: 20px auto;
 }
 

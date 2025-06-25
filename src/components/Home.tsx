@@ -177,7 +177,7 @@ const Home: React.FC<HomeProps> = ({
         timeOfDay: RecommendationEngine.getCurrentTimeOfDay(),
         season: RecommendationEngine.getCurrentSeason(),
         userSafetyProfile: userProfile,
-        availableOils: myOils.map(oil => oil.id)
+        availableOils: [] // myOilsが空の場合でもレシピを表示
       });
       setCurrentRecommendations(recommendations);
       updateHomeState({ selectedSymptoms: newSymptoms, currentRecommendations: recommendations });
@@ -188,7 +188,7 @@ const Home: React.FC<HomeProps> = ({
         timeOfDay: RecommendationEngine.getCurrentTimeOfDay(),
         season: RecommendationEngine.getCurrentSeason(),
         userSafetyProfile: userProfile,
-        availableOils: myOils.map(oil => oil.id)
+        availableOils: [] // myOilsが空の場合でもレシピを表示
       });
       setCurrentRecommendations(recommendations);
       updateHomeState({ selectedSymptoms: newSymptoms, currentRecommendations: recommendations });

@@ -162,10 +162,6 @@ const CustomBlends: React.FC = () => {
   return (
     <div className="custom-blends">
       <div className="blends-header">
-        <div>
-          <h1>カスタムブレンド</h1>
-          <p>オリジナルのエッセンシャルオイルブレンドを作成・管理</p>
-        </div>
         <button className="create-blend-btn" onClick={handleCreateBlend}>
           + 新しいブレンドを作成
         </button>

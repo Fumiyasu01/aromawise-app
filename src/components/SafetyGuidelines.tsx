@@ -41,10 +41,7 @@ const SafetyGuidelines: React.FC = () => {
 
   return (
     <div className="safety-guidelines">
-      <header className="safety-header">
-        <h1>🛡️ 安全ガイドライン</h1>
-        <p>エッセンシャルオイルを安全に使用するための重要な情報</p>
-      </header>
+      {/* ヘッダーはGuideHubで表示するため削除 */}
 
       <div className="safety-search">
         <input

@@ -179,16 +179,11 @@ body.dark-mode .home-header p {
 .info-card {
   background: var(--organic-bg-light, #FDFAF4);
   border: 1px solid var(--organic-accent, #7A9A65);
-  padding: 30px;
-  border-radius: 50%;
+  padding: 25px 20px;
+  border-radius: 20px;
   box-shadow: 0 4px 12px var(--organic-shadow);
   margin: 20px auto;
-  max-width: 200px;
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  max-width: 300px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -205,8 +200,8 @@ body.dark-mode .home-header p {
 .info-card p {
   color: var(--organic-text, #4A4A4A);
   margin: 0;
-  line-height: 1.5;
-  font-size: 0.875rem;
+  line-height: 1.6;
+  font-size: 0.9rem;
   font-weight: 300;
 }
 
