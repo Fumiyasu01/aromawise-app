@@ -27,6 +27,8 @@ import SharedBlend from './components/SharedBlend';
 import OilsHub from './components/OilsHub';
 import BlendsHub from './components/BlendsHub';
 import GuideHub from './components/GuideHub';
+import NavigationDebug from './components/NavigationDebug';
+import NavigationTest from './components/NavigationTest';
 import { Oil } from './types/Oil';
 import { BlendRecipe } from './types/BlendRecipe';
 import { BlendSuggestion } from './types/FragranceBlend';
@@ -237,6 +239,8 @@ function AppInner() {
         {/* PWAコンポーネント */}
         <OfflineIndicator />
         <InstallBanner />
+        <NavigationDebug />
+        <NavigationTest />
         
         {/* ヘッダー部分 */}
         <div className="app-header">

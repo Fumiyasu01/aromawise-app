@@ -1,0 +1,88 @@
+/* Emergency Navigation Fix - Override all conflicting styles */
+
+/* Reset all navigation styles to ensure clickability */
+.navigation,
+.navigation * {
+  pointer-events: auto !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Ensure navigation is absolutely on top */
+.navigation {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 999999 !important; /* Maximum z-index */
+  background: white !important;
+  isolation: isolate !important;
+}
+
+/* Reset nav-item button styles */
+.navigation .nav-item {
+  /* Reset all potential blocking styles */
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  /* Override touch-improvements.css */
+  border-radius: 0 !important;
+  margin: 0 !important;
+  min-height: 50px !important;
+  min-width: auto !important;
+  padding: 8px 4px !important;
+  
+  /* Ensure it's clickable */
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+  
+  /* Remove any transforms that might interfere */
+  transform: none !important;
+  
+  /* Override any background/border from other files */
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Ensure pseudo-elements don't block clicks */
+.navigation .nav-item::before,
+.navigation .nav-item::after {
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Active state should work */
+.navigation .nav-item:active {
+  transform: scale(0.95) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Ensure text and icons are visible */
+.navigation .nav-icon,
+.navigation .nav-label {
+  pointer-events: none !important; /* Let clicks pass through to button */
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Dark mode support */
+body.dark-mode .navigation {
+  background: #161616 !important;
+}
+
+/* Debug - add visible border to confirm button area */
+.navigation .nav-item {
+  outline: 1px solid transparent !important;
+}
+
+.navigation .nav-item:focus {
+  outline: 2px solid #4ade80 !important;
+  outline-offset: -2px !important;
+}

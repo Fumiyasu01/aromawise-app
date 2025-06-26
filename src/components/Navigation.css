@@ -27,6 +27,7 @@
   touch-action: manipulation;
   min-height: 50px;
   position: relative;
+  z-index: 2; /* Above pseudo-elements */
 }
 
 .nav-item.active {
@@ -99,20 +100,43 @@ body.dark-mode .nav-item:hover {
 .navigation {
   pointer-events: auto !important;
   isolation: isolate; /* Create new stacking context */
+  /* Force navigation to be on top */
+  position: fixed !important;
+  z-index: 10001 !important;
 }
 
 .navigation * {
   pointer-events: auto !important;
 }
 
+/* Override any conflicting styles from other CSS files */
+.navigation .nav-item {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+  user-select: none !important;
+  /* Ensure the button is interactive */
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+}
+
 /* Debug: Visual indicator for click area */
-.nav-item {
-  position: relative;
-  z-index: 1;
+.nav-item:focus {
+  outline: 2px solid #4ade80;
+  outline-offset: 2px;
 }
 
 /* Visual feedback for debugging */
 .nav-item:active {
-  background-color: rgba(0, 0, 0, 0.1);
-  transform: scale(0.95);
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  transform: scale(0.95) !important;
+}
+
+/* Ensure nav items don't have any transforms that might affect stacking */
+.nav-item::before,
+.nav-item::after {
+  pointer-events: none !important;
+  z-index: -1;
 }

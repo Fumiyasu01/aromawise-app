@@ -494,7 +494,7 @@ body.dark-mode {
     transform: translate(-50%, -50%);
     transition: width 0.3s, height 0.3s;
     pointer-events: none;
-    z-index: 1;
+    z-index: -1; /* Behind the button content */
   }
 
   .oil-item:active::before,
