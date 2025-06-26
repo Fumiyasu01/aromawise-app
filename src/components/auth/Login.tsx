@@ -132,20 +132,28 @@ const Login: React.FC<LoginProps> = ({ onSwitchToSignup, onSwitchToReset, onClos
 
       <div className="social-login">
         <button
-          className="social-button google"
-          onClick={() => handleSocialLogin('google')}
-          disabled={isLoading}
+          className="social-button google disabled"
+          onClick={(e) => {
+            e.preventDefault();
+            alert('Google認証は現在準備中です。メールアドレスでログインするか、ゲストとして続けてください。');
+          }}
+          disabled={true}
+          style={{ opacity: 0.6, cursor: 'not-allowed' }}
         >
           <span className="social-icon">🔷</span>
-          Googleでログイン
+          Googleでログイン（準備中）
         </button>
         <button
-          className="social-button apple"
-          onClick={() => handleSocialLogin('apple')}
-          disabled={isLoading}
+          className="social-button apple disabled"
+          onClick={(e) => {
+            e.preventDefault();
+            alert('Apple認証は現在準備中です。メールアドレスでログインするか、ゲストとして続けてください。');
+          }}
+          disabled={true}
+          style={{ opacity: 0.6, cursor: 'not-allowed' }}
         >
           <span className="social-icon">🍎</span>
-          Appleでログイン
+          Appleでログイン（準備中）
         </button>
       </div>
 
