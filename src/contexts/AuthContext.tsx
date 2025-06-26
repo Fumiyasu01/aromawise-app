@@ -33,11 +33,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             error: null
           });
         } else {
-          setAuthState(prev => ({ ...prev, isLoading: false }));
+          // 保存されたユーザーがいない場合は自動的にゲストユーザーを作成
+          const guestUser: User = {
+            id: `guest_${Date.now()}`,
+            email: '',
+            name: 'ゲストユーザー',
+            isGuest: true,
+            createdAt: new Date(),
+            lastLoginAt: new Date()
+          };
+          
+          localStorage.setItem('aromawise_user', JSON.stringify(guestUser));
+          setAuthState({
+            user: guestUser,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null
+          });
         }
       } catch (error) {
         console.error('Failed to load auth state:', error);
-        setAuthState(prev => ({ ...prev, isLoading: false }));
+        // エラーが発生してもゲストユーザーとして続行
+        const guestUser: User = {
+          id: `guest_${Date.now()}`,
+          email: '',
+          name: 'ゲストユーザー',
+          isGuest: true,
+          createdAt: new Date(),
+          lastLoginAt: new Date()
+        };
+        
+        localStorage.setItem('aromawise_user', JSON.stringify(guestUser));
+        setAuthState({
+          user: guestUser,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null
+        });
       }
     };
 

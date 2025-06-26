@@ -247,19 +247,20 @@ function AppInner() {
           
           {/* 認証状態表示 */}
           <div className="auth-status">
-            {isAuthenticated && user ? (
+            {user && (
               <span className="user-welcome">
                 {user.isGuest ? 'ゲスト' : user.name}
               </span>
-            ) : (
+            )}
+            {user?.isGuest && (
               <button 
                 className="btn-secondary auth-button"
                 onClick={() => {
-                  setAuthModalMode('login');
+                  setAuthModalMode('signup');
                   setShowAuthModal(true);
                 }}
               >
-                ログイン
+                アカウント作成
               </button>
             )}
           </div>
